@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./css/styles.css">
+
+    <title>SALURBAL</title>
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+
+      <!-- Title -->
+      <div class="row">
+        <div class="col-md-12 border">
+          <h1>SALURBAL - Street Design Profiles</h1>    
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-12 border">
+              <p>list by profile</p>  
+            </div>
+            <div class="col-md-12 border">
+              <p>filter by country</p>  
+            </div>
+            <div class="col-md-12 border">
+              <p>filter by L1</p>  
+            </div>
+            <div class="col-md-12 border">
+              <p>filter by L2</p>  
+            </div>
+            <div class="col-md-12 border">
+              <p>dimred selection</p>  
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 border">
+          <div id="dimred"></div>
+        </div>
+        <div class="col-md-3 border">
+          <p>map</p>
+        </div>
+        <div class="col-md-2 border">
+          <p>list by country</p>
+        </div>  
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 border">
+          <p>distribution</p>
+        </div>
+      </div>
+       
+    </div>
+
+    <!-- Libraries -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter2/1.4.6/crossfilter.js"></script>
+
+    <script type="text/javascript" src="./js/components/dimredChart.js"></script> 
+    <script type="text/javascript" src="./js/main.js"></script>
+
+  </body>
+</html>
