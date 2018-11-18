@@ -1,10 +1,19 @@
-/* global d3, crossfilter, dimredChart */
+/* global d3, crossfilter, dimredPlot, lacMap, heatlistChart */
 
-var myDimredChart = dimredChart()
+var myDimredPlot = dimredPlot()
   .x( d => d[ "TSNE_TR_X" ] )
   .y( d => d[ "TSNE_TR_Y" ] )
   .z( d => d[ "TR_PROFILE" ] )
   .text( d => d[ "L2Namev2" ] );
+
+/*var myLacMap = lacMap()
+  .latlng( d => d[ "LatLng" ] )
+  .z( d => d[ "TR_PROFILE" ] )
+  .text( d => d[ "L2Namev2" ] );*/
+
+var myHeatlistChart = heatlistChart()
+  .text( d => d[ "key" ] )
+  .quantity( d => d[ "value" ] );
 
 d3.csv( "./data/base_l2_clean.csv", d => {
   
@@ -26,6 +35,7 @@ d3.csv( "./data/base_l2_clean.csv", d => {
 
   d[ 'CentLatitude' ] = +d[ 'CentLatitude' ];
   d[ 'CentLongitude' ] = +d[ 'CentLongitude' ];
+  d[ "LatLng" ] = new L.LatLng( +d[ 'CentLatitude' ], +d[ 'CentLongitude' ] );
 
   d[ 'TSNE_TR_X' ] = +d[ 'TSNE_TR_X' ];
   d[ 'TSNE_TR_Y' ] = +d[ 'TSNE_TR_Y' ];
@@ -33,6 +43,8 @@ d3.csv( "./data/base_l2_clean.csv", d => {
   return d;
 
 } ).then( data => {
+
+  console.log( data );
 
   var csData = crossfilter( data );
 
@@ -46,14 +58,37 @@ d3.csv( "./data/base_l2_clean.csv", d => {
 
   function update() {
 
+    /* Dimensionality Reduction */
     var dimred = d3.select( "#dimred" );
     
-    myDimredChart
+    myDimredPlot
       .width( +dimred.style( "width" ).slice( 0, -2 ) );
 
     dimred
       .datum( csData.all() )
-      .call( myDimredChart );
+      .call( myDimredPlot );
+
+    /* Units on Map */
+
+    /*var map = d3.select( "#map" );
+    
+    myLacMap
+      .width( +map.style( "width" ).slice( 0, -2 ) );
+
+    map
+      .datum( csData.all() )
+      .call( myLacMap );*/
+
+    /* List By Country */
+
+    var heatlist = d3.select( "#listByCountry" );
+    
+    myHeatlistChart
+      .width( +heatlist.style( "width" ).slice( 0, -2 ) );
+
+    heatlist
+      .datum( csData.sumByCountry.all() )
+      .call( myHeatlistChart );
 
   }
 

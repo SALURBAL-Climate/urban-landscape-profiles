@@ -1,16 +1,13 @@
 /* global d3 */
 
-function dimredChart() {
+function lacMap() {
   
   var margin = { top: 10, right: 10, bottom: 10, left: 10 },
     width = 400,
     height = 400,
-    xValue = function( d ) { return d[ 0 ]; },
-    yValue = function( d ) { return d[ 1 ]; },
+    latlngValue = function( d ) { return d[ 0 ]; },
     zValue = function( d ) { return d[ 2 ]; },
     textValue = function( d ) { return d[ 3 ]; },
-    xScale = d3.scaleLinear(),
-    yScale = d3.scaleLinear(),
     zScale = d3.scaleOrdinal( d3.schemeCategory10 );
 
   function chart( selection ) {
@@ -38,13 +35,19 @@ function dimredChart() {
       var g = svg.merge( svgEnter ).select( "g" )
           .attr( "transform", "translate(" + margin.left + "," + margin.top + ")" );
 
-      // Defining the scales
-  
-      xScale.rangeRound( [ 0, innerWidth ] )
-        .domain( [ d3.min( data, xValue ), d3.max( data, xValue ) ] );
-      
-      yScale.rangeRound( [ innerHeight, 0 ] )
-        .domain( [ d3.min( data, yValue ), d3.max( data, yValue ) ] );
+      // Configuring map
+
+      var map = L.map( "map" ).setView( [ -16.64, -65.21 ], 2 );
+      const mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>";
+      L.tileLayer( "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution : "&copy; " + mapLink + " Contributors",
+        maxZoom : 8,
+      } ).addTo( map );
+
+      map._initPathRoot();
+
+      // Defining the projection
+      var projection = d3.geoMercator();
       
       // Binding data
       var circles = g.selectAll( ".circle" )
@@ -54,28 +57,27 @@ function dimredChart() {
         .enter()
         .append( "circle" )
           .attr( "class", "circle" )
-        .merge( circles )
-          .attr( "cx", X )
-          .attr( "cy", Y )  
+        .merge( circles ) 
           .style( "fill", Z )
           .attr( "r", 2 )
           .append( "title" )
             .text( d => textValue( d ) );
 
+      function update() {
+        circles.attr( "transform", 
+          function( d ) { 
+            return "translate(" + map.latLngToLayerPoint( latlngValue( d ) ).x +","+ map.latLngToLayerPoint( latlngValue( d ) ).y +")";
+          }
+        );
+      }
+
+      map.on( "viewreset", update );
+      update();
+
       circles.exit().remove();
 
     } );
 
-  }
-
-  // The x-accessor for the path generator; xScale ∘ xValue.
-  function X( d ) {
-    return xScale( xValue( d ) );
-  }
-
-  // The y-accessor for the path generator; yScale ∘ yValue.
-  function Y( d ) {
-    return yScale( yValue( d ) );
   }
 
   function Z( d ) {
@@ -100,15 +102,9 @@ function dimredChart() {
     return chart;
   };
 
-  chart.x = function( _ ) {
-    if( !arguments.length ) return xValue;
-    xValue = _;
-    return chart;
-  };
-
-  chart.y = function( _ ) {
-    if( !arguments.length ) return yValue;
-    yValue = _;
+  chart.latlng = function( _ ) {
+    if( !arguments.length ) return latlngValue;
+    latlngValue = _;
     return chart;
   };
 
