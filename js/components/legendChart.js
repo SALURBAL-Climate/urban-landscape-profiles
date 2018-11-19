@@ -1,16 +1,15 @@
 /* global d3 */
 
-function heatlistChart() {
+function legendChart() {
   
   var margin = { top: 30, right: 10, bottom: 10, left: 10 },
     width = 400,
-    height = 400,
+    height = 230,
     textValue = function( d ) { return d[ 0 ]; },
     quantityValue = function( d ) { return d[ 1 ]; },
     textAlias = "Text";
     quantityAlias = "Quantity";
-    zScale = d3.scaleSequential( d3.interpolateBlues );
-    zScaleInv = d3.scaleSequential( d3.interpolateBlues );
+    hueScale = d3.scaleOrdinal( d3.schemeCategory10  );
 
   function chart( selection ) {
 
@@ -41,11 +40,8 @@ function heatlistChart() {
 
       // Defining the scales
   
-      zScale
-        .domain( [ d3.min( data, quantityValue ), d3.max( data, quantityValue ) ] );
-
-      zScaleInv
-        .domain( [ d3.max( data, quantityValue ), d3.min( data, quantityValue ) ] );
+      hueScale
+        .domain( [ "1", "2", "3", "", "4", "5", "6" ] );
 
       g.append( "rect" )
         .attr( "class", "rect" )
@@ -66,6 +62,16 @@ function heatlistChart() {
 
       g.append( "text" )
         .attr( "class", "labeltitle" )
+        .attr( "x", ( innerWidth / 2 ) )
+        .attr( "y", "-.5em" )
+        .style( "font-size", "1em" )
+        .style( "font-weight", "bold" )
+        .attr( "text-anchor", "middle" )
+        .style( "fill", "gray" )
+        .text( "Color" );
+      
+      g.append( "text" )
+        .attr( "class", "labeltitle" )
         .attr( "x", innerWidth - 5 )
         .attr( "y", "-.5em" )
         .style( "font-size", "1em" )
@@ -84,19 +90,18 @@ function heatlistChart() {
 
 
       // Binding data
-      var rects = g.selectAll( ".rect.heat" )
+      var circles = g.selectAll( ".circle.category" )
         .data( function ( d ) { return d; } );
 
-      rects
+      circles
         .enter()
-        .append( "rect" )
-          .attr( "class", "rect heat" )
-        .merge( rects )
-          .attr( "x", ( d, i ) => ( innerWidth / 2 ) )
-          .attr( "y", ( d, i ) => ( 2 * i ) + "em" )
-          .attr( "width", ( innerWidth / 2 ) )
-          .attr( "height", "2em" )  
-          .style( "fill", Z );
+        .append( "circle" )
+          .attr( "class", "circle category" )
+        .merge( circles )
+          .attr( "cx", ( d, i ) => ( innerWidth / 2 ) )
+          .attr( "cy", ( d, i ) => ( ( 2 * i ) + 1 ) + "em" )
+          .attr( "r", ".7em" )  
+          .style( "fill", Hue );
 
       var texts = g.selectAll( ".label.text" )
         .data( function ( d ) { return d; } );
@@ -123,11 +128,11 @@ function heatlistChart() {
           .attr( "x", ( d, i ) => innerWidth - 5 )
           .attr( "y", ( d, i ) => ( ( 2 * i ) + 1.5 ) + "em" )
           .style( "font-size", "1em" )
-          .style( "fill", ZInv )
+          .style( "fill", "gray" )
           .attr( "text-anchor", "end" )
           .text( d => quantityValue( d ) );
 
-      rects.exit().remove();
+      circles.exit().remove();
       texts.exit().remove();
       quantities.exit().remove();
 
@@ -135,12 +140,8 @@ function heatlistChart() {
 
   }
 
-  function Z( d ) {
-    return zScale( quantityValue( d ) );
-  }
-
-  function ZInv( d ) {
-    return zScaleInv( quantityValue( d ) );
+  function Hue( d ) {
+    return hueScale( textValue( d ) );
   }
 
   chart.margin = function( _ ) {

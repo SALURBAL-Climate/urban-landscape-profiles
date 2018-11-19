@@ -11,7 +11,7 @@ function dimredPlot() {
     textValue = function( d ) { return d[ 3 ]; },
     xScale = d3.scaleLinear(),
     yScale = d3.scaleLinear(),
-    zScale = d3.scaleOrdinal( d3.schemeCategory10 );
+    hueScale = d3.scaleOrdinal( d3.schemeCategory10  );
 
   function chart( selection ) {
 
@@ -45,6 +45,9 @@ function dimredPlot() {
       
       yScale.rangeRound( [ innerHeight, 0 ] )
         .domain( [ d3.min( data, yValue ), d3.max( data, yValue ) ] );
+
+      hueScale
+        .domain( [ "1", "2", "3", "", "4", "5", "6" ] );
       
       // Binding data
       var circles = g.selectAll( ".circle" )
@@ -57,7 +60,7 @@ function dimredPlot() {
         .merge( circles )
           .attr( "cx", X )
           .attr( "cy", Y )  
-          .style( "fill", Z )
+          .style( "fill", Hue )
           .attr( "r", 2 )
           .append( "title" )
             .text( d => textValue( d ) );
@@ -78,8 +81,8 @@ function dimredPlot() {
     return yScale( yValue( d ) );
   }
 
-  function Z( d ) {
-    return zScale( zValue( d ) );
+  function Hue( d ) {
+    return hueScale( zValue( d ) );
   }
 
   chart.margin = function( _ ) {
