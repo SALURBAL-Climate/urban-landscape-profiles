@@ -44,7 +44,7 @@ function lacMap() {
         maxZoom : 8,
       } ).addTo( map );
 
-      map._initPathRoot();
+      //map._initPathRoot();
 
       // Defining the projection
       var projection = d3.geoMercator();
