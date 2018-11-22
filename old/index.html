@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.css">
+
+    <link rel="stylesheet" href="./css/styles.css">
+
+    <title>SALURBAL</title>
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+
+      <div class="row no-gutters">
+        <div class="col-md-12 border">
+          <h1>SALURBAL - Street Design Profiles</h1>    
+        </div>
+      </div>
+
+      <div class="row no-gutters">
+        <div class="col-md-2">
+          <div class="row no-gutters">
+            <div class="col-md-12 border">
+              <div id="totalOfUnits"></div>  
+            </div>
+            <div class="col-md-12 border">
+              <div id="listByProfile"></div>  
+            </div>
+            <div class="col-md-12 border">
+              <h3>Country</h3>
+              <div id="filterByCountry"></div>
+            </div>
+            <div class="col-md-12 border">
+              <h3>L1 Name</h3>
+              <div id="filterByL1"></div>  
+            </div>
+            <div class="col-md-12 border">
+              <h3>L2 Name</h3>
+              <div id="filterByL2"></div>
+            </div>
+            <div class="col-md-12 border">
+              <p>dimred selection</p>  
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 border">
+          <div id="dimred"></div>
+        </div>
+        <div class="col-md-3 border">
+          <div id="map"></div>
+        </div>
+        <div class="col-md-2 border">
+          <div id="listByCountry"></div>
+        </div>  
+      </div>
+
+      <div class="row no-gutters">
+        <div class="col-md-12 border">
+          <p>distribution</p>
+        </div>
+      </div>
+       
+    </div>
+
+    <!-- Libraries -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-geo/1.9.1/d3-geo.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter2/1.4.6/crossfilter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.js"></script>
+
+    <script type="text/javascript" src="./js/components/dimredPlot.js"></script>
+    <script type="text/javascript" src="./js/components/lacMap.js"></script>
+    <script type="text/javascript" src="./js/components/heatlistChart.js"></script>
+    <script type="text/javascript" src="./js/components/legendChart.js"></script>
+    <script type="text/javascript" src="./js/components/combobox.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+
+  </body>
+</html>
