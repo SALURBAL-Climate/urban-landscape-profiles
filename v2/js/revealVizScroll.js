@@ -24,6 +24,7 @@ var revealVizScroll = (function(){
         .append("svg")
         .attr("width", 500)
         .attr("height", 700)
+        .style( "border", "1px solid" )
         .append("text")
         .attr("x", 100)
         .attr("y", 200);
