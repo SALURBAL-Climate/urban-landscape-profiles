@@ -1,13 +1,16 @@
 /* global d3, crossfilter, tip */
 
-var level = "L1Name";
+var level = "L1Name",
+  typology = "stt_perfil";
+
+var friendly_names = {
+  "intersection_density" : "Intersection Density (?)",
+  "street_length_average" : "Street Length Average (?)"
+};
 
 var svg,
   width = 500,
   height = 700,
-  margin = { top: 20, right: 20, bottom: 20, left: 20 },
-  iwidth = width - margin.left - margin.right,
-  iheight = height - margin.top - margin.bottom,
   transition_duration = 1000;
 
 var csData, 
@@ -24,46 +27,23 @@ var countriesFigure,
   countriesBoxplotyAxis,
   countriesBoxplotVertLines,
   countriesBoxplotBoxes,
-  countriesBoxplotMedians;
+  countriesBoxplotMedians,
+  typologiesNumUnits;
 
 var xScaleBox,
-  yScaleBox;
+  yScaleBox,
+  cScale = d3.scaleOrdinal( d3.schemeCategory10  )
+   .domain( [ "0", "1", "2", "3", "", "4", "5", "6" ] );
 
-function typoDistribution( element ) {
+var typologySimul;
 
-  countriesBoxplotxAxis.selectAll( "path,line,text" )
-    .transition()
-      .duration( transition_duration )
-      .style( "stroke-opacity", 0 )
-      .style( "fill-opacity", 0 );
-
-  countriesBoxplotyAxis.selectAll( "path,line,text" )
-    .transition()
-      .duration( transition_duration )
-      .style( "stroke-opacity", 0 )
-      .style( "fill-opacity", 0 );
-
-  countriesBoxplotVertLines
-    .transition()
-      .duration( transition_duration )
-      .style( "stroke-opacity", 0 );
-
-  countriesBoxplotBoxes
-    .transition()
-      .duration( transition_duration )
-      .style( "stroke-opacity", 0 );
-
-  countriesBoxplotMedians
-    .transition()
-      .duration( transition_duration )
-      .style( "stroke-opacity", 0 );
-
-}
+var using_colors = false;
 
 function doStep( step ) {
 
   if( step === "geo-distribution" ) geoDistribution( this );
-  else if( step === "feat-distribution" ) featDistribution( this )
+  else if( step === "feat-distribution1" ) featDistribution( this, "intersection_density" )
+  else if( step === "feat-distribution2" ) featDistribution( this, "street_length_average" )
   else if( step === "typo-distribution" ) typoDistribution( this );
 
 }
@@ -108,14 +88,12 @@ d3.csv( "./data/base_l1ux_clean.csv", d => {
   csData.countries = csData.dimension( d => d[ "Country" ] );
   csData.l1names = csData.dimension( d => d[ "L1Name" ] );
   csData.l2names = csData.dimension( d => d[ "L2Namev2" ] );
-  csData.profiles = csData.dimension( d => d[ "TR_PROFILE" ] );
+  csData.typologies = csData.dimension( d => d[ typology ] );
 
   csData.sumByCountry = csData.countries.group();
   csData.sumByL1Name =  csData.l1names.group();
   csData.sumByL2Name =  csData.l2names.group();
-  csData.sumByProfile = csData.profiles.group();
-
-  initializeBoxPlot();
+  csData.sumByTypology = csData.typologies.group();
 
 } );
 

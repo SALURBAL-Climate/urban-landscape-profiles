@@ -1,38 +1,6 @@
-function initializeBoxPlot() {
+function featDistribution( element, feature ) {
 
-  sumstat = d3.nest()
-    .key( d => d[ "Country" ] )
-    .sortKeys( d3.ascending )
-    .rollup( d => {
-      
-      q1 = d3.quantile( d.map( g => g[ "intersection_density" ] ).sort( d3.ascending ), .25 );
-      median = d3.quantile( d.map( g => g[ "intersection_density" ] ).sort( d3.ascending ), .5 );
-      q3 = d3.quantile(d.map( g => g[ "intersection_density" ] ).sort( d3.ascending ), .75 );
-      interQuantileRange = q3 - q1;
-      min = q1 - 1.5 * interQuantileRange
-      max = q3 + 1.5 * interQuantileRange
-      return( { q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max } );
-
-    } )
-    .entries( csData.all() );
-
-  console.log( sumstat );
-
-  xScaleBox = d3.scaleBand()
-    .range( [ 30, width - 30 ] )
-    .domain( sumstat.map( d => d.key ) )
-    .paddingInner( 1 )
-    .paddingOuter( .5 );
-
-  yScaleBox = d3.scaleLinear()
-    .domain( [ 0, d3.max( csData.all(), d => d[ "intersection_density" ] ) ] )
-    .range( [ height - 70 , 150 ] );
-
-}
-
-function featDistribution( element ) {
-
-  // Resizing map anc ountries list
+  // Resizing map and ountries list
 
   countriesProjection = d3.geoMercator()
     .scale( 170 / Math.PI )
@@ -59,9 +27,45 @@ function featDistribution( element ) {
       .attr( "y", ( d, i ) => ( 15 + i * 10  ) )
       .style( "font-size", "0.20em" );
 
+  // Stoping simulation
+  if( typologySimul != null ) typologySimul.stop();
+
+  if( typologiesNumUnits != null ) typologiesNumUnits
+    .transition()
+      .duration( transition_duration )
+      .style( "fill-opacity", 0 );
+
   // Drawing boxplot
 
-  if( countriesBoxplotxAxis == null ) { 
+  sumstat = d3.nest()
+    .key( d => d[ "Country" ] )
+    .sortKeys( d3.ascending )
+    .rollup( d => {
+      
+      q1 = d3.quantile( d.map( g => g[ feature ] ).sort( d3.ascending ), .25 );
+      median = d3.quantile( d.map( g => g[ feature ] ).sort( d3.ascending ), .5 );
+      q3 = d3.quantile(d.map( g => g[ feature ] ).sort( d3.ascending ), .75 );
+      interQuantileRange = q3 - q1;
+      min = q1 - 1.5 * interQuantileRange
+      max = q3 + 1.5 * interQuantileRange
+      return( { q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max } );
+
+    } )
+    .entries( csData.all() );
+
+  xScaleBox = d3.scaleBand()
+    .range( [ 30, width - 30 ] )
+    .domain( sumstat.map( d => d.key ) )
+    .paddingInner( 1 )
+    .paddingOuter( .5 );
+
+  yScaleBox = d3.scaleLinear()
+    .domain( [ 0, d3.max( csData.all(), d => d[ feature ] ) ] )
+    .range( [ height - 70 , 150 ] );
+
+  /*if( countriesBoxplotxAxis == null || update_axis == true ) {*/
+
+    hide_boxplot();
 
     // Show the X axis
     countriesBoxplotxAxis = svg.append( "g" )
@@ -90,9 +94,19 @@ function featDistribution( element ) {
         .attr( "transform", "translate(30,0)" );
 
     countriesBoxplotyAxis
-      .call( d3.axisLeft( yScaleBox ) );
+      .call( d3.axisLeft( yScaleBox ) )
+      .append( "text" )
+        .attr( "transform", "rotate(-90)" )
+        .attr( "x", -150 )
+        .attr( "y", 7 )
+        .style( "fill", "black" )
+        .attr( "dy", ".7em" )
+        .style( "text-anchor", "end" )
+        .text( friendly_names[ feature ] );
 
     // Show the main vertical line
+    if( countriesBoxplotVertLines != null ) countriesBoxplotVertLines.remove();
+
     countriesBoxplotVertLines = svg.selectAll( "line.countriesBoxplot.vertline" )
       .data( sumstat )
       .enter()
@@ -108,8 +122,11 @@ function featDistribution( element ) {
     // rectangle for the main box
     var boxWidth = 30;
     
+    if( countriesBoxplotBoxes != null ) countriesBoxplotBoxes.remove();
+
     countriesBoxplotBoxes = svg.selectAll( "boxes.countriesBoxplot.box" )
       .data( sumstat )
+      .remove()
       .enter()
       .append( "rect" )
         .attr( "class", "countriesBoxplot box" )
@@ -121,8 +138,12 @@ function featDistribution( element ) {
         .style( "fill", "white" );
 
     // Show the median
+    
+    if( countriesBoxplotMedians != null ) countriesBoxplotMedians.remove();
+
     countriesBoxplotMedians = svg.selectAll( "line.countriesBoxplot.medians" )
       .data( sumstat )
+      .remove()
       .enter()
       .append( "line" )
         .attr( "class", "countriesBoxplot medians" )
@@ -133,7 +154,29 @@ function featDistribution( element ) {
         .attr( "stroke", "black" )
         .style( "width", 40 );
 
-  } else {
+  //} else {
+
+    show_boxplot();
+    
+  //}
+
+  // Add individual points with jitter
+  var jitterWidth = 30;
+  
+  unitsPoints
+    .moveToFront();
+
+  unitsPoints
+    .transition()
+      .duration( transition_duration )
+      .attr( "cx",  d => xScaleBox( d[ "Country" ] ) - jitterWidth / 2 + Math.random() * jitterWidth )
+      .attr( "cy", d  => yScaleBox( d[ feature ] ) );
+
+}
+
+function show_boxplot() {
+
+  if( countriesBoxplotyAxis != null ) {
 
     countriesBoxplotxAxis.selectAll( "path,line,text" )
       .transition()
@@ -164,16 +207,39 @@ function featDistribution( element ) {
 
   }
 
-  // Add individual points with jitter
-  var jitterWidth = 30;
-  
-  unitsPoints
-    .moveToFront();
+}
 
-  unitsPoints
-  .transition()
-    .duration( transition_duration )
-    .attr( "cx",  d => xScaleBox( d[ "Country" ] ) - jitterWidth / 2 + Math.random() * jitterWidth )
-    .attr( "cy", d  => yScaleBox( d[ "intersection_density" ] ) );
+function hide_boxplot() {
+
+  if( countriesBoxplotBoxes != null ) {
+
+    countriesBoxplotxAxis.selectAll( "path,line,text" )
+      .transition()
+        .duration( transition_duration )
+        .style( "stroke-opacity", 0 )
+        .style( "fill-opacity", 0 );
+
+    countriesBoxplotyAxis.selectAll( "path,line,text" )
+      .transition()
+        .duration( transition_duration )
+        .style( "stroke-opacity", 0 )
+        .style( "fill-opacity", 0 );
+
+    countriesBoxplotVertLines
+      .transition()
+        .duration( transition_duration )
+        .style( "stroke-opacity", 0 );
+
+    countriesBoxplotBoxes
+      .transition()
+        .duration( transition_duration )
+        .style( "stroke-opacity", 0 );
+
+    countriesBoxplotMedians
+      .transition()
+        .duration( transition_duration )
+        .style( "stroke-opacity", 0 );
+
+  }
 
 }

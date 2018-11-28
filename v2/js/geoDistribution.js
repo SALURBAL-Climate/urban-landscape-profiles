@@ -82,27 +82,11 @@ function geoDistribution( element ) {
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k[ "Country" ] === d.key )
-              .attr( "fill", "steelblue" )
+              .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
               .style( "fill-opacity", 1 );  
 
         } )
-        .on( "mouseout", function( d ) {
-          
-          countriesList
-            .attr( "fill", "steelblue" )
-            .style( "font-weight", "normal" )
-            .style( "fill-opacity", 1 );
-
-          countriesNumUnits
-            .attr( "fill", "steelblue" )
-            .style( "font-weight", "normal" )
-            .style( "fill-opacity", 1 );
-
-          unitsPoints
-            .attr( "fill", "steelblue" )
-            .style( "fill-opacity", 1 ); 
-
-        } );
+        .on( "mouseout", unhighlight );
 
     countriesNumUnits = svg.selectAll( "text.countriesNumUnits" )
       .data( csData.sumByCountry.all() )
@@ -110,7 +94,7 @@ function geoDistribution( element ) {
         .attr( "class", "countriesNumUnits" )
         .attr( "x", 460 )
         .attr( "y", ( d, i ) => ( 15 + i * 20 ) )
-        .attr( "fill", "steelblue" )
+        .attr( "fill", cScale( "0" ) )
         .attr( "text-anchor", "start" )
         .text( d => d.value )
         .style( "font-size", "0.4em" )
@@ -137,27 +121,11 @@ function geoDistribution( element ) {
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k[ "Country" ] === d.key )
-              .attr( "fill", "steelblue" )
+              .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
               .style( "fill-opacity", 1 );              
 
         } )
-        .on( "mouseout", function( d ) {
-          
-          countriesList
-            .attr( "fill", "steelblue" )
-            .style( "font-weight", "normal" )
-            .style( "fill-opacity", 1 );
-
-          countriesNumUnits
-            .attr( "fill", "steelblue" )
-            .style( "font-weight", "normal" )
-            .style( "fill-opacity", 1 );
-
-          unitsPoints
-            .attr( "fill", "steelblue" )
-            .style( "fill-opacity", 1 );
-
-        } );
+        .on( "mouseout", unhighlight );
 
     countriesList
       .transition()
@@ -199,7 +167,7 @@ function geoDistribution( element ) {
         .attr( "cx", d => countriesProjection( d.point )[ 0 ] )
         .attr( "cy", d => countriesProjection( d.point )[ 1 ] )
         .attr( "r", 2 )
-        .attr( "fill", "steelblue" )
+        .attr( "fill", d => cScale( "0" ) )
         .style( "fill-opacity", 0 )
         .on( "mouseover", d => {
 
@@ -223,29 +191,12 @@ function geoDistribution( element ) {
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k[ level ] === d[ level ] )
-              .attr( "fill", "steelblue" )
+              .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
               .style( "fill-opacity", 1 )
               .attr( "r", 5 );
 
         } )
-        .on( "mouseout", d => {
-
-          countriesList
-            .attr( "fill", "steelblue" )
-            .style( "fill-opacity", 1 )
-            .style( "font-weight", "normal" );
-
-          countriesNumUnits
-            .attr( "fill", "steelblue" )
-            .style( "fill-opacity", 1 )
-            .style( "font-weight", "normal" );
-
-          unitsPoints
-            .attr( "fill", "steelblue" )
-            .style( "fill-opacity", 1 )
-            .attr( "r", 2 );
-
-        } );
+        .on( "mouseout", unhighlight );
 
      unitsPoints   
       .append( "title" )
@@ -294,6 +245,34 @@ function geoDistribution( element ) {
       .transition()
         .duration( transition_duration )
         .style( "stroke-opacity", 0 );
+
+  }
+
+}
+
+function unhighlight() {
+
+  countriesList
+    .attr( "fill", cScale( "0" ) )
+    .style( "fill-opacity", 1 )
+    .style( "font-weight", "normal" );
+
+  countriesNumUnits
+    .attr( "fill", cScale( "0" ) )
+    .style( "fill-opacity", 1 )
+    .style( "font-weight", "normal" );
+
+  unitsPoints
+    .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
+    .style( "fill-opacity", 1 )
+    .attr( "r", 2 );
+
+  if( typologiesNumUnits != null ) {
+
+    typologiesNumUnits
+      .attr( "fill", d => cScale( d.key ) )
+      .style( "fill-opacity", 1 )
+      .style( "font-weight", "normal" );
 
   }
 
