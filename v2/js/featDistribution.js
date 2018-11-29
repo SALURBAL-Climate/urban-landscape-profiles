@@ -46,8 +46,8 @@ function featDistribution( element, feature ) {
       median = d3.quantile( d.map( g => g[ feature ] ).sort( d3.ascending ), .5 );
       q3 = d3.quantile(d.map( g => g[ feature ] ).sort( d3.ascending ), .75 );
       interQuantileRange = q3 - q1;
-      min = q1 - 1.5 * interQuantileRange
-      max = q3 + 1.5 * interQuantileRange
+      min = q1 - 1.5 * interQuantileRange;
+      max = q3 + 1.5 * interQuantileRange;
       return( { q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max } );
 
     } )
@@ -60,7 +60,7 @@ function featDistribution( element, feature ) {
     .paddingOuter( .5 );
 
   yScaleBox = d3.scaleLinear()
-    .domain( [ 0, d3.max( csData.all(), d => d[ feature ] ) ] )
+    .domain( [ -20, d3.max( csData.all(), d => d[ feature ] ) ] )
     .range( [ height - 70 , 150 ] );
 
   /*if( countriesBoxplotxAxis == null || update_axis == true ) {*/
@@ -116,7 +116,7 @@ function featDistribution( element, feature ) {
         .attr( "x2", d => xScaleBox( d.key ) )
         .attr( "y1", d => yScaleBox( d.value.min ) )
         .attr( "y2", d => yScaleBox( d.value.max ) )
-        .attr( "stroke", "black" )
+        .attr( "stroke", "#ccc" )
         .style( "width", 40 );
 
     // rectangle for the main box
@@ -126,7 +126,6 @@ function featDistribution( element, feature ) {
 
     countriesBoxplotBoxes = svg.selectAll( "boxes.countriesBoxplot.box" )
       .data( sumstat )
-      .remove()
       .enter()
       .append( "rect" )
         .attr( "class", "countriesBoxplot box" )
@@ -134,7 +133,7 @@ function featDistribution( element, feature ) {
         .attr( "y", d => yScaleBox( d.value.q3 ) )
         .attr( "height", d => yScaleBox( d.value.q1 ) - yScaleBox( d.value.q3 ) )
         .attr( "width", boxWidth )
-        .attr( "stroke", "black" )
+        .attr( "stroke", "#ccc" )
         .style( "fill", "white" );
 
     // Show the median
@@ -143,7 +142,6 @@ function featDistribution( element, feature ) {
 
     countriesBoxplotMedians = svg.selectAll( "line.countriesBoxplot.medians" )
       .data( sumstat )
-      .remove()
       .enter()
       .append( "line" )
         .attr( "class", "countriesBoxplot medians" )
@@ -151,7 +149,7 @@ function featDistribution( element, feature ) {
         .attr( "x2", d => xScaleBox( d.key ) + boxWidth / 2 )
         .attr( "y1", d => yScaleBox( d.value.median ) )
         .attr( "y2", d => yScaleBox( d.value.median ) )
-        .attr( "stroke", "black" )
+        .attr( "stroke", "#ccc" )
         .style( "width", 40 );
 
   //} else {
@@ -166,11 +164,23 @@ function featDistribution( element, feature ) {
   unitsPoints
     .moveToFront();
 
-  unitsPoints
+  typologySimul = d3.forceSimulation( csData.all() )
+    .force( "collide", d3.forceCollide().radius( point_radius ) )
+    .force( "x", d3.forceX( d => xScaleBox( d[ "Country" ] ) ).strength( 0.3 ) )
+    .force( "y", d3.forceY( d => yScaleBox( d[ feature ] ) ).strength( 0.3 ) )
+    .on( "tick", _ => {
+        
+        unitsPoints
+          .attr( "cx", d => d.x )
+          .attr( "cy", d => d.y );
+
+    } );
+
+  /*unitsPoints
     .transition()
       .duration( transition_duration )
       .attr( "cx",  d => xScaleBox( d[ "Country" ] ) - jitterWidth / 2 + Math.random() * jitterWidth )
-      .attr( "cy", d  => yScaleBox( d[ feature ] ) );
+      .attr( "cy", d  => yScaleBox( d[ feature ] ) );*/
 
 }
 

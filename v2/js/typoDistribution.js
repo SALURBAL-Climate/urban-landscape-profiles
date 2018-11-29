@@ -30,11 +30,14 @@ function typoDistribution( element ) {
   };
 
   hide_boxplot();
+
+  // Stoping simulation
+  if( typologySimul != null ) typologySimul.stop();
   
   typologySimul = d3.forceSimulation( csData.all() )
-    .force( "collide", d3.forceCollide().radius( 3 ) )
-    .force( "x", d3.forceX( width / 2 ) )
-    .force( "y", d3.forceY( height / 2 ) )
+    .force( "collide", d3.forceCollide().radius( point_radius + 2 ) )
+    .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( 0.3 ) )
+    .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( 0.3 ) )
     .on( "tick", _ => {
         
         unitsPoints
@@ -55,7 +58,7 @@ function typoDistribution( element ) {
       .enter().append( "text" )
         .attr( "class", "typologiesNumUnits" )
         .attr( "x", d => typology_centroid[ d.key ][ "x" ] )
-        .attr( "y", d => typology_centroid[ d.key ][ "y" ] - 40 )
+        .attr( "y", d => typology_centroid[ d.key ][ "y" ] - 60 )
         .attr( "fill", d => cScale( d.key ) )
         .attr( "text-anchor", "middle" )
         .text( d => d.value )
@@ -97,12 +100,12 @@ function typoDistribution( element ) {
 
     }
 
-  d3.timeout( _ => {
+  /*d3.timeout( _ => {
   
     typologySimul
       .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( 0.3 ) )
       .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( 0.3 ) );
 
-  }, transition_duration );
+  }, transition_duration );*/
 
 }

@@ -1,11 +1,11 @@
 /* global d3, crossfilter, tip */
 
-var level = "L1Name",
+var level = "L2Name",
   typology = "stt_perfil";
 
 var friendly_names = {
-  "intersection_density" : "Intersection Density (?)",
-  "street_length_average" : "Street Length Average (?)",
+  "intersection_density" : "Intersection Density (km2)",
+  "street_length_average" : "Street Length Average (km)",
 
   "population_density" : "Population Density (?)",
   "area" : "Area (?)"
@@ -14,6 +14,8 @@ var friendly_names = {
 var svg,
   width = 500,
   height = 700,
+  point_radius = 1,
+  point_radius_highlighted = 6,
   transition_duration = 1000;
 
 var csData, 
@@ -134,7 +136,7 @@ d3.selection.prototype.moveToFront = function() {
   } );
 }
 
-d3.csv( "./data/base_l1ux_clean.csv", d => {
+d3.csv( "./data/base_l2_clean.csv", d => {
   
   d[ "number_of_urban_patches" ] = +d[ "number_of_urban_patches" ];
   d[ "patch_density" ] = +d[ "patch_density" ];

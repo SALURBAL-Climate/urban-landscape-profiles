@@ -166,7 +166,7 @@ function geoDistribution( element ) {
         .attr( "class", "unitsPoints" )
         .attr( "cx", d => countriesProjection( d.point )[ 0 ] )
         .attr( "cy", d => countriesProjection( d.point )[ 1 ] )
-        .attr( "r", 2 )
+        .attr( "r", point_radius )
         .attr( "fill", d => cScale( "0" ) )
         .style( "fill-opacity", 0 )
         .on( "mouseover", d => {
@@ -193,7 +193,7 @@ function geoDistribution( element ) {
             .filter( k => k[ level ] === d[ level ] )
               .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
               .style( "fill-opacity", 1 )
-              .attr( "r", 5 );
+              .attr( "r", point_radius_highlighted );
 
           if( typologiesNumUnits != null ) {
 
@@ -212,7 +212,7 @@ function geoDistribution( element ) {
 
      unitsPoints   
       .append( "title" )
-          .text( d => d[ "Country" ] + " - " + d[ "L1Name" ] );
+          .text( d => d[ "Country" ] + " - " + d[ "L1Name" ] + " - " + d[ "L2Name" ] );
 
     unitsPoints
       .transition()
@@ -228,6 +228,18 @@ function geoDistribution( element ) {
         .attr( "cy", d => countriesProjection( d.point )[ 1 ] );
 
   }
+
+  typologySimul = d3.forceSimulation( csData.all() )
+    .force( "collide", d3.forceCollide().radius( point_radius ) )
+    .force( "x", d3.forceX( d => countriesProjection( d.point )[ 0 ] ) )
+    .force( "y", d3.forceY( d => countriesProjection( d.point )[ 1 ] ) )
+    .on( "tick", _ => {
+        
+        unitsPoints
+          .attr( "cx", d => d.x )
+          .attr( "cy", d => d.y );
+
+    } );
 
   if( countriesBoxplotxAxis != null ) {
 
@@ -277,7 +289,7 @@ function unhighlight( element ) {
   unitsPoints
     .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
     .style( "fill-opacity", 1 )
-    .attr( "r", 2 );
+    .attr( "r", point_radius );
 
   if( typologiesNumUnits != null ) {
 
