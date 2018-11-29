@@ -5,7 +5,10 @@ var level = "L1Name",
 
 var friendly_names = {
   "intersection_density" : "Intersection Density (?)",
-  "street_length_average" : "Street Length Average (?)"
+  "street_length_average" : "Street Length Average (?)",
+
+  "population_density" : "Population Density (?)",
+  "area" : "Area (?)"
 };
 
 var svg,
@@ -28,10 +31,14 @@ var countriesFigure,
   countriesBoxplotVertLines,
   countriesBoxplotBoxes,
   countriesBoxplotMedians,
-  typologiesNumUnits;
+  typologiesNumUnits,
+  indepFeatScatterxAxis,
+  indepFeatScatteryAxis;
 
 var xScaleBox,
   yScaleBox,
+  xScaleScatter,
+  yScaleScatter,
   cScale = d3.scaleOrdinal( d3.schemeCategory10  )
    .domain( [ "0", "1", "2", "3", "", "4", "5", "6" ] );
 
@@ -39,12 +46,85 @@ var typologySimul;
 
 var using_colors = false;
 
+function indepFeatDistribution( element ) {
+
+  if( indepFeatScatterxAxis == null ) {
+
+    xScaleScatter = d3.scaleLinear()
+      .domain( [ d3.min( csData.all(), d => d[ "population_density" ] ), d3.max( csData.all(), d => d[ "population_density" ] ) ] )
+      .range( [ 30, width - 30 ] );
+
+    yScaleScatter = d3.scaleLinear()
+      .domain( [ d3.min( csData.all(), d => d[ "area" ] ), d3.max( csData.all(), d => d[ "area" ] ) ] )
+      .range( [ height - 70 , 150 ] );
+
+    // Show the X axis
+    indepFeatScatterxAxis = svg.append( "g" )
+      .attr( "transform", "translate(0," + height + ")" );
+
+    indepFeatScatterxAxis
+      .transition()
+        .duration( transition_duration )
+        .attr( "transform", "translate(0," + ( height - 70 ) + ")" );
+    
+    indepFeatScatterxAxis
+      .call( d3.axisBottom( xScaleScatter ).ticks( 5, "s" ) )
+      .selectAll( "text" )
+        .attr( "y", 10 )
+        .attr( "x", 0 )
+        //.attr( "transform", "rotate(-90)" )
+        .style( "text-anchor", "middle" )
+      
+    indepFeatScatterxAxis
+      .append( "text" )
+        //.attr( "transform", "rotate(-90)" )
+        .attr( "x", width - 30 )
+        .attr( "y", -13 )
+        .style( "fill", "black" )
+        .attr( "dy", ".7em" )
+        .style( "text-anchor", "end" )
+        .text( friendly_names[ "area" ] );
+
+    // Show the Y axis    
+    indepFeatScatteryAxis = svg.append( "g" )
+      .attr( "transform", "translate(0,0)" );
+
+    indepFeatScatteryAxis
+      .transition()
+        .duration( transition_duration )
+        .attr( "transform", "translate(30,0)" );
+
+    indepFeatScatteryAxis
+      .call( d3.axisLeft( yScaleScatter ).ticks( 5, "s" ) )
+      .append( "text" )
+        .attr( "transform", "rotate(-90)" )
+        .attr( "x", -150 )
+        .attr( "y", 7 )
+        .style( "fill", "black" )
+        .attr( "dy", ".7em" )
+        .style( "text-anchor", "end" )
+        .text( friendly_names[ "population_density" ] );
+
+  }
+
+  unitsPoints
+    .transition()
+      .duration( transition_duration )
+      .style( "fill-opacity", 1 )
+      .attr( "cx",  d => xScaleScatter( d[ "population_density" ] ) )
+      .attr( "cy", d  => yScaleScatter( d[ "area" ] ) );
+
+
+}
+
 function doStep( step ) {
 
   if( step === "geo-distribution" ) geoDistribution( this );
   else if( step === "feat-distribution1" ) featDistribution( this, "intersection_density" )
   else if( step === "feat-distribution2" ) featDistribution( this, "street_length_average" )
-  else if( step === "typo-distribution" ) typoDistribution( this );
+  else if( step === "typo-distribution" ) typoDistribution( this )
+  else if( step === "feat-typo-distribution" ) featTypoDistribution( this )
+  else if( step === "indep-feat-distribution" ) indepFeatDistribution( this );
 
 }
 
@@ -71,8 +151,6 @@ d3.csv( "./data/base_l1ux_clean.csv", d => {
   d[ "population_density" ] = +d[ "population_density" ];
 
   d[ "point" ] = [ +d[ "CentLongitude" ], +d[ "CentLatitude" ] ];
-
-  d[ "highlighted" ] = false;
 
   //d[ "TSNE_TR_X" ] = +d[ "TSNE_TR_X" ];
   //d[ "TSNE_TR_Y" ] = +d[ "TSNE_TR_Y" ];

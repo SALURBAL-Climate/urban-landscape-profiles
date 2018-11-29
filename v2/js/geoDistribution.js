@@ -83,7 +83,7 @@ function geoDistribution( element ) {
             .style( "fill-opacity", .4 )
             .filter( k => k[ "Country" ] === d.key )
               .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
-              .style( "fill-opacity", 1 );  
+              .style( "fill-opacity", 1 );
 
         } )
         .on( "mouseout", unhighlight );
@@ -195,6 +195,18 @@ function geoDistribution( element ) {
               .style( "fill-opacity", 1 )
               .attr( "r", 5 );
 
+          if( typologiesNumUnits != null ) {
+
+            typologiesNumUnits
+              .attr( "fill", "gray" )
+              .style( "fill-opacity", .4 )
+              .filter( k => k.key === d[ typology ] )
+                .attr( "fill", k => cScale( k.key ) )
+                .style( "font-weight", "bold" )
+                .style( "fill-opacity", 1 );
+
+          }
+
         } )
         .on( "mouseout", unhighlight );
 
@@ -250,7 +262,7 @@ function geoDistribution( element ) {
 
 }
 
-function unhighlight() {
+function unhighlight( element ) {
 
   countriesList
     .attr( "fill", cScale( "0" ) )
