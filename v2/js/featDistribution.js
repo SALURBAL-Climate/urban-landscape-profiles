@@ -48,6 +48,10 @@ function featDistribution( element, feature ) {
       interQuantileRange = q3 - q1;
       min = q1 - 1.5 * interQuantileRange;
       max = q3 + 1.5 * interQuantileRange;
+
+      if( min < d3.min( d, g => g[ feature ] ) ) min = d3.min( d, g => g[ feature ] );
+      if( max > d3.max( d, g => g[ feature ] ) ) max = d3.max( d, g => g[ feature ] );
+
       return( { q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max } );
 
     } )
@@ -60,7 +64,7 @@ function featDistribution( element, feature ) {
     .paddingOuter( .5 );
 
   yScaleBox = d3.scaleLinear()
-    .domain( [ -20, d3.max( csData.all(), d => d[ feature ] ) ] )
+    .domain( [ d3.min( csData.all(), d => d[ feature ] ) - 10, d3.max( csData.all(), d => d[ feature ] ) ] )
     .range( [ height - 70 , 150 ] );
 
   /*if( countriesBoxplotxAxis == null || update_axis == true ) {*/
@@ -158,9 +162,7 @@ function featDistribution( element, feature ) {
     
   //}
 
-  // Add individual points with jitter
-  var jitterWidth = 30;
-  
+  // Add individual points
   unitsPoints
     .moveToFront();
 
