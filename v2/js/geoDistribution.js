@@ -82,7 +82,7 @@ function geoDistribution( element ) {
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k[ "Country" ] === d.key )
-              .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
+              .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
               .style( "fill-opacity", 1 );
 
         } )
@@ -121,7 +121,7 @@ function geoDistribution( element ) {
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k[ "Country" ] === d.key )
-              .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
+              .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
               .style( "fill-opacity", 1 );              
 
         } )
@@ -191,7 +191,7 @@ function geoDistribution( element ) {
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k[ level ] === d[ level ] )
-              .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
+              .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
               .style( "fill-opacity", 1 )
               .attr( "r", point_radius_highlighted );
 
@@ -287,7 +287,7 @@ function unhighlight( element ) {
     .style( "font-weight", "normal" );
 
   unitsPoints
-    .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
+    .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
     .style( "fill-opacity", 1 )
     .attr( "r", point_radius );
 

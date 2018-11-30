@@ -64,7 +64,7 @@ function featDistribution( element, feature ) {
     .paddingOuter( .5 );
 
   yScaleBox = d3.scaleLinear()
-    .domain( [ d3.min( csData.all(), d => d[ feature ] ) - 10, d3.max( csData.all(), d => d[ feature ] ) ] )
+    .domain( [ ( feature == "number_of_urban_patches" ) ? -80 : d3.min( csData.all(), d => d[ feature ] ), d3.max( csData.all(), d => d[ feature ] ) ] )
     .range( [ height - 70 , 150 ] );
 
   /*if( countriesBoxplotxAxis == null || update_axis == true ) {*/
@@ -98,7 +98,7 @@ function featDistribution( element, feature ) {
         .attr( "transform", "translate(30,0)" );
 
     countriesBoxplotyAxis
-      .call( d3.axisLeft( yScaleBox ) )
+      .call( d3.axisLeft( yScaleBox ).ticks( 10, "s" ) )
       .append( "text" )
         .attr( "transform", "rotate(-90)" )
         .attr( "x", -150 )

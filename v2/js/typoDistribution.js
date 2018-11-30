@@ -78,7 +78,7 @@ function typoDistribution( element ) {
               .attr( "fill", "gray" )
               .style( "fill-opacity", .4 )
               .filter( k => k[ typology ] === d.key )
-                .attr( "fill", d => cScale( using_colors ? d[ "stt_perfil" ] : "0" ) )
+                .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
                 .style( "fill-opacity", 1 );              
 
           } )

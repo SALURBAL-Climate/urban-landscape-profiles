@@ -1,11 +1,13 @@
 /* global d3, crossfilter, tip */
 
 var level = "L2Name",
-  typology = "stt_perfil";
+  typology = "urb_perfil";
 
 var friendly_names = {
-  "intersection_density" : "Intersection Density (km2)",
-  "street_length_average" : "Street Length Average (km)",
+  "number_of_urban_patches" : "Number of Urban Patches",
+  "area_weigthed_mean_shape_index" : "Area-Weigthed Mean Shape Index",
+
+
 
   "population_density" : "Population Density (?)",
   "area" : "Area (?)"
@@ -15,7 +17,7 @@ var svg,
   width = 500,
   height = 700,
   point_radius = 1,
-  point_radius_highlighted = 6,
+  point_radius_highlighted = 4,
   transition_duration = 1000;
 
 var csData, 
@@ -122,8 +124,8 @@ function indepFeatDistribution( element ) {
 function doStep( step ) {
 
   if( step === "geo-distribution" ) geoDistribution( this );
-  else if( step === "feat-distribution1" ) featDistribution( this, "intersection_density" )
-  else if( step === "feat-distribution2" ) featDistribution( this, "street_length_average" )
+  else if( step === "feat-distribution1" ) featDistribution( this, "number_of_urban_patches" )
+  else if( step === "feat-distribution2" ) featDistribution( this, "area_weigthed_mean_shape_index" )
   else if( step === "typo-distribution" ) typoDistribution( this )
   else if( step === "feat-typo-distribution" ) featTypoDistribution( this )
   else if( step === "indep-feat-distribution" ) indepFeatDistribution( this );
