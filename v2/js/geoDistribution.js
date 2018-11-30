@@ -53,8 +53,8 @@ function geoDistribution( element ) {
       .data( csData.sumByCountry.all() )
       .enter().append( "text" )
         .attr( "class", "countriesList" )
-        .attr( "x", 450 )
-        .attr( "y", ( d, i ) => ( 15 + i * 20 ) )
+        .attr( "x", width - 50 )
+        .attr( "y", ( d, i ) => ( 20 + i * 20 ) )
         .attr( "fill", "steelblue" )
         .attr( "text-anchor", "end" )
         .text( d => d.key )
@@ -85,6 +85,23 @@ function geoDistribution( element ) {
               .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
               .style( "fill-opacity", 1 );
 
+          typologies = d3.map( csData.all()
+              .filter( l => l[ "Country" ] == d.key ), j => j[ typology ] ).keys();
+          
+          if( typologiesList != null ) typologiesList
+            .attr( "fill", "gray" )
+            .style( "fill-opacity", .4 )
+            .filter( k => typologies.indexOf( k.key ) >= 0 )
+              .attr( "fill", k => cScale( k.key ) )
+              .style( "fill-opacity", 1 );
+
+          if( typologiesNumUnits != null ) typologiesNumUnits
+            .attr( "fill", "gray" )
+            .style( "fill-opacity", .4 )
+            .filter( k => typologies.indexOf( k.key ) >= 0 )
+              .attr( "fill", k => cScale( k.key ) )
+              .style( "fill-opacity", 1 );
+
         } )
         .on( "mouseout", unhighlight );
 
@@ -92,8 +109,8 @@ function geoDistribution( element ) {
       .data( csData.sumByCountry.all() )
       .enter().append( "text" )
         .attr( "class", "countriesNumUnits" )
-        .attr( "x", 460 )
-        .attr( "y", ( d, i ) => ( 15 + i * 20 ) )
+        .attr( "x", width - 40 )
+        .attr( "y", ( d, i ) => ( 20 + i * 20 ) )
         .attr( "fill", cScale( "0" ) )
         .attr( "text-anchor", "start" )
         .text( d => d.value )
@@ -122,7 +139,24 @@ function geoDistribution( element ) {
             .style( "fill-opacity", .4 )
             .filter( k => k[ "Country" ] === d.key )
               .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
-              .style( "fill-opacity", 1 );              
+              .style( "fill-opacity", 1 );
+
+          typologies = d3.map( csData.all()
+              .filter( l => l[ "Country" ] == d.key ), j => j[ typology ] ).keys();
+          
+          if( typologiesList != null ) typologiesList
+            .attr( "fill", "gray" )
+            .style( "fill-opacity", .4 )
+            .filter( k => typologies.indexOf( k.key ) >= 0 )
+              .attr( "fill", k => cScale( k.key ) )
+              .style( "fill-opacity", 1 );
+
+          if( typologiesNumUnits != null ) typologiesNumUnits
+            .attr( "fill", "gray" )
+            .style( "fill-opacity", .4 )
+            .filter( k => typologies.indexOf( k.key ) >= 0 )
+              .attr( "fill", k => cScale( k.key ) )
+              .style( "fill-opacity", 1 );            
 
         } )
         .on( "mouseout", unhighlight );
@@ -143,15 +177,15 @@ function geoDistribution( element ) {
     countriesList
       .transition()
         .duration( transition_duration )
-        .attr( "x", 450 )
-        .attr( "y", ( d, i ) => ( 15 + i * 20  ) )
+        .attr( "x", width - ( ( using_colors ) ? 100 : 50 ) )
+        .attr( "y", ( d, i ) => ( 20 + i * 20  ) )
         .style( "font-size", "0.4em" );
 
     countriesNumUnits
       .transition()
         .duration( transition_duration )
-        .attr( "x", 460 )
-        .attr( "y", ( d, i ) => ( 15 + i * 20  ) )
+        .attr( "x", width - ( ( using_colors ) ? 90 : 40 ) )
+        .attr( "y", ( d, i ) => ( 20 + i * 20  ) )
         .style( "font-size", "0.4em" );
 
   }
@@ -207,6 +241,17 @@ function geoDistribution( element ) {
 
           }
 
+          if( typologiesList != null ) {
+
+            typologiesList
+              .attr( "fill", "gray" )
+              .style( "fill-opacity", .4 )
+              .filter( k => k.key === d[ typology ] )
+                .attr( "fill", k => cScale( k.key ) )
+                .style( "fill-opacity", 1 );
+
+          }
+
         } )
         .on( "mouseout", unhighlight );
 
@@ -218,14 +263,6 @@ function geoDistribution( element ) {
       .transition()
         .duration( transition_duration )
         .style( "fill-opacity", 1 );
-
-  } else {
-
-     unitsPoints
-      .transition()
-        .duration( transition_duration )
-        .attr( "cx", d => countriesProjection( d.point )[ 0 ] )
-        .attr( "cy", d => countriesProjection( d.point )[ 1 ] );
 
   }
 
@@ -297,6 +334,14 @@ function unhighlight( element ) {
       .attr( "fill", d => cScale( d.key ) )
       .style( "fill-opacity", 1 )
       .style( "font-weight", "normal" );
+
+  }
+
+  if( typologiesList != null ) {
+
+    typologiesList
+      .attr( "fill", d => cScale( d.key ) )
+      .style( "fill-opacity", 1 );
 
   }
 

@@ -31,11 +31,16 @@ function typoDistribution( element ) {
 
   hide_boxplot();
 
+  if( typologiesList != null ) typologiesList
+    .transition()
+      .duration( transition_duration )
+      .style( "fill-opacity", 0 );
+
   // Stoping simulation
   if( typologySimul != null ) typologySimul.stop();
   
   typologySimul = d3.forceSimulation( csData.all() )
-    .force( "collide", d3.forceCollide().radius( point_radius + 2 ) )
+    .force( "collide", d3.forceCollide().radius( point_radius + 1.5 ) )
     .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( 0.3 ) )
     .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( 0.3 ) )
     .on( "tick", _ => {
@@ -74,11 +79,35 @@ function typoDistribution( element ) {
                 .style( "font-weight", "bold" )
                 .style( "fill-opacity", 1 );
 
+            if( typologiesList != null ) typologiesList
+              .attr( "fill", "gray" )
+              .style( "fill-opacity", .4 )
+              .filter( k => k.key === d.key )
+                .attr( "fill", k => cScale( k.key ) )
+                .style( "fill-opacity", 1 );
+
             unitsPoints
               .attr( "fill", "gray" )
               .style( "fill-opacity", .4 )
               .filter( k => k[ typology ] === d.key )
                 .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
+                .style( "fill-opacity", 1 );
+
+            countries = d3.map( csData.all()
+              .filter( l => l[ typology ] == d.key ), j => j[ "Country" ] ).keys();
+            
+            countriesList
+              .attr( "fill", "gray" )
+              .style( "fill-opacity", .4 )
+              .filter( k => countries.indexOf( k.key ) >= 0 )
+                .attr( "fill", k => cScale( "0" ) )
+                .style( "fill-opacity", 1 );
+
+            countriesNumUnits
+              .attr( "fill", "gray" )
+              .style( "fill-opacity", .4 )
+              .filter( k => countries.indexOf( k.key ) >= 0 )
+                .attr( "fill", k => cScale( "0" ) )
                 .style( "fill-opacity", 1 );              
 
           } )
@@ -92,20 +121,15 @@ function typoDistribution( element ) {
     } else {
 
       typologiesNumUnits
-        .style( "fill-opacity", 0 )
-        .moveToFront()
+        .moveToFront();
+
+      typologiesNumUnits
         .transition()
           .duration( transition_duration )
-          .style( "fill-opacity", 1 );
+          .attr( "text-anchor", "middle" )
+          .attr( "x", d => typology_centroid[ d.key ][ "x" ] )
+          .attr( "y", d => typology_centroid[ d.key ][ "y" ] - 60 );
 
     }
-
-  /*d3.timeout( _ => {
-  
-    typologySimul
-      .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( 0.3 ) )
-      .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( 0.3 ) );
-
-  }, transition_duration );*/
 
 }

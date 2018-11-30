@@ -16,7 +16,7 @@ var friendly_names = {
 var svg,
   width = 500,
   height = 700,
-  point_radius = 1,
+  point_radius = 1.5,
   point_radius_highlighted = 4,
   transition_duration = 1000;
 
@@ -35,6 +35,7 @@ var countriesFigure,
   countriesBoxplotVertLines,
   countriesBoxplotBoxes,
   countriesBoxplotMedians,
+  typologiesList,
   typologiesNumUnits,
   indepFeatScatterxAxis,
   indepFeatScatteryAxis;
@@ -44,7 +45,7 @@ var xScaleBox,
   xScaleScatter,
   yScaleScatter,
   cScale = d3.scaleOrdinal( d3.schemeCategory10  )
-   .domain( [ "0", "1", "2", "3", "", "4", "5", "6" ] );
+   .domain( [ "0", "1", "2", "", "3", "4", "5", "6" ] );
 
 var typologySimul;
 
@@ -169,7 +170,7 @@ d3.csv( "./data/base_l2_clean.csv", d => {
 
   csData.countries = csData.dimension( d => d[ "Country" ] );
   csData.l1names = csData.dimension( d => d[ "L1Name" ] );
-  csData.l2names = csData.dimension( d => d[ "L2Namev2" ] );
+  csData.l2names = csData.dimension( d => d[ "L2Name" ] );
   csData.typologies = csData.dimension( d => d[ typology ] );
 
   csData.sumByCountry = csData.countries.group();

@@ -85,7 +85,7 @@
 
             <small>The <b>BE</b> significantly affects the public’s health. For more than a decade there has been an increase in the collaborations among public health, social sciences and urban planning researchers to study how the BE may impact health and health inequities. Several features of Latin American cities (<b>LAC</b>) make them uniquely suited for the study of their urban environment. One approach to managing the complexity and volume of the data describing the urban settings and environmental characteristics of <b>LAC</b> is to develop <b>BE</b> typologies for <b>sub-cities</b>. These typologies are helpful because they help us understand how multiple dimensions of the <b>BE</b> come together and create profiles with these settings.</small>
 
-            <br />
+            <br /><br />
 
             <small><b>Sub-cities</b> are derived from the administrative boundary of the respective city.</small>
 
@@ -103,11 +103,11 @@
             
             <p>Analytical process for building the typlogies was developed in two domains: <b>Urban Landscape</b> and <b>Street Design</b>. Next slides present the process developed for the <b>Urban Landscape</b> domain and using 6 of its variables previously selected by domain experts.</p>
 
-            <!--<small><b>Street Design</b> characterize the shape and connectivity of the city network. To determine the typologies in this domain we selected variables in three subdomains: street density, intersection density and setter network length and structure. The street density subdomain measure the number of streets in the network using the street density variable. The intersection density subdomain measure the number of intersection in the network using the intersection density variable. The street network length and structure measure the directness and length of the streets using the circuity average and street length average variables.</small>-->
-            <small><b>Urban Landscape</b> characterizes the distribution of the urban patches. A patch is an area of uninterrupted urban development. To determine the typologies in this domain we selected variables in three subdomains: fragmentation, shape and isolation. The fragmentation subdomain measures the division of the patches among the urban extent boundary and was quantified using the following variables: number of patches, patch density, area-weighted mean patch size and effective mesh size. The shape subdomain measures the average shape of the aggregated patches in the urban extent and was quantified using the area-weighted mean shape index variable. The isolation subdomain measures the average distance between urban patches and was quantified using the area-weighted mean nearest neighbor variable.</small>
-
             <!--<p>Variables selected are: <b>Street Density</b>, <b>Intersection Density</b>,  <b>Street Length Average</b>, <b>Circuity Average</b>, <b>Streets per Node Average</b>.</p>-->
             <p>Variables selected are: <b>Area-Weigthed Mean Shape Index</b>, <b>Effective Mesh Size</b>, <b>Area-Weigthed Mean Nearest Neighbor</b>, <b>Patch Density</b>, <b>Number of Urban Patches</b>, <b>Area-Weighted Mean Patch Size</b>.</p>
+
+            <!--<small><b>Street Design</b> characterize the shape and connectivity of the city network. To determine the typologies in this domain we selected variables in three subdomains: street density, intersection density and setter network length and structure. The street density subdomain measure the number of streets in the network using the street density variable. The intersection density subdomain measure the number of intersection in the network using the intersection density variable. The street network length and structure measure the directness and length of the streets using the circuity average and street length average variables.</small>-->
+            <small><b>Urban Landscape</b> characterizes the distribution of the urban patches. A patch is an area of uninterrupted urban development. To determine the typologies in this domain we selected variables in three subdomains: fragmentation, shape and isolation. The fragmentation subdomain measures the division of the patches among the urban extent boundary and was quantified using the following variables: number of patches, patch density, area-weighted mean patch size and effective mesh size. The shape subdomain measures the average shape of the aggregated patches in the urban extent and was quantified using the area-weighted mean shape index variable. The isolation subdomain measures the average distance between urban patches and was quantified using the area-weighted mean nearest neighbor variable.</small>
 
           </section>
 
@@ -132,28 +132,34 @@
           <section class="scroll" scrollable="demo" step="typo-distribution">
             
             <!--<p>Based on the 6 variables previously mentioned, <b>Street Design</b> typologies are builded as sown.</p>-->
-            <p>Based on the 6 variables previously mentioned, <b>Urban Landscape</b> typologies are builded as sown.</p>
+            <p>Based on the 6 variables previously mentioned, <b>Urban Landscape</b> typologies are builded as shown.</p>
 
             <!--<small>Approximately 23% of the cities were identified in the <b style="color: #2ca02c;">typology 2</b> and were the biggest profile. Profile 3 has the lowest presence in the countries (11%). The 66% of cities were assigned to the other. The presence of all profiles were in average similar in terms of prominent presence by country.</small>-->
-            <small>Approximately 26% of the cities were identified in the <b style="color: #e377c2;">typology 5</b> with the most presence in the selected countries (50%). <b style="color: #7f7f7f;">Typology 6</b> has the lowest presence in the countries (4%). The 70% of cities were assigned to the other profiles. The presence of the typologies <b style="color: #ff7f0e;">1</b>, <b style="color: #2ca02c;">2</b> and <b style="color: #8c564b;">4</b> were in average similar in terms of prominent presence by country.</small>
+            <small>Approximately 26% of the <b>sub-cities</b> were identified in the <b style="color: #e377c2;">typology 5</b> with the most presence in the selected countries (50%). <b style="color: #7f7f7f;">Typology 6</b> has the lowest presence in the countries (4%). The 70% of cities were assigned to the other typologies. The presence of the typologies <b style="color: #ff7f0e;">1</b>, <b style="color: #2ca02c;">2</b> and <b style="color: #8c564b;">4</b> were in average similar in terms of prominent presence by country.</small>
+
+            <br /><br />
+
+            <small>At this point you are able to come back to a previous slide keeping the color hue encoding for typologies.</small>
           
           </section>
           
           <section>
             
-            <p>Scatter Plot Matrix</p>
-          
+            <p>A general perspective about typologies built in terms of each of the 6 variables affecting the model can be visualized <a href="./scatterplotmatrix.html" target="_blank">here</a>.</p>
+
           </section>
 
           <section>
             
-            <p>Independent variables</p>
-          
+            <p>Finally, these typologies can be analyzed in terms of exogenous variable to determine some kind of relationship for supporting the decision making. In this case, sub-city area and population density.</p>
+
+            <iframe src="./independent.html" width="100%" height="450px"></iframe>
+
           </section>
 
           <section>
             
-            <h2>End</h2>
+            <h2>Thanks</h2>
           
           </section>
         

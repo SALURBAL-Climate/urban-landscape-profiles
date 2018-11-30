@@ -30,10 +30,42 @@ function featDistribution( element, feature ) {
   // Stoping simulation
   if( typologySimul != null ) typologySimul.stop();
 
-  if( typologiesNumUnits != null ) typologiesNumUnits
-    .transition()
-      .duration( transition_duration )
-      .style( "fill-opacity", 0 );
+  if( using_colors == true ) {
+
+    if( typologiesList == null ) {
+    
+      typologiesList = svg.selectAll( "circle.typologiesList" )
+        .data( csData.sumByTypology.all() )
+        .enter().append( "circle" )
+          .attr( "class", "typologiesList" )
+          .attr( "cx", width - 20 )
+          .attr( "cy", ( d, i ) => ( 15 + i * 20  ) )
+          .attr( "r", point_radius_highlighted )
+          .attr( "fill", d => cScale( d.key ) )
+          .style( "fill-opacity", 0 );
+
+      typologiesList
+        .transition()
+          .duration( transition_duration )
+          .style( "fill-opacity", 1 );
+
+    } else {
+
+      typologiesList
+        .transition()
+          .duration( transition_duration )
+          .style( "fill-opacity", 1 );
+
+    }
+
+    typologiesNumUnits
+      .transition()
+        .duration( transition_duration )
+        .attr( "x", width - 30 )
+        .attr( "y", ( d, i ) => ( 20 + i * 20 ) )
+        .attr( "text-anchor", "end" );
+
+  }
 
   // Drawing boxplot
 
@@ -64,7 +96,7 @@ function featDistribution( element, feature ) {
     .paddingOuter( .5 );
 
   yScaleBox = d3.scaleLinear()
-    .domain( [ ( feature == "number_of_urban_patches" ) ? -80 : d3.min( csData.all(), d => d[ feature ] ), d3.max( csData.all(), d => d[ feature ] ) ] )
+    .domain( [ ( feature == "number_of_urban_patches" ) ? -200 : d3.min( csData.all(), d => d[ feature ] ), d3.max( csData.all(), d => d[ feature ] ) ] )
     .range( [ height - 70 , 150 ] );
 
   /*if( countriesBoxplotxAxis == null || update_axis == true ) {*/
