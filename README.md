@@ -58,7 +58,7 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
 Details about implementation and usability testing can be found [here](https://fabiancpl.github.io/resources/)
 
 ## Authors
-<!-- Contributors table START -->
-| [![Fabian C. Peña](https://fabiancpl.github.io/resources/foto_fabianPenna.jpeg | width=100)<br /><sub>Fabian C. Peña</sub>](https://fabiancpl.github.io)<br />| [![Andres F. Useche](http://127.0.0.1:8080/images/andres.jpg | width=100)<br /><sub>Andres F. Useche</sub>](https://github.com/)<br />|
-| :---: | :---: |
-<!-- Contributors table END -->
+
+[Fabian C. Peña](https://fabiancpl.github.io) - Systems and Computing Engineering Department
+Andres F. Useche - Industrial Engineering Department
+Universidad de los Andes - Bogota, Colombia
