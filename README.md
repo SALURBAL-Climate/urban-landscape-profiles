@@ -32,7 +32,7 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
  
  - **T1:** Characterize the profiles previously identified. This profiles must be explained in terms of attributes considered during modeling stage, so users need to **Summarize** and **Compare** the **Distribution** of different attributes among profiles. 
 
- - **T2:** For itself, the profiles are not meaningful at least that were related with some demographic or health outcome. Users need to **Compare** and **Summarize** the **Distribution** of demographic or health outcomes among profiles.
+ - **T2:** For itself, the profiles are not meaningful at least that were related with some demographic or health outcome. Users need to **Summarize** and **Compare** the **Distribution** of demographic or health outcomes among profiles.
 
  - **T3:** Users outside SALURBAL context need to identify how many cities or sub-cities from his country are included in the project. In other terms, users need to **Lookup** **Features** of a specific city or sub-city included in the analysis.
 
