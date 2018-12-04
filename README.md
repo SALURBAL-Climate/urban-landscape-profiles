@@ -46,16 +46,14 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
 
  - **T8:** Experts want to see the performed clustering in his countries and see the relation with specific demographic or health outcomes. For the experts, public policies could be developed based on specific results countries. Experts need to \textbf{Browse} the units of a specific country and \textbf{Compare} their \textbf{Similarity} in terms of demographic or health outcomes and the relation among the typology.
  
-## First Solution Approach
+## Proposed Solution
 
 
 
-## Mockup
-![Mockup](docs/mockup.png)
+## Demo and Implementation Details
 
-## Paper
-
-Details about implementation and usability testing can be found [here](https://fabiancpl.github.io/resources/)
+Demo can be found [here](https://fabiancpl.github.io/salurbal/)
+Implementation details and usability testing can be found [here](https://fabiancpl.github.io/salurbal/docs/paper.pdf)
 
 ## Authors
 
