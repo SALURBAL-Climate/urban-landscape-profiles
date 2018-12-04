@@ -40,11 +40,11 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
 
  - **T5:** Many cities have highest values for some attributes. Users need to **Locate** the cities with **Extreme** values for the BE indicators to analyze and compare with the other cities.
 
- - **T6:** As an extension of Main task 1, users would need to \textbf{Compare} two specific variables and see the \textbf{Correlation} between them for each profile. Many variables are highly correlated, so experts need to focus in less variables to make their analysis.
+ - **T6:** As an extension of Main task 1, users would need to **Compare** two specific variables and see the **Correlation** between them for each profile. Many variables are highly correlated, so experts need to focus in less variables to make their analysis.
 
- - **T7:** Select groups of units by specific demographic or health outcomes. Expert users can be interested in \textbf{Locate} or \textbf{Identify} cities with \textbf{Extreme} values for the outcomes. 
+ - **T7:** Select groups of units by specific demographic or health outcomes. Expert users can be interested in **Locate** or **Identify** cities with **Extreme** values for the outcomes. 
 
- - **T8:** Experts want to see the performed clustering in his countries and see the relation with specific demographic or health outcomes. For the experts, public policies could be developed based on specific results countries. Experts need to \textbf{Browse} the units of a specific country and \textbf{Compare} their \textbf{Similarity} in terms of demographic or health outcomes and the relation among the typology.
+ - **T8:** Experts want to see the performed clustering in his countries and see the relation with specific demographic or health outcomes. For the experts, public policies could be developed based on specific results countries. Experts need to **Browse** the units of a specific country and **Compare** their **Similarity** in terms of demographic or health outcomes and the relation among the typology.
  
 ## Proposed Solution
 
