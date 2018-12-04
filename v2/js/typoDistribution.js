@@ -40,9 +40,9 @@ function typoDistribution( element ) {
   if( typologySimul != null ) typologySimul.stop();
   
   typologySimul = d3.forceSimulation( csData.all() )
-    .force( "collide", d3.forceCollide().radius( point_radius + 1.5 ) )
-    .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( 0.3 ) )
-    .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( 0.3 ) )
+    .force( "collide", d3.forceCollide().radius( point_radius + 1 ) )
+    .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( .3 ) )
+    .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( .3 ) )
     .on( "tick", _ => {
         
         unitsPoints
@@ -66,10 +66,12 @@ function typoDistribution( element ) {
         .attr( "y", d => typology_centroid[ d.key ][ "y" ] - 60 )
         .attr( "fill", d => cScale( d.key ) )
         .attr( "text-anchor", "middle" )
-        .text( d => d.value )
+        .text( d => "Profile " + d.key + " (" + d.value + ")" )
         .style( "font-size", "0.4em" )
         .style( "fill-opacity", 0 )
         .on( "mouseover", function( d ) {
+
+            d3.select( this ).style( "cursor", "pointer" );
 
             typologiesNumUnits
               .attr( "fill", "gray" )

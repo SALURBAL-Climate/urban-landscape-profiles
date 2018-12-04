@@ -45,7 +45,7 @@ var xScaleBox,
   xScaleScatter,
   yScaleScatter,
   cScale = d3.scaleOrdinal( d3.schemeCategory10  )
-   .domain( [ "0", "1", "2", "", "3", "4", "5", "6" ] );
+   .domain( [ "0", "1", "2", "r", "m", "3", "4", "", "5", "6" ] );
 
 var typologySimul;
 

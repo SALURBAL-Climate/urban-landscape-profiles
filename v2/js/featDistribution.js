@@ -18,14 +18,14 @@ function featDistribution( element, feature ) {
       .duration( transition_duration )
       .attr( "x", 135 )
       .attr( "y", ( d, i ) => ( 15 + i * 10  ) )
-      .style( "font-size", "0.20em" );
+      .style( "font-size", "0.2em" );
 
   countriesNumUnits
     .transition()
       .duration( transition_duration )
       .attr( "x", 140 )
       .attr( "y", ( d, i ) => ( 15 + i * 10  ) )
-      .style( "font-size", "0.20em" );
+      .style( "font-size", "0.2em" );
 
   // Stoping simulation
   if( typologySimul != null ) typologySimul.stop();
@@ -63,7 +63,8 @@ function featDistribution( element, feature ) {
         .duration( transition_duration )
         .attr( "x", width - 30 )
         .attr( "y", ( d, i ) => ( 20 + i * 20 ) )
-        .attr( "text-anchor", "end" );
+        .attr( "text-anchor", "end" )
+        .style( "font-size", "0.3em" );
 
   }
 
@@ -118,6 +119,8 @@ function featDistribution( element, feature ) {
         .attr( "y", -4 )
         .attr( "x", -12 )
         .attr( "transform", "rotate(-90)" )
+        .attr( "font-size", "1em" )
+        .style( "font-style", "'Montserrat', sans-serif" )
         .style( "text-anchor", "end" );
 
     // Show the Y axis    
@@ -134,9 +137,10 @@ function featDistribution( element, feature ) {
       .append( "text" )
         .attr( "transform", "rotate(-90)" )
         .attr( "x", -150 )
-        .attr( "y", 7 )
+        .attr( "y", 12 )
         .style( "fill", "black" )
-        .attr( "dy", ".7em" )
+        .attr( "font-size", "1em" )
+        .style( "font-style", "'Montserrat', sans-serif" )
         .style( "text-anchor", "end" )
         .text( friendly_names[ feature ] );
 
@@ -152,7 +156,7 @@ function featDistribution( element, feature ) {
         .attr( "x2", d => xScaleBox( d.key ) )
         .attr( "y1", d => yScaleBox( d.value.min ) )
         .attr( "y2", d => yScaleBox( d.value.max ) )
-        .attr( "stroke", "#ccc" )
+        .attr( "stroke", "steelblue" )
         .style( "width", 40 );
 
     // rectangle for the main box
@@ -169,7 +173,7 @@ function featDistribution( element, feature ) {
         .attr( "y", d => yScaleBox( d.value.q3 ) )
         .attr( "height", d => yScaleBox( d.value.q1 ) - yScaleBox( d.value.q3 ) )
         .attr( "width", boxWidth )
-        .attr( "stroke", "#ccc" )
+        .attr( "stroke", "steelblue" )
         .style( "fill", "white" );
 
     // Show the median
@@ -185,7 +189,7 @@ function featDistribution( element, feature ) {
         .attr( "x2", d => xScaleBox( d.key ) + boxWidth / 2 )
         .attr( "y1", d => yScaleBox( d.value.median ) )
         .attr( "y2", d => yScaleBox( d.value.median ) )
-        .attr( "stroke", "#ccc" )
+        .attr( "stroke", "steelblue" )
         .style( "width", 40 );
 
   //} else {
@@ -200,8 +204,8 @@ function featDistribution( element, feature ) {
 
   typologySimul = d3.forceSimulation( csData.all() )
     .force( "collide", d3.forceCollide().radius( point_radius ) )
-    .force( "x", d3.forceX( d => xScaleBox( d[ "Country" ] ) ).strength( 0.3 ) )
-    .force( "y", d3.forceY( d => yScaleBox( d[ feature ] ) ).strength( 0.3 ) )
+    .force( "x", d3.forceX( d => xScaleBox( d[ "Country" ] ) ).strength( .3 ) )
+    .force( "y", d3.forceY( d => yScaleBox( d[ feature ] ) ).strength( .3 ) )
     .on( "tick", _ => {
         
         unitsPoints

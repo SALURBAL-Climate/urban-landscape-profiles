@@ -23,7 +23,8 @@ function geoDistribution( element ) {
       .append( "path" )
         .attr( "class", "countriesFigure" )
         .attr( "d", countriesPath )
-        .style( "stroke-opacity", 0 );
+        .style( "stroke-opacity", 0 )
+        .style( "stroke", "steelblue" );
 
     countriesFigure
       .transition()
@@ -61,6 +62,8 @@ function geoDistribution( element ) {
         .style( "font-size", "0.4em" )
         .style( "fill-opacity", 0 )
         .on( "mouseover", function( d ) {
+
+          d3.select( this ).style( "cursor", "pointer" );
 
           countriesList
             .attr( "fill", "gray" )
@@ -118,6 +121,8 @@ function geoDistribution( element ) {
         .style( "fill-opacity", 0 )
         .on( "mouseover", function( d ) {
           
+          d3.select( this ).style( "cursor", "pointer" );
+
           countriesList
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
@@ -177,16 +182,16 @@ function geoDistribution( element ) {
     countriesList
       .transition()
         .duration( transition_duration )
-        .attr( "x", width - ( ( using_colors ) ? 100 : 50 ) )
+        .attr( "x", width - ( ( using_colors ) ? 140 : 50 ) )
         .attr( "y", ( d, i ) => ( 20 + i * 20  ) )
-        .style( "font-size", "0.4em" );
+        .style( "font-size", "0.3em" );
 
     countriesNumUnits
       .transition()
         .duration( transition_duration )
-        .attr( "x", width - ( ( using_colors ) ? 90 : 40 ) )
+        .attr( "x", width - ( ( using_colors ) ? 130 : 40 ) )
         .attr( "y", ( d, i ) => ( 20 + i * 20  ) )
-        .style( "font-size", "0.4em" );
+        .style( "font-size", "0.3em" );
 
   }
 
@@ -203,9 +208,11 @@ function geoDistribution( element ) {
         .attr( "r", point_radius )
         .attr( "fill", d => cScale( "0" ) )
         .style( "fill-opacity", 0 )
-        .on( "mouseover", d => {
+        .on( "mouseover", function( d ) {
 
-           countriesList
+          d3.select( this ).style( "cursor", "pointer" );
+
+          countriesList
             .attr( "fill", "gray" )
             .style( "fill-opacity", .4 )
             .filter( k => k.key === d[ "Country" ] )
@@ -312,6 +319,8 @@ function geoDistribution( element ) {
 }
 
 function unhighlight( element ) {
+
+  d3.select( this ).style( "cursor", "default" );
 
   countriesList
     .attr( "fill", cScale( "0" ) )
