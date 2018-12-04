@@ -6,7 +6,7 @@ This is the final project of the [Visual Analytics course](http://johnguerra.co/
 
 Salud Urbana en América Latina ([SALURBAL](https://drexel.edu/lac/salurbal/overview/)), is a five-year project launched in April 2017. The Drexel University Dornsife School of Public Health and partners throughout Latin America and in the United States are working together to study how urban environments and urban policies impact the health of city residents throughout Latin America.
 
-More specifically, it is addressed in this sudy: **HOW TO QUANTIFY THE CONTRIBUTIONS OF CITY-LEVEL BUILT ENVIRONMENT (BE) FACTORS TO DIFFERENCES IN LEVELS OF HEALTH AND HEALTH INEQUALITIES WITHIN AND BETWEEN CITIES?**
+More specifically, it is addressed in this sudy: **How to quantify the contributions of city-level Built Environment (BE) factors to differences in levels of health and health inequalities within and between cities?**
 
 The BE significantly affects the public’s health. For more than a decade there has been an increase in the collaborations among public health, social sciences and urban planning researchers to study how the BE may impact health and health inequities. Several features of Latin American cities (LAC) make them uniquely suited for the study of their urban environment. One approach to managing the complexity and volume of the data describing the urban settings and environmental characteristics of LAC is to develop BE profiles for cities and sub-cities. These profiles are helpful because they help to understand how multiple dimensions of the BE come together in like cities.
 
@@ -58,12 +58,7 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
   <a href="https://fabiancpl.github.io/salurbal/docs/paper.pdf">Paper</a>
 </p>
 
-
 ![Demo](images/thumbnail.gif)
-
-Demo can be found [here](https://fabiancpl.github.io/salurbal/)
-<br />
-Implementation details and usability testing can be found [here](https://fabiancpl.github.io/salurbal/docs/paper.pdf)
 
 ## Authors
 
