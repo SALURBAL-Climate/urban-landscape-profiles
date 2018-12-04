@@ -63,5 +63,7 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
 ## Authors
 
 [Fabian C. Peña](https://fabiancpl.github.io) - Systems and Computing Engineering Department
+<br />
 Andres F. Useche - Industrial Engineering Department
+<br />
 Universidad de los Andes - Bogota, Colombia
