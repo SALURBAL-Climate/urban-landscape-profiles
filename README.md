@@ -1,6 +1,6 @@
-# Visual Analytics Final Project
+# Built Environment Profiles for Latin American Urban Settings
 
-This is the final project of the [Visual Analytics course](http://johnguerra.co/classes/isis_4822_fall_2018/) in [Universidad de los Andes](http://www.uniandes.edu.co/). This project aims to solve a real problem through a visual analytics application. 
+This is the final project of the [Visual Analytics course](http://johnguerra.co/classes/isis_4822_fall_2018/) in [Universidad de los Andes](http://www.uniandes.edu.co/).
 
 ## Project Description
 
