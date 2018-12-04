@@ -55,6 +55,7 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
 ![Demo](images/thumbnail.gif)
 
 Demo can be found [here](https://fabiancpl.github.io/salurbal/)
+<br />
 Implementation details and usability testing can be found [here](https://fabiancpl.github.io/salurbal/docs/paper.pdf)
 
 ## Authors
