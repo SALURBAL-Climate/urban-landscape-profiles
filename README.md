@@ -48,10 +48,6 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
  
 ## Proposed Solution
 
-
-
-## Demo and Implementation Details
-
 <p align="center">
   <a href="https://fabiancpl.github.io/salurbal/">Demo</a> |
   <a href="https://docs.google.com/presentation/d/18E5FyPsHviUxzhy-wQu-oogi26tUFKwkCB86D6ayPZw/edit?usp=sharing">Slides</a> |
