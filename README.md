@@ -52,6 +52,13 @@ Tasks described below are the result of multiple meetings with the SALURBAL team
 
 ## Demo and Implementation Details
 
+<p align="center">
+  <a href="https://fabiancpl.github.io/salurbal/">Demo</a> |
+  <a href="https://docs.google.com/presentation/d/18E5FyPsHviUxzhy-wQu-oogi26tUFKwkCB86D6ayPZw/edit?usp=sharing">Slides</a> |
+  <a href="https://fabiancpl.github.io/salurbal/docs/paper.pdf">Paper</a>
+</p>
+
+
 ![Demo](images/thumbnail.gif)
 
 Demo can be found [here](https://fabiancpl.github.io/salurbal/)
