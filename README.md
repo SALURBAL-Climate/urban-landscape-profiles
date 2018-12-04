@@ -30,21 +30,21 @@ Position attributes (latitude and longitude) of type **Quantitative Diverging** 
 
 Tasks described below are the result of multiple meetings with the SALURBAL team:
  
- - **T1:** Characterize typologies previously identified. This typologies must be explained in terms of attributes considered during modeling stage, so we need to **Summarize** and **Compare** the **Distribution** of different attributes among profiles. 
+ - **T1:** Characterize the profiles previously identified. This profiles must be explained in terms of attributes considered during modeling stage, so users need to **Summarize** and **Compare** the **Distribution** of different attributes among profiles. 
 
- - **T2:** For itself, the profiles are not meaningful at least that were related with some demographic or health outcomes. Users need to **Compare** and **Summarize** the **Distribution** of demographic or health outcomes among profiles. Unfortunately, this task could not be achieved for health outcomes for no availability of the data.
+ - **T2:** For itself, the profiles are not meaningful at least that were related with some demographic or health outcome. Users need to **Compare** and **Summarize** the **Distribution** of demographic or health outcomes among profiles.
 
- - **T3:** Users outside SALURBAL context need to identify how many cities from his country are included in the project. Users need to **Discover** the cities included in the analysis.
+ - **T3:** Users outside SALURBAL context need to identify how many cities or sub-cities from his country are included in the project. In other terms, users need to **Lookup** **Features** of a specific city or sub-city included in the analysis.
 
- - **T4:** The motivation to perform clustering methods to find typologies in LAC cities is not clear for many experts. So it is important to show users the variability among the cities in the specified domains. Users need to **Compare** the **Distribution** of different metrics for each country.
+ - **T4:** The motivation to perform clustering methods to find profiles for Latin Amercian cities and sub-cities is not clear for many experts. So it is important to show users the variability among cities and sub-cities in the specified domain. Users need to **Compare** the **Distribution** of different attributes for each country.
 
- - **T5:** Many cities have highest values for some attributes. Users need to **Locate** the cities with **Extreme** values for the BE indicators to analyze and compare with the other cities.
+ - **T5:** Many cities have highest values for some attributes. Users need to **Identify** cities and sub-cities with **Extreme** values for some BE attributes.
 
- - **T6:** As an extension of Main task 1, users would need to **Compare** two specific variables and see the **Correlation** between them for each profile. Many variables are highly correlated, so experts need to focus in less variables to make their analysis.
+ - **T6:** As an extension of Task 1, users need to **Compare** two specific attributes and validate the **Correlation** between them for each profile. Many attributes are highly correlated, so experts need to focus in less attributes to make their analysis.
 
- - **T7:** Select groups of units by specific demographic or health outcomes. Expert users can be interested in **Locate** or **Identify** cities with **Extreme** values for the outcomes. 
+ - **T7:** Select groups of units by a specific demographic or health outcome. Expert users can be interested in **Browse** or **Identify** cities or sub-cities with **Extreme** values for the outcome. 
 
- - **T8:** Experts want to see the performed clustering in his countries and see the relation with specific demographic or health outcomes. For the experts, public policies could be developed based on specific results countries. Experts need to **Browse** the units of a specific country and **Compare** their **Similarity** in terms of demographic or health outcomes and the relation among the typology.
+ - **T8:** Users need to see the identified cluster for his countries of interest and see the relation with specific demographic or health outcomes. For users, public policies could be developed based on specific results countries. Users need to **Browse** the cities or sub-cities of a specific country and **Compare** their **Similarity** in terms of demographic or health outcomes and the relation among the profile.
  
 ## Proposed Solution
 
