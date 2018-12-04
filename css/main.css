@@ -1,0 +1,79 @@
+body {
+  font-style: 'Montserrat', sans-serif !important;
+}
+
+h1 {
+  font-size: 1.3em !important;
+}
+
+h2 {
+  font-size: 1.1em !important;
+}
+
+h3 {
+  font-size: .9em !important;
+}
+
+p {
+  font-size: 0.6em !important;
+}
+
+span {
+  font-size: 0.6em !important;
+}
+
+small {
+  font-size: 0.4em !important;
+}
+
+sup { 
+  vertical-align: super !important;
+  font-size: smaller !important;
+}
+
+img {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+img.people {
+  border-radius: 50% !important;
+  margin: 0px !important;
+}
+
+a {
+  font-weight: bold !important;
+
+}
+
+/* Table styles */
+
+table {
+  width: 100%;
+}
+
+td {
+  width: 50%;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+td.img {
+  width: 15%;
+  text-align: right !important;
+  vertical-align: middle !important;
+}
+
+td.personal-data {
+  width: 35%;
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+/* Map styles */
+
+path.countriesFigure {
+  fill: #fff;
+  stroke: #ccc;
+  stroke-width: .5px;
+}
