@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./css/theme/white.css">
     <link rel="stylesheet" href="./css/revealVizScroll.css">
     <link rel="stylesheet" href="./css/main.css">
-    
+
   </head>
   <body>
 
@@ -28,29 +28,41 @@
             
           <br />
 
-          <h1>Built Environment Typologies for Latin American Urban Settings</h1>
+          <h1>Built Environment Profiles for Latin American Urban Settings</h1>
           
           <br />
 
           <table>
             <tbody>
               <tr>
-                <td>
+                <td class="img">
                   <img src="https://fabiancpl.github.io/resources/foto_fabianPenna.jpeg" width="80px" class="people">
-                  <br />
-                  <a href="https://fabiancpl.github.io/" target="_blank">
-                    <span>Fabian C. Peña</span></a>
                 </td>
-                <td>
-                  <img src="./images/andres.jpg" width="80px" class="people">
+                <td class="personal-data">
+                  <a href="https://fabiancpl.github.io/" target="_blank">
+                    <span>Fabian C. Peña</span>
+                  </a>
                   <br />
+                  <a href="mailto:fc.pena@uniandes.edu.co" target="_blank">
+                    <small>fc.pena@uniandes.edu.co</small>
+                  </a>
+                </td>
+                </td>
+                <td class="img">
+                  <img src="./images/andres.jpg" width="80px" class="people">
+                </td>
+                <td class="personal-data">
                   <span>Andres F. Useche</span>
-                </td>  
+                  <br />
+                  <a href="mailto:af.useche10@uniandes.edu.co" target="_blank">
+                    <small>af.useche10@uniandes.edu.co</small>
+                  </a>
+                </td>
+              </tr>  
             </tbody>
           </table>
 
-          <p>Final Project</p>
-          <p>Visual Analytics - Fall 2018</p>
+          <p>Final Project - Visual Analytics - Fall 2018</p>
 
           <table>
             <tbody>
@@ -79,11 +91,11 @@
 
             <br />
 
-            <h3>How to quantify the contributions of city-level Built Environment (BE) factors to differences in levels of health and health inequalities among and within cities?</h3>
+            <h3>How to quantify the contributions of city-level Built Environment (BE) factors to differences in levels of health and health inequalities within and between cities?</h3>
 
             <br />
 
-            <small>The <b>BE</b> significantly affects the public’s health. For more than a decade there has been an increase in the collaborations among public health, social sciences and urban planning researchers to study how the BE may impact health and health inequities. Several features of Latin American cities (<b>LAC</b>) make them uniquely suited for the study of their urban environment. One approach to managing the complexity and volume of the data describing the urban settings and environmental characteristics of <b>LAC</b> is to develop <b>BE</b> typologies for <b>sub-cities</b>. These typologies are helpful because they help us understand how multiple dimensions of the <b>BE</b> come together and create profiles with these settings.</small>
+            <small>The <b>BE</b> significantly affects the public’s health. For more than a decade there has been an increase in the collaborations among public health, social sciences and urban planning researchers to study how the BE may impact health and health inequities. Several features of Latin American cities (<b>LAC</b>) make them uniquely suited for the study of their urban environment. One approach to managing the complexity and volume of the data describing the urban settings and environmental characteristics of <b>LAC</b> is to develop <b>BE</b> profiles for <b>cities</b> and <b>sub-cities</b>. These profiles are helpful because they help to understand how multiple dimensions of the <b>BE</b> come together in like <b>cities</b>.</small>
 
             <br /><br />
 
@@ -91,75 +103,144 @@
 
           </section>
           
-          <section class="scroll" scrollable="demo" step="geo-distribution">
-            
-            <p>The methodology was implemented for 1.351 <b>sub-cities</b> in 10 Latin American countries.</p>
-
-            <small>Geolocation shown in the map is an approximation from real <b>sub-city</b> centroid. This modification is performed to avoid overlapping among points.</small>
-          
-          </section>
-          
           <section>
             
-            <p>Analytical process for building the typlogies was developed in two domains: <b>Urban Landscape</b> and <b>Street Design</b>. Next slides present the process developed for the <b>Urban Landscape</b> domain and using 6 of its variables previously selected by domain experts.</p>
+            <p>Analytical process for building the profiles was developed in two domains: <b>Urban Landscape</b> and <b>Street Design</b>.</p>
 
-            <!--<p>Variables selected are: <b>Street Density</b>, <b>Intersection Density</b>,  <b>Street Length Average</b>, <b>Circuity Average</b>, <b>Streets per Node Average</b>.</p>-->
-            <p>Variables selected are: <b>Area-Weigthed Mean Shape Index</b>, <b>Effective Mesh Size</b>, <b>Area-Weigthed Mean Nearest Neighbor</b>, <b>Patch Density</b>, <b>Number of Urban Patches</b>, <b>Area-Weighted Mean Patch Size</b>.</p>
+            <br />
 
             <!--<small><b>Street Design</b> characterize the shape and connectivity of the city network. To determine the typologies in this domain we selected variables in three subdomains: street density, intersection density and setter network length and structure. The street density subdomain measure the number of streets in the network using the street density variable. The intersection density subdomain measure the number of intersection in the network using the intersection density variable. The street network length and structure measure the directness and length of the streets using the circuity average and street length average variables.</small>-->
-            <small><b>Urban Landscape</b> characterizes the distribution of the urban patches. A patch is an area of uninterrupted urban development. To determine the typologies in this domain we selected variables in three subdomains: fragmentation, shape and isolation. The fragmentation subdomain measures the division of the patches among the urban extent boundary and was quantified using the following variables: number of patches, patch density, area-weighted mean patch size and effective mesh size. The shape subdomain measures the average shape of the aggregated patches in the urban extent and was quantified using the area-weighted mean shape index variable. The isolation subdomain measures the average distance between urban patches and was quantified using the area-weighted mean nearest neighbor variable.</small>
+            <small><b>Urban Landscape</b> characterizes the distribution of the urban patches. A patch is an area of uninterrupted urban development. To determine the profile in this domain we selected variables in three subdomains: fragmentation, shape and isolation. The fragmentation subdomain measures the division of the patches among the urban extent boundary and was quantified using the following variables: number of patches, patch density, area-weighted mean patch size and effective mesh size. The shape subdomain measures the average shape of the aggregated patches in the urban extent and was quantified using the area-weighted mean shape index variable. The isolation subdomain measures the average distance between urban patches and was quantified using the area-weighted mean nearest neighbor variable.</small>
 
+            <br /><br />
+
+            <!--<p>Variables selected are: <b>Street Density</b>, <b>Intersection Density</b>,  <b>Street Length Average</b>, <b>Circuity Average</b>, <b>Streets per Node Average</b>.</p>-->
+            <small>Variables selected are: <b>Area-Weigthed Mean Shape Index</b>, <b>Effective Mesh Size</b>, <b>Area-Weigthed Mean Nearest Neighbor</b>, <b>Patch Density</b>, <b>Number of Urban Patches</b>, <b>Area-Weighted Mean Patch Size</b>.</small>
+
+          </section>
+
+          <section class="scroll" scrollable="demo" step="geo-distribution">
+            
+            <p>The map presents the 1.351 <b>sub-cities</b> for the 10 selected Latin America countries.</p> 
+
+            <br />
+
+            <small>The points represent the <b>sub-cities</b> geolocated with an approximation from its centroid. The upper right table presents the number of <b>sub-cities</b> by country. You can highlight the country of your interest.</small>
+
+            <br /><br />
+
+            <small>&#x1f4a1; Mexico and Brasil are the countries with the highest number of selected sub-cities.</small>
+          
           </section>
 
           <section class="scroll" scrollable="demo" step="feat-distribution1">
             
-            <p>In this and next slide, two of the most representative variables motivating the study for this domain are shown.</p>
+            <p>This boxplot presents the distribution of the <b>Number of Urban Patches</b> (y-axis) by country (x-axis).</p>
+
+            <br />
 
             <!--<small><b>Intersection Density</b> measures the amount of intersections per km2 of area.</small>-->
-            <small><b>Number of Urban Patches</b> measures the contiguous areas of urban development (urban patches hereafter).</small>
+            <small>The <b>Number of Urban Patches</b> variable measures the contiguous areas of urban development (urban patches hereafter).</small>
+
+            <br /><br />
+
+            <small>&#x1f4a1; Argentina is the country with the highest variability ranging from 46,25 (quartile 25%) and 268,5 (quartile 75%) indicating a high presence of cities with small and large urban development size. Brasil is the country with the highest number of urban patches with a value upper than 3.000 located in Brasilia. Peru is the country with the lowest variability from the selected countries.</small>
           
           </section>
 
           <section class="scroll" scrollable="demo" step="feat-distribution2">
             
-            <p>In this and previous slide, two of the most representative variables motivating the study for this domain are shown.</p>
+            <p>As in the previous chart, here is presented the distribution of the <b>Area-Weighted Mean Shape Index</b> (y-axis) by country (x-axis).</p>
+
+            <br />
 
             <!--<small><b>Street length average</b> measures the length of streets in the street network.</small>-->
-            <small><b>Area-Weighted Mean Shape Index</b> is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.</small>
-          
+            <small>The <b>Area-Weighted Mean Shape Index</b> variable is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The <b>Area-Weighted Mean Shape Index</b> is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.</small>
+            
+            <br /><br />
+
+            <small>&#x1f4a1; Guatemala, Chile, Brasil and Argentina present a high variability in this variable indicating the presence of cities with different shape ranging from compact cities (lower values) to complex cities (higher values).</small>
+
           </section>
           
           <section class="scroll" scrollable="demo" step="typo-distribution">
             
             <!--<p>Based on the 6 variables previously mentioned, <b>Street Design</b> typologies are builded as sown.</p>-->
-            <p>Based on the 6 variables previously mentioned, <b>Urban Landscape</b> typologies are builded as shown.</p>
+            <p>Based on the variables previously mentioned, 6 <b>Urban Landscape</b> profiles are identified applying clustering algorithms. As showed in left chart, the profiles are identified by different color hues.</p>
 
-            <!--<small>Approximately 23% of the cities were identified in the <b style="color: #2ca02c;">typology 2</b> and were the biggest profile. Profile 3 has the lowest presence in the countries (11%). The 66% of cities were assigned to the other. The presence of all profiles were in average similar in terms of prominent presence by country.</small>-->
-            <small>Approximately 26% of the <b>sub-cities</b> were identified in the <b style="color: #e377c2;">typology 5</b> with the most presence in the selected countries (50%). <b style="color: #7f7f7f;">Typology 6</b> has the lowest presence in the countries (4%). The 70% of cities were assigned to the other typologies. The presence of the typologies <b style="color: #ff7f0e;">1</b>, <b style="color: #2ca02c;">2</b> and <b style="color: #8c564b;">4</b> were in average similar in terms of prominent presence by country.</small>
+            <br />
+
+            <small>At this point you are able to come back to a previous slide keeping the color hue encoding for the profiles.</small>
 
             <br /><br />
 
-            <small>At this point you are able to come back to a previous slide keeping the color hue encoding for typologies.</small>
+            <!--<small>Approximately 23% of the cities were identified in the <b style="color: #2ca02c;">typology 2</b> and were the biggest profile. Profile 3 has the lowest presence in the countries (11%). The 66% of cities were assigned to the other. The presence of all profiles were in average similar in terms of prominent presence by country.</small>-->
+            <small>&#x1f4a1; Approximately 26% of the <b>sub-cities</b> were identified in the <b style="color: #e377c2;">profile 5</b>, being this the typology with the highest proportion of <b>sub-cities</b> in 50% of the countries. This pattern indicates a tendency of countries to design <b>cities</b> in similar way. The <b style="color: #7f7f7f;">profile 6</b> has the lowest number of identified <b>sub-cities</b>. The 70% of non-indetified <b>sub-cities</b> were assigned to the other typologies. The <b style="color: #ff7f0e;">profile 1</b>, <b style="color: #2ca02c;">profile 2</b> and <b style="color: #8c564b;">profile 4</b> are prominent in similar proportion in countries.</small>          
           
           </section>
           
           <section>
             
-            <p>A general perspective about typologies built in terms of each of the 6 variables affecting the model can be visualized <a href="./scatterplotmatrix.html" target="_blank">here</a>.</p>
+            <p>To identify the contribution of each variable to the identified profiles, a <a href="./scatterplotmatrix.html" target="_blank">scatter plot matrix</a> shows the 6 variables in the y and x-axis. As described in previous slide, color hue is used to represent the assigned profile. <b>Sub-cities</b> can be selected by a drag selection or by country.</p>
 
           </section>
 
           <section>
             
-            <p>Finally, these typologies can be analyzed in terms of exogenous variable to determine some kind of relationship for supporting the decision making. In this case, sub-city area and population density.</p>
+            <p>These profiles can be analyzed in terms of exogenous variables to identify associations with the profiles. The <b>sub-cities</b> are shown for each exogenous variable (x-axis) and for each profile color (y-axis and color hue). <b>Sub-cities</b> can be selected by a drag selection or by country.</p>
 
             <iframe src="./independent.html" width="100%" height="450px"></iframe>
 
           </section>
 
           <section>
+              
+            <br />
+
+            <h1>Thanks!</h1>
             
-            <h2>Thanks</h2>
+            <br />
+
+            <table>
+              <tbody>
+                <tr>
+                  <td class="img">
+                    <img src="https://fabiancpl.github.io/resources/foto_fabianPenna.jpeg" width="80px" class="people">
+                  </td>
+                  <td class="personal-data">
+                    <a href="https://fabiancpl.github.io/" target="_blank">
+                      <span>Fabian C. Peña</span>
+                    </a>
+                    <br />
+                    <a href="mailto:fc.pena@uniandes.edu.co" target="_blank">
+                      <small>fc.pena@uniandes.edu.co</small>
+                    </a>
+                  </td>
+                  </td>
+                  <td class="img">
+                    <img src="./images/andres.jpg" width="80px" class="people">
+                  </td>
+                  <td class="personal-data">
+                    <span>Andres F. Useche</span>
+                    <br />
+                    <a href="mailto:af.useche10@uniandes.edu.co" target="_blank">
+                      <small>af.useche10@uniandes.edu.co</small>
+                    </a>
+                  </td>
+                </tr>  
+              </tbody>
+            </table>
+
+            <p>Final Project - Visual Analytics - Fall 2018</p>
+
+            <table>
+              <tbody>
+                <tr>
+                  <td><a href="http://uniandes.edu.co/" target="_blank"><img src="./images/logo-uniandes.png" width="180px"></a></td>
+                  <td><a href="https://drexel.edu/lac/" target="_blank"><img src="./images/UHC-LAC logo1.png" width="200px"></a></td>
+                </tr>  
+              </tbody>
+            </table>
           
           </section>
         
