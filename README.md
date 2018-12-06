@@ -1,6 +1,6 @@
 # Built Environment Profiles for Latin American Urban Settings
 
-This is the final project of the [Visual Analytics course](http://johnguerra.co/classes/isis_4822_fall_2018/) in [Universidad de los Andes](http://www.uniandes.edu.co/).
+This is the final project of the [Visual Analytics course](http://johnguerra.co/classes/isis_4822_fall_2018/) in [Universidad de los Andes](http://www.uniandes.edu.co/). More details about the design and implementation process can be found in this [paper](https://fabiancpl.github.io/salurbal/docs/paper.pdf).
 
 ## Project Description
 
