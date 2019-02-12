@@ -2,7 +2,7 @@
 <html>
   <head>
     
-    <title>SALURBAL</title>
+    <title>Built Environment Profiles for Latin American Urban Settings</title>
     
     <meta charset="utf-8">
     <meta name="author" content="Fabian Camilo Peña Lozano">
@@ -22,7 +22,7 @@
 
       <div class="slides">
         
-        <div class="scrollable scrollable-demo"></div>
+        <div class="scrollable scrollable-salurbal"></div>
 
         <section>
             
@@ -62,7 +62,25 @@
             </tbody>
           </table>
 
-          <p>Final Project - Visual Analytics - Fall 2018</p>
+          <table>
+            <tbody>
+              <tr>
+                <td class="img">
+                  <img src="./images/olga.jpg" width="80px" class="people">
+                </td>
+                <td class="personal-data">
+                  <a href="https://medicina.uniandes.edu.co/index.php/es/osarmien" target="_blank">
+                    <span>Olga L. Sarmiento</span>
+                  </a>
+                  <br />
+                  <a href="mailto:osarmien@uniandes.edu.co" target="_blank">
+                    <small>osarmien@uniandes.edu.co</small>
+                  </a>
+                </td>
+                </td>
+              </tr>  
+            </tbody>
+          </table>
 
           <table>
             <tbody>
@@ -119,7 +137,7 @@
 
           </section>
 
-          <section class="scroll" scrollable="demo" step="geo-distribution">
+          <section class="scroll" scrollable="salurbal" step="geo-distribution">
             
             <p>The map presents the 1.351 <b>sub-cities</b> for the 10 selected Latin America countries.</p> 
 
@@ -133,7 +151,7 @@
           
           </section>
 
-          <section class="scroll" scrollable="demo" step="feat-distribution1">
+          <section class="scroll" scrollable="salurbal" step="feat-distribution1">
             
             <p>This boxplot presents the distribution of the <b>Number of Urban Patches</b> (y-axis) by country (x-axis).</p>
 
@@ -148,7 +166,7 @@
           
           </section>
 
-          <section class="scroll" scrollable="demo" step="feat-distribution2">
+          <section class="scroll" scrollable="salurbal" step="feat-distribution2">
             
             <p>As in the previous chart, here is presented the distribution of the <b>Area-Weighted Mean Shape Index</b> (y-axis) by country (x-axis).</p>
 
@@ -163,7 +181,7 @@
 
           </section>
           
-          <section class="scroll" scrollable="demo" step="typo-distribution">
+          <section class="scroll" scrollable="salurbal" step="typo-distribution">
             
             <!--<p>Based on the 6 variables previously mentioned, <b>Street Design</b> typologies are builded as sown.</p>-->
             <p>Based on the variables previously mentioned, 6 <b>Urban Landscape</b> profiles are identified applying clustering algorithms. As showed in left chart, the profiles are identified by different color hues.</p>
@@ -189,7 +207,7 @@
             
             <p>These profiles can be analyzed in terms of exogenous variables to identify associations with the profiles. The <b>sub-cities</b> are shown for each exogenous variable (x-axis) and for each profile color (y-axis and color hue). <b>Sub-cities</b> can be selected by a drag selection or by country.</p>
 
-            <iframe src="./independent.html" width="100%" height="450px"></iframe>
+            <!--<iframe src="./independent.html" width="100%" height="450px"></iframe>-->
 
           </section>
 
@@ -258,6 +276,7 @@
 
     <!-- Scripts -->
     <script src="./js/initialize.js"></script>
+    <script src="./js/utilities.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/geoDistribution.js"></script>  
     <script src="./js/featDistribution.js"></script>

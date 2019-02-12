@@ -1,11 +1,30 @@
+
 function initializeMap() {
 
+  var scale0 = 950 / Math.PI;
+
   countriesProjection = d3.geoMercator()
-    .scale( 950 / Math.PI )
+    .scale( scale0 )
     .translate( [ 650 , 250 ] );
 
   countriesPath = d3.geoPath()
     .projection( countriesProjection );
+
+  zoomMap = d3.zoom()
+    .scaleExtent( [ 1, 18 ] )
+    .on( "zoom", zoomed );
+
+}
+
+function zoomed() {
+
+  var transform = d3.event.transform;
+
+  countriesFigure
+    .attr('transform', transform );
+
+  unitsPoints
+    .attr('transform', transform );
 
 }
 
@@ -17,6 +36,8 @@ function geoDistribution( element ) {
   
   if( countriesFigure == null ) {
 
+    svg.call( zoomMap );
+
     countriesFigure = svg.selectAll( "path.countriesFigure" )
       .data( countriesGeoJSON.features )
       .enter()
@@ -24,7 +45,7 @@ function geoDistribution( element ) {
         .attr( "class", "countriesFigure" )
         .attr( "d", countriesPath )
         .style( "stroke-opacity", 0 )
-        .style( "stroke", "steelblue" );
+        .style( "stroke", "gray" );
 
     countriesFigure
       .transition()
@@ -46,6 +67,43 @@ function geoDistribution( element ) {
 
   }
   
+  // Drawing unitsPoints
+
+  if( unitsPoints == null ) {
+
+    unitsPoints = svg.selectAll( "circle.unitsPoints" )
+      .data( csData.all() )
+      .enter().append( "circle" )
+        .attr( "class", "unitsPoints" )
+        .attr( "cx", d => countriesProjection( d.point )[ 0 ] )
+        .attr( "cy", d => countriesProjection( d.point )[ 1 ] )
+        .attr( "r", point_radius )
+        .attr( "fill", d => cScale( "0" ) )
+        .style( "fill-opacity", 0 )
+        .on( "mouseover", highlight )
+        .on( "mouseout", unhighlight );
+
+     unitsPoints   
+      .append( "title" )
+          .text( d => d[ "COUNTRY" ] + " - " + d[ "L1" ] + " - " + d[ "L2" ] );
+
+    unitsPoints
+      .transition()
+        .duration( transition_duration )
+        .style( "fill-opacity", 1 );
+
+  }
+
+  typologySimul = d3.forceSimulation( csData.all() )
+    .force( "collide", d3.forceCollide().radius( point_radius ) )
+    .force( "x", d3.forceX( d => countriesProjection( d.point )[ 0 ] ) )
+    .force( "y", d3.forceY( d => countriesProjection( d.point )[ 1 ] ) )
+    .on( "tick", _ => {
+        unitsPoints
+          .attr( "cx", d => d.x )
+          .attr( "cy", d => d.y );
+    } );
+
   // Drawing countries list
   
   if( countriesList == null ) { 
@@ -61,51 +119,7 @@ function geoDistribution( element ) {
         .text( d => d.key )
         .style( "font-size", "0.4em" )
         .style( "fill-opacity", 0 )
-        .on( "mouseover", function( d ) {
-
-          d3.select( this ).style( "cursor", "pointer" );
-
-          countriesList
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k.key === d.key )
-              .attr( "fill", "steelblue" )
-              .style( "font-weight", "bold" )
-              .style( "fill-opacity", 1 );
-
-          countriesNumUnits
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k.key === d.key )
-              .attr( "fill", "steelblue" )
-              .style( "font-weight", "bold" )
-              .style( "fill-opacity", 1 );
-
-          unitsPoints
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k[ "Country" ] === d.key )
-              .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
-              .style( "fill-opacity", 1 );
-
-          typologies = d3.map( csData.all()
-              .filter( l => l[ "Country" ] == d.key ), j => j[ typology ] ).keys();
-          
-          if( typologiesList != null ) typologiesList
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => typologies.indexOf( k.key ) >= 0 )
-              .attr( "fill", k => cScale( k.key ) )
-              .style( "fill-opacity", 1 );
-
-          if( typologiesNumUnits != null ) typologiesNumUnits
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => typologies.indexOf( k.key ) >= 0 )
-              .attr( "fill", k => cScale( k.key ) )
-              .style( "fill-opacity", 1 );
-
-        } )
+        .on( "mouseover", highlight )
         .on( "mouseout", unhighlight );
 
     countriesNumUnits = svg.selectAll( "text.countriesNumUnits" )
@@ -119,51 +133,7 @@ function geoDistribution( element ) {
         .text( d => d.value )
         .style( "font-size", "0.4em" )
         .style( "fill-opacity", 0 )
-        .on( "mouseover", function( d ) {
-          
-          d3.select( this ).style( "cursor", "pointer" );
-
-          countriesList
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k.key === d.key )
-              .attr( "fill", "steelblue" )
-              .style( "font-weight", "bold" )
-              .style( "fill-opacity", 1 );
-
-          countriesNumUnits
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k.key === d.key )
-              .attr( "fill", "steelblue" )
-              .style( "font-weight", "bold" )
-              .style( "fill-opacity", 1 );
-
-          unitsPoints
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k[ "Country" ] === d.key )
-              .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
-              .style( "fill-opacity", 1 );
-
-          typologies = d3.map( csData.all()
-              .filter( l => l[ "Country" ] == d.key ), j => j[ typology ] ).keys();
-          
-          if( typologiesList != null ) typologiesList
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => typologies.indexOf( k.key ) >= 0 )
-              .attr( "fill", k => cScale( k.key ) )
-              .style( "fill-opacity", 1 );
-
-          if( typologiesNumUnits != null ) typologiesNumUnits
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => typologies.indexOf( k.key ) >= 0 )
-              .attr( "fill", k => cScale( k.key ) )
-              .style( "fill-opacity", 1 );            
-
-        } )
+        .on( "mouseover", highlight )
         .on( "mouseout", unhighlight );
 
     countriesList
@@ -195,96 +165,6 @@ function geoDistribution( element ) {
 
   }
 
-  // Drawing unitsPoints
-
-  if( unitsPoints == null ) {
-
-    unitsPoints = svg.selectAll( "circle.unitsPoints" )
-      .data( csData.all() )
-      .enter().append( "circle" )
-        .attr( "class", "unitsPoints" )
-        .attr( "cx", d => countriesProjection( d.point )[ 0 ] )
-        .attr( "cy", d => countriesProjection( d.point )[ 1 ] )
-        .attr( "r", point_radius )
-        .attr( "fill", d => cScale( "0" ) )
-        .style( "fill-opacity", 0 )
-        .on( "mouseover", function( d ) {
-
-          d3.select( this ).style( "cursor", "pointer" );
-
-          countriesList
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k.key === d[ "Country" ] )
-              .attr( "fill", "steelblue" )
-              .style( "font-weight", "bold" )
-              .style( "fill-opacity", 1 );
-
-          countriesNumUnits
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k.key === d[ "Country" ] )
-              .attr( "fill", "steelblue" )
-              .style( "font-weight", "bold" )
-              .style( "fill-opacity", 1 );
-
-          unitsPoints
-            .attr( "fill", "gray" )
-            .style( "fill-opacity", .4 )
-            .filter( k => k[ level ] === d[ level ] )
-              .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
-              .style( "fill-opacity", 1 )
-              .attr( "r", point_radius_highlighted );
-
-          if( typologiesNumUnits != null ) {
-
-            typologiesNumUnits
-              .attr( "fill", "gray" )
-              .style( "fill-opacity", .4 )
-              .filter( k => k.key === d[ typology ] )
-                .attr( "fill", k => cScale( k.key ) )
-                .style( "font-weight", "bold" )
-                .style( "fill-opacity", 1 );
-
-          }
-
-          if( typologiesList != null ) {
-
-            typologiesList
-              .attr( "fill", "gray" )
-              .style( "fill-opacity", .4 )
-              .filter( k => k.key === d[ typology ] )
-                .attr( "fill", k => cScale( k.key ) )
-                .style( "fill-opacity", 1 );
-
-          }
-
-        } )
-        .on( "mouseout", unhighlight );
-
-     unitsPoints   
-      .append( "title" )
-          .text( d => d[ "Country" ] + " - " + d[ "L1Name" ] + " - " + d[ "L2Name" ] );
-
-    unitsPoints
-      .transition()
-        .duration( transition_duration )
-        .style( "fill-opacity", 1 );
-
-  }
-
-  typologySimul = d3.forceSimulation( csData.all() )
-    .force( "collide", d3.forceCollide().radius( point_radius ) )
-    .force( "x", d3.forceX( d => countriesProjection( d.point )[ 0 ] ) )
-    .force( "y", d3.forceY( d => countriesProjection( d.point )[ 1 ] ) )
-    .on( "tick", _ => {
-        
-        unitsPoints
-          .attr( "cx", d => d.x )
-          .attr( "cy", d => d.y );
-
-    } );
-
   if( countriesBoxplotxAxis != null ) {
 
     countriesBoxplotxAxis.selectAll( "path,line,text" )
@@ -313,44 +193,6 @@ function geoDistribution( element ) {
       .transition()
         .duration( transition_duration )
         .style( "stroke-opacity", 0 );
-
-  }
-
-}
-
-function unhighlight( element ) {
-
-  d3.select( this ).style( "cursor", "default" );
-
-  countriesList
-    .attr( "fill", cScale( "0" ) )
-    .style( "fill-opacity", 1 )
-    .style( "font-weight", "normal" );
-
-  countriesNumUnits
-    .attr( "fill", cScale( "0" ) )
-    .style( "fill-opacity", 1 )
-    .style( "font-weight", "normal" );
-
-  unitsPoints
-    .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
-    .style( "fill-opacity", 1 )
-    .attr( "r", point_radius );
-
-  if( typologiesNumUnits != null ) {
-
-    typologiesNumUnits
-      .attr( "fill", d => cScale( d.key ) )
-      .style( "fill-opacity", 1 )
-      .style( "font-weight", "normal" );
-
-  }
-
-  if( typologiesList != null ) {
-
-    typologiesList
-      .attr( "fill", d => cScale( d.key ) )
-      .style( "fill-opacity", 1 );
 
   }
 

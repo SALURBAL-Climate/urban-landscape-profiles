@@ -1,14 +1,11 @@
 /* global d3, crossfilter, tip */
 
-var level = "L2Name",
-  typology = "urb_perfil";
+var level = "L2"
+  model = null;
 
 var friendly_names = {
   "number_of_urban_patches" : "Number of Urban Patches",
   "area_weigthed_mean_shape_index" : "Area-Weigthed Mean Shape Index",
-
-
-
   "population_density" : "Population Density (?)",
   "area" : "Area (?)"
 };
@@ -16,12 +13,11 @@ var friendly_names = {
 var svg,
   width = 500,
   height = 700,
-  point_radius = 1.5,
-  point_radius_highlighted = 4,
+  point_radius = 2,
   transition_duration = 1000;
 
 var csData, 
-  sumstat,
+  //sumstat,
   countriesGeoJSON;
 
 var countriesFigure,
@@ -40,7 +36,8 @@ var countriesFigure,
   indepFeatScatterxAxis,
   indepFeatScatteryAxis;
 
-var xScaleBox,
+var zoomMap,
+  xScaleBox,
   yScaleBox,
   xScaleScatter,
   yScaleScatter,
@@ -48,8 +45,6 @@ var xScaleBox,
    .domain( [ "0", "1", "2", "r", "m", "3", "4", "", "5", "6" ] );
 
 var typologySimul;
-
-var using_colors = false;
 
 function indepFeatDistribution( element ) {
 
@@ -139,44 +134,43 @@ d3.selection.prototype.moveToFront = function() {
   } );
 }
 
-d3.csv( "./data/base_l2_clean.csv", d => {
+d3.csv( "./data/l2.csv", d => {
   
-  d[ "number_of_urban_patches" ] = +d[ "number_of_urban_patches" ];
-  d[ "patch_density" ] = +d[ "patch_density" ];
-  d[ "area_weigthed_mean_shape_index" ] = +d[ "area_weigthed_mean_shape_index" ];
-  d[ "area_weigthed_mean_nearest_neighbor" ] = +d[ "area_weigthed_mean_nearest_neighbor" ];
-  d[ "effective_mesh_size" ] = +d[ "effective_mesh_size" ];
-  d[ "area_weighted_mean_patch_size" ] = +d[ "area_weighted_mean_patch_size" ];
-  d[ "Circuity_average" ] = +d[ "Circuity_average" ];
-  d[ "intersection_density" ] = +d[ "intersection_density" ];
-  d[ "street_density" ] = +d[ "street_density" ];
-  d[ "street_length_average" ] = +d[ "street_length_average" ];
-  d[ "streets_per_node_average" ] = +d[ "streets_per_node_average" ];
-  d[ "area" ] = +d[ "area" ];
-  d[ "population_density" ] = +d[ "population_density" ];
+  /* Transport model */
+  d[ "BECADCRCTYAVG" ] = +d[ "BECADCRCTYAVG" ];
+  d[ "BECADINTDENS" ] = +d[ "BECADINTDENS" ];
+  d[ "BECADSTTDENS" ] = +d[ "BECADSTTDENS" ];
+  d[ "BECADSTTLGAVG" ] = +d[ "BECADSTTLGAVG" ];
+  d[ "BECADSTTPNODEAVG" ] = +d[ "BECADSTTPNODEAVG" ];
 
-  d[ "point" ] = [ +d[ "CentLongitude" ], +d[ "CentLatitude" ] ];
+  /* Urban Landscape model */
+  d[ "BECNURBPTCH" ] = +d[ "BECNURBPTCH" ];
+  d[ "BECPTCHDENS" ] = +d[ "BECPTCHDENS" ];
+  d[ "BECEFFMESHSIZE" ] = +d[ "BECEFFMESHSIZE" ];
+  d[ "BECAWAVGPTCHAREA" ] = +d[ "BECAWAVGPTCHAREA" ];
+  d[ "BECAWMNSHPINDX" ] = +d[ "BECAWMNSHPINDX" ];
+  d[ "BECAWMNNNGH" ] = +d[ "BECAWMNNNGH" ];
 
-  //d[ "TSNE_TR_X" ] = +d[ "TSNE_TR_X" ];
-  //d[ "TSNE_TR_Y" ] = +d[ "TSNE_TR_Y" ];
+  d[ "TRANS_PROB" ] = +d[ "TRANS_PROB" ];
+  d[ "URBAN_PROB" ] = +d[ "URBAN_PROB" ];
+
+  d[ "point" ] = [ +d[ "LONG" ], +d[ "LAT" ] ];
 
   return d;
 
 } ).then( data => {
 
-  console.log( data );
-
   csData = crossfilter( data );
 
-  csData.countries = csData.dimension( d => d[ "Country" ] );
-  csData.l1names = csData.dimension( d => d[ "L1Name" ] );
-  csData.l2names = csData.dimension( d => d[ "L2Name" ] );
-  csData.typologies = csData.dimension( d => d[ typology ] );
+  csData.countries = csData.dimension( d => d[ "COUNTRY" ] );
+  csData.l1s = csData.dimension( d => d[ "L1" ] );
+  csData.transProfiles = csData.dimension( d => d[ "TRANS_PROF" ] );
+  csData.urbanProfiles = csData.dimension( d => d[ "URBAN_PROF" ] );
 
   csData.sumByCountry = csData.countries.group();
-  csData.sumByL1Name =  csData.l1names.group();
-  csData.sumByL2Name =  csData.l2names.group();
-  csData.sumByTypology = csData.typologies.group();
+  csData.sumByL1 =  csData.l1s.group();
+  csData.sumByTransProfiles = csData.transProfiles.group();
+  csData.sumByUrbanProfiles = csData.urbanProfiles.group();
 
 } );
 

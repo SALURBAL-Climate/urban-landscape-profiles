@@ -1,28 +1,34 @@
 body {
-  font-style: 'Montserrat', sans-serif !important;
+  font-family: 'Calibri', sans-serif !important;
 }
 
 h1 {
+  font-family: 'Calibri', sans-serif !important;
   font-size: 1.3em !important;
 }
 
 h2 {
+  font-family: 'Calibri', sans-serif !important;
   font-size: 1.1em !important;
 }
 
 h3 {
+  font-family: 'Calibri', sans-serif !important;
   font-size: .9em !important;
 }
 
 p {
+  font-family: 'Calibri', sans-serif !important;
   font-size: 0.6em !important;
 }
 
 span {
+  font-family: 'Calibri', sans-serif !important;
   font-size: 0.6em !important;
 }
 
 small {
+  font-family: 'Calibri', sans-serif !important;
   font-size: 0.4em !important;
 }
 
@@ -41,10 +47,7 @@ img.people {
   margin: 0px !important;
 }
 
-a {
-  font-weight: bold !important;
 
-}
 
 /* Table styles */
 
@@ -56,6 +59,7 @@ td {
   width: 50%;
   text-align: center !important;
   vertical-align: middle !important;
+  border-bottom: 0px !important;
 }
 
 td.img {
