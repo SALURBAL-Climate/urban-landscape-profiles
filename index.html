@@ -10,9 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="./css/reveal.css">
-    <link rel="stylesheet" href="./css/theme/white.css">
-    <link rel="stylesheet" href="./css/revealVizScroll.css">
+    <link rel="stylesheet" href="./lib/css/reveal.css">
+    <link rel="stylesheet" href="./lib/css/theme/white.css">
+    <link rel="stylesheet" href="./lib/css/revealVizScroll.css">
     <link rel="stylesheet" href="./css/main.css">
 
   </head>
@@ -22,7 +22,14 @@
 
       <div class="slides">
         
-        <div class="scrollable scrollable-salurbal"></div>
+        <div class="scrollable scrollable-salurbal">
+          <div class="viz-common">
+            <small>Locate sub-city:</small>
+            <select id="combo-units">
+              <option></option>
+            </select>
+          </div>
+        </div>
 
         <section>
             
@@ -269,8 +276,8 @@
     </div>
 
     <!-- Libs -->
-    <script src="./js/head.min.js"></script>
-    <script src="./js/reveal.js"></script>
+    <script src="./lib/js/head.min.js"></script>
+    <script src="./lib/js/reveal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter2/1.4.6/crossfilter.min.js"></script>
 

@@ -1,3 +1,33 @@
+function initComboUnits( units ) {
+
+  var locateUnits = d3.select( '#combo-units' );
+    
+  locateUnits.selectAll( 'option' )
+    .data( units.sort( ( a, b ) => d3.ascending( a, b ) ) )
+    .enter()
+    .append( 'option' )
+      .attr( 'value', d => d )
+      .html( d => d );
+
+  locateUnits
+    .on( 'click', function() {
+      var selectedUnit = d3.select( '#combo-units' ).property( 'value' );
+      
+      unitsPoints
+        .filter( ( d ) => d[ "L2" ] === selectedUnit )
+        .transition()
+        .duration( transition_duration / 10 )
+          .attr( "r", point_radius * 15 )
+          .attr( "fill", "red" )
+          .style( "z-index", 2000 )
+        .transition()
+        .duration( transition_duration )
+          .attr( "r", point_radius );
+
+    } );
+
+}
+
 // Highlight points in all visualizations
 function highlight( d ) {
 
@@ -34,11 +64,11 @@ function highlight( d ) {
     .attr( "fill", "gray" )
     .style( "fill-opacity", .4 )
     .filter( k => ( element == "COUNTRY" ) ? k[ "COUNTRY" ] === d.key : k[ "L2" ] === d[ "L2" ] )
-      .attr( "fill", d => cScale( model !== null ? d[ model ] : "0" ) )
+      .attr( "fill", d => cScale( model !== undefined ? d[ model ] : "0" ) )
       .style( "fill-opacity", 1 );
 
   // If model visualization is active
-  if( model !== null ) {
+  if( model !== undefined ) {
 
     var typologies = d3.map( csData.all()
         .filter( l => l[ "COUNTRY" ] == d.key ), j => j[ model ] ).keys();
@@ -77,12 +107,12 @@ function unhighlight() {
     .style( "font-weight", "normal" );
 
   unitsPoints
-    .attr( "fill", d => cScale( model !== null ? d[ model ] : "0" ) )
+    .attr( "fill", d => cScale( model !== undefined ? d[ model ] : "0" ) )
     .style( "fill-opacity", 1 )
     .attr( "r", point_radius );
 
   // If model visualization is active
-  if( model != null ) {
+  if( model != undefined ) {
 
     typologiesNumUnits
       .attr( "fill", d => cScale( d.key ) )

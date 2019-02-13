@@ -30,7 +30,7 @@ function featDistribution( element, feature ) {
   // Stoping simulation
   if( typologySimul != null ) typologySimul.stop();
 
-  if( using_colors == true ) {
+  if( model !== undefined ) {
 
     if( typologiesList == null ) {
     
@@ -71,7 +71,7 @@ function featDistribution( element, feature ) {
   // Drawing boxplot
 
   sumstat = d3.nest()
-    .key( d => d[ "Country" ] )
+    .key( d => d[ "COUNTRY" ] )
     .sortKeys( d3.ascending )
     .rollup( d => {
       
@@ -204,7 +204,7 @@ function featDistribution( element, feature ) {
 
   typologySimul = d3.forceSimulation( csData.all() )
     .force( "collide", d3.forceCollide().radius( point_radius ) )
-    .force( "x", d3.forceX( d => xScaleBox( d[ "Country" ] ) ).strength( .3 ) )
+    .force( "x", d3.forceX( d => xScaleBox( d[ "COUNTRY" ] ) ).strength( .3 ) )
     .force( "y", d3.forceY( d => yScaleBox( d[ feature ] ) ).strength( .3 ) )
     .on( "tick", _ => {
         
@@ -217,7 +217,7 @@ function featDistribution( element, feature ) {
   /*unitsPoints
     .transition()
       .duration( transition_duration )
-      .attr( "cx",  d => xScaleBox( d[ "Country" ] ) - jitterWidth / 2 + Math.random() * jitterWidth )
+      .attr( "cx",  d => xScaleBox( d[ "COUNTRY" ] ) - jitterWidth / 2 + Math.random() * jitterWidth )
       .attr( "cy", d  => yScaleBox( d[ feature ] ) );*/
 
 }

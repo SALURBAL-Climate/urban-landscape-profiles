@@ -1,19 +1,17 @@
 /* global d3, crossfilter, tip */
 
-var level = "L2"
-  model = null;
+var level = "L2",
+  model;
 
 var friendly_names = {
-  "number_of_urban_patches" : "Number of Urban Patches",
-  "area_weigthed_mean_shape_index" : "Area-Weigthed Mean Shape Index",
-  "population_density" : "Population Density (?)",
-  "area" : "Area (?)"
+  "BECADCRCTYAVG" : "Circuity",
+  "BECADINTDENS" : "Intersection Density",
 };
 
 var svg,
-  width = 500,
-  height = 700,
-  point_radius = 2,
+  width = 550,
+  height = 650,
+  point_radius = 1.5,
   transition_duration = 1000;
 
 var csData, 
@@ -120,8 +118,8 @@ function indepFeatDistribution( element ) {
 function doStep( step ) {
 
   if( step === "geo-distribution" ) geoDistribution( this );
-  else if( step === "feat-distribution1" ) featDistribution( this, "number_of_urban_patches" )
-  else if( step === "feat-distribution2" ) featDistribution( this, "area_weigthed_mean_shape_index" )
+  else if( step === "feat-distribution1" ) featDistribution( this, "BECADCRCTYAVG" )
+  else if( step === "feat-distribution2" ) featDistribution( this, "BECADINTDENS" )
   else if( step === "typo-distribution" ) typoDistribution( this )
   else if( step === "feat-typo-distribution" ) featTypoDistribution( this )
   else if( step === "indep-feat-distribution" ) indepFeatDistribution( this );
@@ -171,6 +169,8 @@ d3.csv( "./data/l2.csv", d => {
   csData.sumByL1 =  csData.l1s.group();
   csData.sumByTransProfiles = csData.transProfiles.group();
   csData.sumByUrbanProfiles = csData.urbanProfiles.group();
+
+  initComboUnits( d3.map( data, d => d[ "L2" ] ).keys() );
 
 } );
 

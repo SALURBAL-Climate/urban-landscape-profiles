@@ -41,8 +41,8 @@ function typoDistribution( element ) {
   
   typologySimul = d3.forceSimulation( csData.all() )
     .force( "collide", d3.forceCollide().radius( point_radius + 1 ) )
-    .force( "x", d3.forceX( d => typology_centroid[ d[ typology ] ][ "x" ] ).strength( .3 ) )
-    .force( "y", d3.forceY( d => typology_centroid[ d[ typology ] ][ "y" ] ).strength( .3 ) )
+    .force( "x", d3.forceX( d => typology_centroid[ d[ 'TRANS_PROF' ] ][ "x" ] ).strength( .3 ) )
+    .force( "y", d3.forceY( d => typology_centroid[ d[ 'TRANS_PROF' ] ][ "y" ] ).strength( .3 ) )
     .on( "tick", _ => {
         
         unitsPoints
@@ -54,12 +54,12 @@ function typoDistribution( element ) {
   unitsPoints
     .transition()
       .duration( transition_duration )
-      .attr( "fill",  d => cScale( d[ typology ] )  );
+      .attr( "fill",  d => cScale( d[ 'TRANS_PROF' ] )  );
 
   if( typologiesNumUnits == null ) {
 
     typologiesNumUnits = svg.selectAll( "text.typologiesNumUnits" )
-      .data( csData.sumByTypology.all() )
+      .data( csData.sumByTransProfiles.all() )
       .enter().append( "text" )
         .attr( "class", "typologiesNumUnits" )
         .attr( "x", d => typology_centroid[ d.key ][ "x" ] )
@@ -91,12 +91,12 @@ function typoDistribution( element ) {
             unitsPoints
               .attr( "fill", "gray" )
               .style( "fill-opacity", .4 )
-              .filter( k => k[ typology ] === d.key )
-                .attr( "fill", d => cScale( using_colors ? d[ typology ] : "0" ) )
+              .filter( k => k[ 'TRANS_PROF' ] === d.key )
+                .attr( "fill", d => cScale( using_colors ? d[ 'TRANS_PROF' ] : "0" ) )
                 .style( "fill-opacity", 1 );
 
             countries = d3.map( csData.all()
-              .filter( l => l[ typology ] == d.key ), j => j[ "Country" ] ).keys();
+              .filter( l => l[ 'TRANS_PROF' ] == d.key ), j => j[ "Country" ] ).keys();
             
             countriesList
               .attr( "fill", "gray" )
