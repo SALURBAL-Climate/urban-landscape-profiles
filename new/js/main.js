@@ -1,6 +1,9 @@
 
 var data;
 
+var map, subcitiesLayer, markers = [],
+  icons;
+
 var models = [ 'Street Design', 'Urban Landscape' ], model,
   countries, country,
   cities, city,
@@ -104,6 +107,7 @@ function drawCountryCombo() {
       if( country === '' ) country = undefined;
       
       drawCityCombo();
+      drawMap();
     } );
 
 }
@@ -263,23 +267,74 @@ function drawBarchart( profiles ) {
 
 }
 
-function drawMap() {
+function initMap() {
 
-  var map = L.map( 'map' ).setView( [ -16.47, -74.36], 2 );
+  map = L.map( 'map' ).setView( [ -16.47, -74.36], 2 );
 
-  var greenIcon = new L.Icon( {
-    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-    iconSize: [ 15, 31 ],
-    iconAnchor: [ 2, 31 ],
-    popupAnchor: [ 1, -34 ]
-  } );
+  icons = {
+    1: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    2: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    3: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    4: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    5: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } )
+  };
 
   L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo( map );
 
-  data.forEach( d => L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: greenIcon } ).addTo( map )
-    .bindPopup( '<b>City: </b>' + d[ 'L1' ] + '<br /><b>Sub-city: </b>' + d[ 'L2' ] ) );
+  subcitiesLayer = new L.LayerGroup();
+  subcitiesLayer.addTo( map );
+
+  drawMap();
+
+}
+
+function drawMap() {
+
+  // Remove all layers in map
+  subcitiesLayer.clearLayers();
+
+  // Filter data by country
+  var dataTemp;
+  if( country !== undefined ) {
+    dataTemp = data.filter( d => d[ 'COUNTRY' ] == country );
+  } else {
+    dataTemp = data;
+  }
+
+  // Draw the markers
+  arrayOfLatLngs = [];
+  dataTemp.forEach( d => {
+    var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ] } ).addTo( subcitiesLayer )
+      .bindPopup( '<b>City: </b>' + d[ 'L1' ] + '<br /><b>Sub-city: </b>' + d[ 'L2' ] + '<br /><b>Profile: </b>' + d[ colorAttr  ] );
+    markers.push( marker );
+    arrayOfLatLngs.push( [ d[ 'LAT' ], d[ 'LONG' ] ] );
+  } );
+
+  var bounds = new L.LatLngBounds( arrayOfLatLngs );
+  map.fitBounds( bounds );
 
 }
 
@@ -322,6 +377,6 @@ d3.csv( "./data/l2.csv", d => {
   drawCityCombo();
   drawTable();
   drawBarchart( transProfiles );
-  drawMap();
+  initMap();
 
 } );
