@@ -1,68 +1,68 @@
 
-var data,
-  countriesGeoJSON;
+var data;
 
 var models = [ 'Street Design', 'Urban Landscape' ], model,
   countries, country,
-  cities, city;
+  cities, city,
+  transProfiles, urbanProfiles;
 
 var featuresHierarchy = {
   "Street Design" : [ {
       "key" : "BECADCRCTYAVG",
-      "name" : "BECADCRCTYAVG",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Circuity average",
+      "subdomain" : "Street network length and structure",
+      "description" : "Measures the average ratio of network distances to straight-line distances."
     }, {
       "key" : "BECADINTDENS",
-      "name" : "BECADINTDENS",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Intersection density",
+      "subdomain" : "Intersection density",
+      "description" : "Measures the amount of intersections per km2 of area."
     }, {
       "key" : "BECADSTTDENS",
-      "name" : "BECADSTTDENS",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Street density",
+      "subdomain" : "Street density",
+      "description" : "Measures the length of streets per km2 of area."
     }, {
       "key" : "BECADSTTLGAVG",
-      "name" : "BECADSTTLGAVG",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Street length average",
+      "subdomain" : "Street network length and structure",
+      "description" : "Measures the length of streets in the street network."
     }, {
       "key" : "BECADSTTPNODEAVG",
-      "name" : "BECADSTTPNODEAVG",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Streets per node average",
+      "subdomain" : "Intersection density",
+      "description" : "Measures the distribution of the number of streets that meet at each intersection of the street network."
     } ],
   "Urban Landscape" : [ {
       "key" : "BECNURBPTCH",
-      "name" : "BECNURBPTCH",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Number of urban patches",
+      "subdomain" : "Fragmentation",
+      "description" : "Number of contiguous areas of urban development (urban patches hereafter)."
     }, {
       "key" : "BECPTCHDENS",
-      "name" : "BECPTCHDENS",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Patch density",
+      "subdomain" : "Fragmentation",
+      "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares)."
     }, {
       "key" : "BECEFFMESHSIZE",
-      "name" : "BECEFFMESHSIZE",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Effective Mesh Size",
+      "subdomain" : "Fragmentation",
+      "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit."
     }, {
       "key" : "BECAWAVGPTCHAREA",
-      "name" : "BECAWAVGPTCHAREA",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Area-weighted mean patch size",
+      "subdomain" : "Fragmentation",
+      "description" : "Weighted average of urban patch size (in hectares). This value is weighted by the area of each patch."
     }, {
       "key" : "BECAWMNSHPINDX",
-      "name" : "BECAWMNSHPINDX",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Area-weighted mean shape index",
+      "subdomain" : "Shape",
+      "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch."
     }, {
       "key" : "BECAWMNNNGH",
-      "name" : "BECAWMNNNGH",
-      "subdomain" : "subdomain1",
-      "description" : ""
+      "name" : "Area-weighted Mean Nearest Neighbor Distance",
+      "subdomain" : "Isolation",
+      "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch."
     } ]
 };
 
@@ -81,6 +81,7 @@ function drawModelCombo() {
     .on( 'change', _ => {
       model = d3.select( "#modelSelect" ).property( 'value' );
       drawTable();
+      drawBarchart( ( model === 'Street Design' ) ? transProfiles : urbanProfiles );
     } );
 
 }
@@ -146,7 +147,7 @@ function drawTable() {
     .data( featuresHierarchy[ model ] )
     .enter()
     .append( 'tr' )
-      .html( d => '<td>' + d.subdomain + '</td><td>' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right Tooltip on right"></i></td><td id="sparkline-' + d.key + '"></td>' );
+      .html( d => '<td>' + d.subdomain + '</td><td>' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '"></td>' );
 
   drawSparkLines();
 
@@ -229,6 +230,59 @@ function kernelEpanechnikov( k ) {
   return v => Math.abs( v /= k ) <= 1 ? 0.75 * ( 1 - v * v ) / k : 0;
 }
 
+function drawBarchart( profiles ) {
+
+  var profiles_chart = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+    "width": +d3.select( '#right-column' ).node().getBoundingClientRect().width - 200,
+    "height": 250,
+    "data": {
+      "values": profiles
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "key", 
+        "type": "nominal",
+        "title": "Profile"
+      },
+      "x": {
+        "field": "value", 
+        "type": "quantitative",
+        "title": "Number of sub-cities"
+      },
+      "color": {
+        "field": "key", 
+        "type": "nominal",
+        "title": "Profile"
+      }
+    }
+  };
+
+  vegaEmbed('#profiles', profiles_chart, { "actions" : false } );
+
+}
+
+function drawMap() {
+
+  var map = L.map( 'map' ).setView( [ -16.47, -74.36], 2 );
+
+  var greenIcon = new L.Icon( {
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    iconSize: [ 15, 31 ],
+    iconAnchor: [ 2, 31 ],
+    popupAnchor: [ 1, -34 ]
+  } );
+
+  L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo( map );
+
+  data.forEach( d => L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: greenIcon } ).addTo( map )
+    .bindPopup( '<b>City: </b>' + d[ 'L1' ] + '<br /><b>Sub-city: </b>' + d[ 'L2' ] ) );
+
+}
+
 d3.csv( "./data/l2.csv", d => {
   
   /* Street Design model */
@@ -249,7 +303,8 @@ d3.csv( "./data/l2.csv", d => {
   d[ "TRANS_PROB" ] = +d[ "TRANS_PROB" ];
   d[ "URBAN_PROB" ] = +d[ "URBAN_PROB" ];
 
-  d[ "point" ] = [ +d[ "LONG" ], +d[ "LAT" ] ];
+  d[ "LONG" ] = +d[ "LONG" ];
+  d[ "LAT" ] = +d[ "LAT" ];
 
   return d;
 
@@ -259,16 +314,14 @@ d3.csv( "./data/l2.csv", d => {
 
   countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( data );
   cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( data );
+  transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( data );
+  urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( data );
 
   drawModelCombo();
   drawCountryCombo();
   drawCityCombo();
   drawTable();
+  drawBarchart( transProfiles );
+  drawMap();
 
-
-} );
-
-d3.json( "./data/custom.geo.json" ).then( data => {
-  countriesGeoJSON = data;
-  //initializeMap();
 } );
