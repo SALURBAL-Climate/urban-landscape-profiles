@@ -20,29 +20,98 @@
 
     <div class="container-fluid">
 
-      <!-- Title -->
+      <!-- Slide 1 -->
       <div class="row">
         <div class="col-md-12" align="center">
+          
           <h2>Urban Landscape and Street Design Profiles for Latin American Cities and Sub-cities</h2>
           <h3>The SALURBAL Study</h3>
+          <br />
+          <h4>Lead Author</h4>
+          <p>Olga L. Sarmiento, Professor at School of Medicine at Universidad de los Andes</p>
+          <br />
+          <h4>Senior Investigator</h4>
+          <p>Daniel Rodriguez, Professor Department of City and Regional Planning, Institute for Transportation Studies, University of California Berkeley</p>
+          <br />
+          <h4>Other authors in alphabetical order</h4><p>Usama Bilal<sup>d</sup>, Iryna Dronova, Oscar Guaje<sup>a</sup>, Luis Angel Gúzman<sup>a</sup>, Felipe Montes<sup>a</sup>, Alex Quitsberg<sup>c</sup>, Ivana Stankov<sup>d</sup>, Andrés Useche<sup>a</sup>, Xize Wang, Yuanyuan Zhao.</p>
+          
+          <p>a. School of Engineering at Universidad de los Andes in Bogotá Colombia<br/>
+          b. Department of Landscape Architecture and Environmental Planning, University of California, Berkely<br/>
+          c. School of Medicine at Universidad de de los Andes in Bogotá Colombia<br/>
+          d. Urban Health Collaborative at the Dornsife School of Public Health, Drexel University</p>
+          
+          <div class="row">
+            <div class="col-md-3" align="center">
+              <img src='./imgs/salurbal.jpg'>
+            </div>
+            <div class="col-md-3" align="center">
+              <img src='./imgs/uniandes.png'>
+            </div>
+            <div class="col-md-3" align="center">
+              <img src='./imgs/berkeley.png'>
+            </div>
+            <div class="col-md-3" align="center">
+              <img src='./imgs/drexel.png'>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- Subtitle -->
+      <br /><br />
+
+      <!-- Slide 2 -->
       <div class="row">
         <div class="col-md-12" align="center">
-          <p><b>Authors:</b> Andres F. Useche, Olga L. Sarmiento, Fabian C. Peña</p>
+          <h4>Map of SALURBAL countries, cities and sub-cities</h4>
+        </div>
+        <div class="col-md-6" align="center">
+            
+          <table id="unitsTable" class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th class="text-center" style="width: 34%">Countries</th>
+                <th class="text-center" style="width: 33%">L1s</th>
+                <th class="text-center" style="width: 33%">L2s</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="col-md-6" align="center">
+          
+          <div class="form-group">
+            <label for="levelSelectFormControl"><b>Level</b></label>
+            <select class="form-control" id="levelSelect">
+            </select>
+          </div>
+          <div id="map"></div>
+
         </div>
       </div>
 
-      <!-- Content -->
+      <!-- Slide 3 -->
       <div class="row">
 
         <div class="col-md-12" align="center">
           
+          <h4>Urban Landscape and Street Design Profiles for Latin American Cities and Sub-cities</h4>
+
           <div class="row">
 
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-3" align="center">
+              
+              <div class="form-group">
+                <label for="levelSelectFormControl"><b>Level</b></label>
+                <select class="form-control" id="levelSelect">
+                </select>
+              </div>
+
+            </div>
+
+            <div class="col-md-3" align="center">
               
               <div class="form-group">
                 <label for="modelSelectFormControl"><b>Model</b></label>
@@ -51,7 +120,7 @@
               </div>
 
             </div>
-            <div class="col-md-4" align="center">
+            <div class="col-md-3" align="center">
               
               <div class="form-group">
                 <label for="countrySelectFormControl"><b>Country</b></label>
@@ -60,11 +129,11 @@
               </div>
 
             </div>
-            <div class="col-md-4" align="center">
+            <div class="col-md-3" align="center">
               
               <div class="form-group">
                 <label for="citySelectFormControl"><b>City</b></label>
-                <select class="form-control" id="citySelect">
+                <select class="form-control" id="citySelect" disabled>
                 </select>
               </div>
 
@@ -76,12 +145,12 @@
 
         <div class="col-md-6" align="center">
           
-          <table class="table table-bordered table-hover">
+          <table id="featureTable" class="table table-bordered table-hover">
             <thead class="thead-dark">
               <tr>
-                <th style="width: 25%">Subdomain</th>
-                <th style="width: 25%">Metric</th>
-                <th style="width: 50%">Distribution</th>
+                <th class="text-center" style="width: 25%">Subdomain</th>
+                <th class="text-center" style="width: 25%">Metric</th>
+                <th class="text-center" style="width: 50%">Distribution</th>
               </tr>
             </thead>
             <tbody>
@@ -94,6 +163,10 @@
           
           <div id="row">
             
+            <div class="col-md-12" align="center">
+              <span>L = Low / M = Medium / H = High</span>
+            </div>
+
             <div class="col-md-12" align="center">
               <div id="profiles"></div>
             </div>
@@ -109,20 +182,7 @@
 
       <!-- Footer -->
       <footer>
-        <div class="row">
-          <div class="col-md-3" align="center">
-            <img src='./imgs/salurbal.jpg'>
-          </div>
-          <div class="col-md-3" align="center">
-            <img src='./imgs/uniandes.png'>
-          </div>
-          <div class="col-md-3" align="center">
-            <img src='./imgs/berkeley.png'>
-          </div>
-          <div class="col-md-3" align="center">
-            <img src='./imgs/drexel.png'>
-          </div>
-        </div>
+        
     </footer>
 
     </div>

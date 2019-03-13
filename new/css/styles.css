@@ -1,17 +1,8 @@
-
-.table th {
-  text-align: center;   
-}
-
 #map { 
-  height: 350px; 
+  height: 350px;
 }
 
-footer {
-  background: white;
-}
-
-footer img {
+img {
   height: 60px;
   margin: 10px 0px; 
 }
