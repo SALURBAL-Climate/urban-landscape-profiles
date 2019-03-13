@@ -331,11 +331,11 @@ function drawBarchart() {
 
   var profiles;
   if( model === 'Street Design' ){
-    if( level === 'L1 Admin' ) profiles = l1admin_urbanProfiles;
-    else profiles = l2_urbanProfiles;     
-  } else {
     if( level === 'L1 Admin' ) profiles = l1admin_transProfiles;
-    else profiles = l2_transProfiles;
+    else profiles = l2_transProfiles;     
+  } else {
+    if( level === 'L1 Admin' ) profiles = l1admin_urbanProfiles;
+    else profiles = l2_urbanProfiles;
   }
 
   if( model === 'Street Design' ){
@@ -378,7 +378,7 @@ function drawBarchart() {
 
   var profiles_chart = {
     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-    "width": +d3.select( '#right-column' ).node().getBoundingClientRect().width - 350,
+    "width": +d3.select( '#right-column' ).node().getBoundingClientRect().width - 180,
     "height": 250,
     "data": {
       "values": profiles
@@ -398,8 +398,17 @@ function drawBarchart() {
       "color": {
         "field": "name", 
         "type": "nominal",
-        "title": "Profile"
-      }
+        "title": "Profile",
+        "legend": null
+      },
+      "tooltip": [ 
+        {
+          "field": "name", "type": "nominal"
+        },
+        {
+          "field": "value", "type": "quantitative"
+        }
+      ]
     }
   };
 
