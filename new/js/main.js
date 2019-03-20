@@ -112,7 +112,9 @@ function initMap() {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo( map );
 
-  subcitiesLayer = new L.LayerGroup();
+  subcitiesLayer = new L.MarkerClusterGroup( {
+    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', iconSize: new L.Point( 40, 40 ) } )
+  } );
   subcitiesLayer.addTo( map );
 
   drawMap();
@@ -184,6 +186,8 @@ function drawSparkLines() {
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
   else dataTemp = l2_data;
+
+  //if( country !== undefined ) dataTemp = dataTemp.filter( d => d.COUNTRY === country );
 
   featuresHierarchy[ model ].forEach( f => {
 
@@ -290,6 +294,7 @@ function drawCountryCombo() {
       d3.select( "#citySelect" ).property( 'disabled', true );
       
       drawMap();
+      //drawSparkLines();
       //drawCityCombo();
       
     } );
