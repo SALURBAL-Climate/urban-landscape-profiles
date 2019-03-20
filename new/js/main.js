@@ -187,6 +187,8 @@ function drawSparkLines() {
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
   else dataTemp = l2_data;
 
+  if( country !== undefined ) dataTemp = dataTemp.filter( d => d.COUNTRY === country );
+
   //if( country !== undefined ) dataTemp = dataTemp.filter( d => d.COUNTRY === country );
 
   featuresHierarchy[ model ].forEach( f => {
@@ -226,7 +228,7 @@ function drawSparkLines() {
       .call( d3.axisLeft( y ).ticks( 3, '%' ) );
 
     svg.insert( "g", "*" )
-      .attr( "fill", "#bbb" )
+      .attr( "fill", "steelblue" )
       .selectAll( "rect" )
       .data( bins )
       .enter().append( "rect" )
@@ -294,7 +296,8 @@ function drawCountryCombo() {
       d3.select( "#citySelect" ).property( 'disabled', true );
       
       drawMap();
-      //drawSparkLines();
+      drawSparkLines();
+      drawBarchart();
       //drawCityCombo();
       
     } );
@@ -417,13 +420,13 @@ function drawBarchart() {
     }
   };
 
-  vegaEmbed('#profiles', profiles_chart, { "actions" : false } );
+  vegaEmbed( '#profiles', profiles_chart, { "actions" : false } );
 
 }
 
 d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
 
-  this.l1admin_data = data;
+  l1admin_data = data;
 
   l1admin_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l1admin_data );
   l1admin_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l1admin_data );
@@ -432,14 +435,15 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
 
   d3.csv( "./data/l2.csv", d => parseNumbers( d ) ).then( data => {
 
-    this.l2_data = data;
+    l2_data = data;
 
     level = levels[ 0 ];
     model = models[ 0 ];
 
     l2_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l2_data );
     l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
-    l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
+    //l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
+    l2_subcities = d3.map( l2_data, d => d.COUNTRY ).keys().map( c => { return { 'key': c, 'values': l2_data.filter( d => d.COUNTRY === c ).map( l => { return { 'key': l.L2, 'value': 1 } } ) } } );
     l2_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l2_data );
     l2_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l2_data );
 
