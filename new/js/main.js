@@ -5,6 +5,9 @@ var l1admin_data,
 var map, subcitiesLayer, markers = [],
   icons;
 
+var map2, subcitiesLayer2, markers2 = [],
+  icons2;
+
 var levels = [ 'L1 Admin', 'L2' ], level,
   models = [ 'Street Design', 'Urban Landscape' ], model,
   countries, country,
@@ -17,27 +20,32 @@ var featuresHierarchy = {
       "key" : "BECADSTTDENS",
       "name" : "Street density",
       "subdomain" : "Street density",
-      "description" : "Measures the length of streets per km2 of area."
+      "description" : "Measures the length of streets per km2 of area.",
+      "units": "aaa"
     }, {
       "key" : "BECADINTDENS",
       "name" : "Intersection density",
       "subdomain" : "Intersection density",
-      "description" : "Measures the amount of intersections per km2 of area."
+      "description" : "Measures the amount of intersections per km2 of area.",
+      "units": "aaa"
     }, {
       "key" : "BECADSTTPNODEAVG",
       "name" : "Streets per node average",
       "subdomain" : "Intersection density",
-      "description" : "Measures the distribution of the number of streets that meet at each intersection of the street network."
+      "description" : "Measures the distribution of the number of streets that meet at each intersection of the street network.",
+      "units": "aaa"
     }, {
       "key" : "BECADSTTLGAVG",
       "name" : "Street length average",
       "subdomain" : "Street network length and structure",
-      "description" : "Measures the length of streets in the street network."
+      "description" : "Measures the length of streets in the street network.",
+      "units": "aaa"
     }, {
       "key" : "BECADCRCTYAVG",
       "name" : "Circuity average",
       "subdomain" : "Street network length and structure",
-      "description" : "Measures the average ratio of network distances to straight-line distances."
+      "description" : "Measures the average ratio of network distances to straight-line distances.",
+      "units": "aaa"
     }
   ],
   "Urban Landscape" : [ 
@@ -45,33 +53,39 @@ var featuresHierarchy = {
       "key" : "BECAWMNSHPINDX",
       "name" : "Area-weighted mean shape index",
       "subdomain" : "Shape",
-      "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch."
+      "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.",
+      "units": "aaa"
     },
     {
       "key" : "BECNURBPTCH",
       "name" : "Number of urban patches",
       "subdomain" : "Fragmentation",
-      "description" : "Number of contiguous areas of urban development (urban patches hereafter)."
+      "description" : "Number of contiguous areas of urban development (urban patches hereafter).",
+      "units": "aaa"
     }, {
       "key" : "BECPTCHDENS",
       "name" : "Patch density",
       "subdomain" : "Fragmentation",
-      "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares)."
+      "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares).",
+      "units": "aaa"
     }, {
       "key" : "BECAWAVGPTCHAREA",
       "name" : "Area-weighted mean patch size",
       "subdomain" : "Fragmentation",
-      "description" : "Weighted average of urban patch size (in hectares). This value is weighted by the area of each patch."
+      "description" : "Weighted average of urban patch size (in hectares). This value is weighted by the area of each patch.",
+      "units": "aaa"
     }, {
       "key" : "BECEFFMESHSIZE",
       "name" : "Effective Mesh Size",
       "subdomain" : "Fragmentation",
-      "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit."
+      "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit.",
+      "units": "aaa"
     }, {
       "key" : "BECAWMNNNGH",
       "name" : "Area-weighted Mean Nearest Neighbor Distance",
       "subdomain" : "Isolation",
-      "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch."
+      "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch.",
+      "units": "aaa"
     } 
   ]
 };
@@ -151,6 +165,111 @@ function drawMap() {
 
 }
 
+function initMap2() {
+
+  map2 = L.map( 'map2' ).setView( [ -16.47, -74.36], 2 );
+
+  icons2 = {
+    1: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    2: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    3: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    4: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    5: new L.Icon( {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } )
+  };
+
+  L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo( map2 );
+
+  subcitiesLayer2 = new L.MarkerClusterGroup( {
+    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', iconSize: new L.Point( 40, 40 ) } )
+  } );
+  subcitiesLayer2.addTo( map2 );
+
+  drawMap2();
+
+}
+
+function drawMap2() {
+
+  // Remove all layers in map
+  subcitiesLayer2.clearLayers();
+
+  var dataTemp;
+  if( country !== undefined ) {
+    if( level === 'L1 Admin' ) dataTemp = l1admin_data.filter( d => d[ 'COUNTRY' ] == country );
+    else dataTemp = l2_data.filter( d => d[ 'COUNTRY' ] == country );
+  } else {
+    if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+    else dataTemp = l2_data;
+  }
+
+  // Draw the markers
+  arrayOfLatLngs = [];
+  dataTemp.forEach( d => {
+
+    var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
+
+    var textProfile = '';
+    if( model === 'Street Design' ){
+      if( level === 'L1 Admin' ) {
+          if( d[ colorAttr ] === "1" ) textProfile = 'L Walk/M Direct';
+          else if( d[ colorAttr ] === "2" ) textProfile = 'M Walk/L Direct';
+          else if( d[ colorAttr ] === "3" ) textProfile = 'H Walk/L Direct';
+          else if( d[ colorAttr ] === "4" ) textProfile = 'L Walk/H Direct';
+      } else {
+          if( d[ colorAttr ] === "1" ) textProfile = 'M Walk/L Direct';
+          else if( d[ colorAttr ] === "2" ) textProfile = 'L Walk/H Direct';
+          else if( d[ colorAttr ] === "3" ) textProfile = 'H Walk/L Direct';
+          else if( d[ colorAttr ] === "4" ) textProfile = 'L Walk/M Direct';
+      }     
+    } else {
+      if( level === 'L1 Admin' ) {
+          if( d[ colorAttr ] === "1" ) textProfile = 'M Frag/Complex/L Iso';
+          else if( d[ colorAttr ] === "2" ) textProfile = 'H Frag/Irregular/L Iso';
+          else if( d[ colorAttr ] === "3" ) textProfile = 'M Frag/Compact/H Iso';
+          else if( d[ colorAttr ] === "4" ) textProfile = 'L Frag/Irregular/M Iso';
+      } else {
+          if( d[ colorAttr ] === "1" ) textProfile = 'H Frag/Complex/M Iso';
+          else if( d[ colorAttr ] === "2" ) textProfile = 'M Frag/Irregular/L Iso';
+          else if( d[ colorAttr ] === "3" ) textProfile = 'L Frag/Complex/L Iso';
+          else if( d[ colorAttr ] === "4" ) textProfile = 'M Frag/Compact/H Iso';
+          else if( d[ colorAttr ] === "5" ) textProfile = 'L Frag/Irregular/L Iso';
+          else if( d[ colorAttr ] === "6" ) textProfile = 'H Frag/Compact/M Iso';
+      }
+    }
+
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons2[ d[ colorAttr ] ] } ).addTo( subcitiesLayer2 )
+      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + textProfile );
+    markers2.push( marker );
+    arrayOfLatLngs.push( [ d[ 'LAT' ], d[ 'LONG' ] ] );
+  } );
+
+  var bounds = new L.LatLngBounds( arrayOfLatLngs );
+  map2.fitBounds( bounds );
+
+}
+
 function drawUnitsTable() {
 
   d3.select( '#unitsTable' ).select( 'tbody' ).html( '' );
@@ -175,7 +294,7 @@ function drawFeaturesTable() {
     .data( featuresHierarchy[ model ] )
     .enter()
     .append( 'tr' )
-      .html( d => '<td>' + d.subdomain + '</td><td>' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '"></td>' );
+      .html( d => '<td>' + d.subdomain + '</td><td>' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="padding: .25rem;"></td>' );
 
   drawSparkLines();
 
@@ -199,7 +318,34 @@ function drawSparkLines() {
       height = 100,// +d3.select( '#sparkline-' + feature ).node().getBoundingClientRect().height,
       margin = { top: 10, right: 10, bottom: 18, left: 30 };
 
-    var svg = d3.select( '#sparkline-' + feature ).append( 'svg' )
+    d3.select( '#sparkline-' + feature ).html( '' );
+
+    var spec = {
+      "width": width,
+      "height": height,
+      "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+      "data": { "values": dataTemp },
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "bin": true,
+          "field": feature,
+          "type": "quantitative",
+          "axis": { "title": f.name + ' - ' + f.units }
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities' }
+        },
+        "tooltip": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    };
+
+    /*var svg = d3.select( '#sparkline-' + feature ).append( 'svg' )
       .attr( 'width', width )
       .attr( 'height', height );
 
@@ -211,7 +357,7 @@ function drawSparkLines() {
       .range( [ margin.left, width - margin.right ] );
 
     var n = columnArray.length,
-    bins = d3.histogram().domain( x.domain() ).thresholds( columnArray.length / 50 )( columnArray );
+      bins = d3.histogram().domain( x.domain() ).thresholds( columnArray.length / 50 )( columnArray );
 
     var y = d3.scaleLinear()
       .domain( [ 0, d3.max( bins, d => d.length / n ) ] )
@@ -235,7 +381,9 @@ function drawSparkLines() {
         .attr( "x", d => x( d.x0 ) + 1 )
         .attr( "y", d => y( d.length / n ) )
         .attr( "width", d => x( d.x1 ) - x( d.x0 ) - 1 )
-        .attr( "height", d => y( 0 ) - y( d.length / n ) );
+        .attr( "height", d => y( 0 ) - y( d.length / n ) );*/
+
+    vegaEmbed( '#sparkline-' + feature, spec, { "actions" : false } );
 
   } );
 
@@ -257,6 +405,8 @@ function drawLevelCombo() {
       drawMap();
       drawFeaturesTable();
       drawBarchart();
+      if( country !== undefined ) drawCityCombo();
+      drawMap2();
     } );
 
 }
@@ -298,7 +448,8 @@ function drawCountryCombo() {
       drawMap();
       drawSparkLines();
       drawBarchart();
-      //drawCityCombo();
+      drawCityCombo();
+      drawMap2();
       
     } );
 
@@ -311,16 +462,21 @@ function drawCityCombo() {
     .html( '' );
 
   if( country === undefined ) {
-
     d3.select( "#citySelect" ).property( 'disabled', true );
     city = undefined;
-
   } else {
 
-    city = cities.find( d => d.key === country ).values[ 0 ].key;
+    var units;
+    if( level === 'L1 Admin' ){
+      city = l1admin_cities.find( d => d.key === country ).values[ 0 ].key;
+      units = l1admin_cities;
+    } else {
+      city = l2_subcities.find( d => d.key === country ).values[ 0 ].key;
+      units = l2_subcities;
+    }
 
     d3.select( "#citySelect" ).selectAll( 'option' )
-      .data( cities.find( d => d.key === country ).values )
+      .data( units.find( d => d.key === country ).values )
       .enter()
       .append( 'option' )
         .attr( 'value', d => d.key )
@@ -336,6 +492,12 @@ function drawCityCombo() {
 }
 
 function drawBarchart() {
+
+  l1admin_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l1admin_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
+  l1admin_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l1admin_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
+
+  l2_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l2_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
+  l2_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l2_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
 
   var profiles;
   if( model === 'Street Design' ){
@@ -430,8 +592,7 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
 
   l1admin_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l1admin_data );
   l1admin_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l1admin_data );
-  l1admin_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l1admin_data );
-  l1admin_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l1admin_data );
+  
 
   d3.csv( "./data/l2.csv", d => parseNumbers( d ) ).then( data => {
 
@@ -441,19 +602,12 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
     model = models[ 0 ];
 
     l2_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l2_data );
-    l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
+    //l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
     //l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
     l2_subcities = d3.map( l2_data, d => d.COUNTRY ).keys().map( c => { return { 'key': c, 'values': l2_data.filter( d => d.COUNTRY === c ).map( l => { return { 'key': l.L2, 'value': 1 } } ) } } );
-    l2_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l2_data );
-    l2_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l2_data );
-
-    //drawModelCombo();
-    //drawCountryCombo();
-    //drawCityCombo();
-    //drawTable();
-    //drawBarchart( transProfiles );
     
     initMap();
+    initMap2();
     
     drawUnitsTable();
     drawFeaturesTable();
