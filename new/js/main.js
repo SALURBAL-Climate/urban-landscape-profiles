@@ -20,14 +20,14 @@ var featuresHierarchy = {
       "key" : "BECADSTTDENS",
       "name" : "Street density",
       "subdomain" : "Street density",
-      "description" : "Measures the length of streets per km2 of area.",
-      "units": "aaa"
+      "description" : "Measures the length of streets per Km2 of area.",
+      "units": "Streets per Km2"
     }, {
       "key" : "BECADINTDENS",
       "name" : "Intersection density",
       "subdomain" : "Intersection density",
-      "description" : "Measures the amount of intersections per km2 of area.",
-      "units": "aaa"
+      "description" : "Measures the amount of intersections per Km2 of area.",
+      "units": "Intersections per Km2"
     }, {
       "key" : "BECADSTTPNODEAVG",
       "name" : "Streets per node average",
@@ -331,7 +331,7 @@ function drawSparkLines() {
           "bin": true,
           "field": feature,
           "type": "quantitative",
-          "axis": { "title": f.name + ' - ' + f.units }
+          "axis": { "title": f.name + ' (' + f.units + ')' }
         },
         "y": {
           "aggregate": "count",
