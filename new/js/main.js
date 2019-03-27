@@ -2,11 +2,9 @@
 var l1admin_data,
   l2_data;
 
-var map, subcitiesLayer, markers = [],
-  icons;
+var map1, subcitiesLayer1, markers1 = [];
 
-var map2, subcitiesLayer2, markers2 = [],
-  icons2;
+var map2, subcitiesLayer2, markers2 = [], icons2;
 
 var levels = [ 'L1 Admin', 'L2' ], level,
   models = [ 'Street Design', 'Urban Landscape' ], model,
@@ -90,78 +88,88 @@ var featuresHierarchy = {
   ]
 };
 
-function initMap() {
-
-  map = L.map( 'map' ).setView( [ -16.47, -74.36], 2 );
-
-  icons = {
+var icons = {
     1: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      iconUrl: './imgs/icons/1.png',
       iconSize: [ 10, 15 ],
       popupAnchor: [ 1, -34 ]
     } ),
     2: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      iconUrl: './imgs/icons/2.png',
       iconSize: [ 10, 15 ],
       popupAnchor: [ 1, -34 ]
     } ),
     3: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      iconUrl: './imgs/icons/3.png',
       iconSize: [ 10, 15 ],
       popupAnchor: [ 1, -34 ]
     } ),
     4: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      iconUrl: './imgs/icons/4.png',
       iconSize: [ 10, 15 ],
       popupAnchor: [ 1, -34 ]
     } ),
     5: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+      iconUrl: './imgs/icons/5.png',
+      iconSize: [ 10, 15 ],
+      popupAnchor: [ 1, -34 ]
+    } ),
+    6: new L.Icon( {
+      iconUrl: './imgs/icons/6.png',
       iconSize: [ 10, 15 ],
       popupAnchor: [ 1, -34 ]
     } )
   };
 
+function initMap1() {
+
+  map1 = L.map( 'map1' ).setView( [ -16.47, -74.36], 2 );
+
   L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo( map );
+  }).addTo( map1 );
 
-  subcitiesLayer = new L.MarkerClusterGroup( {
+  //subcitiesLayer1 = new L.layerGroup();
+  subcitiesLayer1 = new L.MarkerClusterGroup( {
     iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', iconSize: new L.Point( 40, 40 ) } )
   } );
-  subcitiesLayer.addTo( map );
+  subcitiesLayer1.addTo( map1 );
 
-  drawMap();
+  drawMap1();
 
 }
 
-function drawMap() {
+function drawMap1() {
 
   // Remove all layers in map
-  subcitiesLayer.clearLayers();
+  subcitiesLayer1.clearLayers();
 
   var dataTemp;
-  if( country !== undefined ) {
-    if( level === 'L1 Admin' ) dataTemp = l1admin_data.filter( d => d[ 'COUNTRY' ] == country );
-    else dataTemp = l2_data.filter( d => d[ 'COUNTRY' ] == country );
-  } else {
-    if( level === 'L1 Admin' ) dataTemp = l1admin_data;
-    else dataTemp = l2_data;
-  }
+  if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else dataTemp = l2_data;
 
   // Draw the markers
-  arrayOfLatLngs = [];
-  dataTemp.forEach( d => {
-    //var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
-    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ /*d[ colorAttr ]*/1 ] } ).addTo( subcitiesLayer )
+  dataTemp.map( d => {
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ 1 ] } ).addTo( subcitiesLayer1 )
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) );
-      //.bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + '<br /><b>Sub-city: </b>' + d[ 'L2' ] + '<br /><b>Profile: </b>' + d[ 1  ] );
-    markers.push( marker );
-    arrayOfLatLngs.push( [ d[ 'LAT' ], d[ 'LONG' ] ] );
+    markers1.push( marker );
   } );
 
-  var bounds = new L.LatLngBounds( arrayOfLatLngs );
-  map.fitBounds( bounds );
+  var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
+  map1.fitBounds( bounds );
+
+}
+
+function fitBoundsMap1() {
+
+  var dataTemp;
+  if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else dataTemp = l2_data;
+
+  var bounds;
+  if( country !== undefined ) bounds = new L.LatLngBounds( dataTemp.filter( d => d[ 'COUNTRY' ] === country ).map( d => [ d.LAT, d.LONG ] ) );
+  else bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
+  map1.fitBounds( bounds );
 
 }
 
@@ -169,38 +177,11 @@ function initMap2() {
 
   map2 = L.map( 'map2' ).setView( [ -16.47, -74.36], 2 );
 
-  icons2 = {
-    1: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
-    } ),
-    2: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
-    } ),
-    3: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
-    } ),
-    4: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
-    } ),
-    5: new L.Icon( {
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
-    } )
-  };
-
   L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo( map2 );
 
+  //subcitiesLayer2 = new L.layerGroup();
   subcitiesLayer2 = new L.MarkerClusterGroup( {
     iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', iconSize: new L.Point( 40, 40 ) } )
   } );
@@ -229,38 +210,10 @@ function drawMap2() {
   dataTemp.forEach( d => {
 
     var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
+    var colorAttrName = ( model === 'Street Design' ) ? 'TRANS_PROF_NAME' : 'URBAN_PROF_NAME';
 
-    var textProfile = '';
-    if( model === 'Street Design' ){
-      if( level === 'L1 Admin' ) {
-          if( d[ colorAttr ] === "1" ) textProfile = 'L Walk/M Direct';
-          else if( d[ colorAttr ] === "2" ) textProfile = 'M Walk/L Direct';
-          else if( d[ colorAttr ] === "3" ) textProfile = 'H Walk/L Direct';
-          else if( d[ colorAttr ] === "4" ) textProfile = 'L Walk/H Direct';
-      } else {
-          if( d[ colorAttr ] === "1" ) textProfile = 'M Walk/L Direct';
-          else if( d[ colorAttr ] === "2" ) textProfile = 'L Walk/H Direct';
-          else if( d[ colorAttr ] === "3" ) textProfile = 'H Walk/L Direct';
-          else if( d[ colorAttr ] === "4" ) textProfile = 'L Walk/M Direct';
-      }     
-    } else {
-      if( level === 'L1 Admin' ) {
-          if( d[ colorAttr ] === "1" ) textProfile = 'M Frag/Complex/L Iso';
-          else if( d[ colorAttr ] === "2" ) textProfile = 'H Frag/Irregular/L Iso';
-          else if( d[ colorAttr ] === "3" ) textProfile = 'M Frag/Compact/H Iso';
-          else if( d[ colorAttr ] === "4" ) textProfile = 'L Frag/Irregular/M Iso';
-      } else {
-          if( d[ colorAttr ] === "1" ) textProfile = 'H Frag/Complex/M Iso';
-          else if( d[ colorAttr ] === "2" ) textProfile = 'M Frag/Irregular/L Iso';
-          else if( d[ colorAttr ] === "3" ) textProfile = 'L Frag/Complex/L Iso';
-          else if( d[ colorAttr ] === "4" ) textProfile = 'M Frag/Compact/H Iso';
-          else if( d[ colorAttr ] === "5" ) textProfile = 'L Frag/Irregular/L Iso';
-          else if( d[ colorAttr ] === "6" ) textProfile = 'H Frag/Compact/M Iso';
-      }
-    }
-
-    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons2[ d[ colorAttr ] ] } ).addTo( subcitiesLayer2 )
-      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + textProfile );
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ] } ).addTo( subcitiesLayer2 )
+      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] );
     markers2.push( marker );
     arrayOfLatLngs.push( [ d[ 'LAT' ], d[ 'LONG' ] ] );
   } );
@@ -278,11 +231,19 @@ function drawUnitsTable() {
     .data( l1admin_cities )
     .enter()
     .append( 'tr' )
-      .html( d => '<td>' + d.key + '</td><td class="text-center">' + d.values.length + '</td><td class="text-center">' + l2_subcities.find( k => k.key === d.key ).values.length + '</td>' );
+      .html( d => '<td>' + d.key + '</td><td class="text-center">' + d.values.length + '</td><td class="text-center">' + l2_subcities.find( k => k.key === d.key ).values.length + '</td>' )
+      .on( 'click', d => {
+        country = d.key;
+        fitBoundsMap1();
+      } );
 
   d3.select( '#unitsTable' ).select( 'tbody' )
     .append( 'tr' )  
-      .html( d => '<td class="text-center"><b>TOTAL</b></td><td class="text-center"><b>' + l1admin_cities.reduce( ( a, b ) => a + ( b.values.length || 0 ), 0 ) + '</b></td><td class="text-center"><b>' + l2_subcities.reduce( ( a, b ) => a + ( b.values.length || 0 ), 0 ) + '</b></td>' );
+      .html( d => '<td class="text-center"><b>TOTAL</b></td><td class="text-center"><b>' + l1admin_cities.reduce( ( a, b ) => a + ( b.values.length || 0 ), 0 ) + '</b></td><td class="text-center"><b>' + l2_subcities.reduce( ( a, b ) => a + ( b.values.length || 0 ), 0 ) + '</b></td>' )
+      .on( 'click', d => {
+        country = undefined;
+        fitBoundsMap1();
+      } );
 
 }
 
@@ -389,6 +350,56 @@ function drawSparkLines() {
 
 }
 
+function drawBarchart() {
+
+  var dataTemp;
+  if( country !== undefined ) {
+    if( level === 'L1 Admin' ) dataTemp = l1admin_data.filter( d => d[ 'COUNTRY' ] == country );
+    else dataTemp = l2_data.filter( d => d[ 'COUNTRY' ] == country );
+  } else {
+    if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+    else dataTemp = l2_data;
+  }
+
+  var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
+  var colorAttrName = ( model === 'Street Design' ) ? 'TRANS_PROF_NAME' : 'URBAN_PROF_NAME';
+
+  var profiles_chart = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+    "width": +d3.select( '#right-column' ).node().getBoundingClientRect().width - 190,
+    "height": 250,
+    "data": {
+      "values": dataTemp
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": colorAttrName, 
+        "type": "nominal",
+        "title": "Profile",
+        "sort": { "encoding": "x", "order": "descending" }
+      },
+      "x": {
+        "aggregate": "count",
+        "field": colorAttrName,
+        "type": "quantitative"
+      },
+      "color": {
+        "field": colorAttr, 
+        "type": "nominal",
+        "legend": null,
+        "scale": {
+          "domain": [ "1", "2", "3", "4", "5", "6" ],
+          "scheme": "tableau10"
+        }
+      }
+    }
+  };
+
+  vegaEmbed( '#profiles', profiles_chart, { "actions" : false } );
+
+}
+
 function drawLevelCombo() {
 
   d3.selectAll( "#levelSelect" ).selectAll( 'option' )
@@ -402,7 +413,7 @@ function drawLevelCombo() {
     .on( 'change', function() {
       level = this.value;
       d3.selectAll( "#levelSelect" ).selectAll( 'option' ).property( 'selected', d => ( d === level ) ? true : false );
-      drawMap();
+      drawMap1();
       drawFeaturesTable();
       drawBarchart();
       if( country !== undefined ) drawCityCombo();
@@ -425,6 +436,7 @@ function drawModelCombo() {
       model = d3.select( "#modelSelect" ).property( 'value' );
       drawFeaturesTable();
       drawBarchart();
+      drawMap2();
     } );
 
 }
@@ -445,7 +457,7 @@ function drawCountryCombo() {
       if( country === '' ) country = undefined;
       d3.select( "#citySelect" ).property( 'disabled', true );
       
-      drawMap();
+      drawMap1();
       drawSparkLines();
       drawBarchart();
       drawCityCombo();
@@ -491,104 +503,14 @@ function drawCityCombo() {
   
 }
 
-function drawBarchart() {
-
-  l1admin_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l1admin_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
-  l1admin_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l1admin_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
-
-  l2_transProfiles = d3.nest().key( d => d.TRANS_PROF ).rollup( v => v.length ).entries( l2_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
-  l2_urbanProfiles = d3.nest().key( d => d.URBAN_PROF ).rollup( v => v.length ).entries( l2_data.filter( d => ( country !== undefined ) ? d.COUNTRY === country : true ) );
-
-  var profiles;
-  if( model === 'Street Design' ){
-    if( level === 'L1 Admin' ) profiles = l1admin_transProfiles;
-    else profiles = l2_transProfiles;     
-  } else {
-    if( level === 'L1 Admin' ) profiles = l1admin_urbanProfiles;
-    else profiles = l2_urbanProfiles;
-  }
-
-  if( model === 'Street Design' ){
-    if( level === 'L1 Admin' ) {
-      profiles.forEach( p => {
-        if( p.key === "1" ) p[ 'name' ] = 'L Walk/M Direct';
-        else if( p.key === "2" ) p[ 'name' ] = 'M Walk/L Direct';
-        else if( p.key === "3" ) p[ 'name' ] = 'H Walk/L Direct';
-        else if( p.key === "4" ) p[ 'name' ] = 'L Walk/H Direct';
-      } );
-    } else {
-      profiles.forEach( p => {
-        if( p.key === "1" ) p[ 'name' ] = 'M Walk/L Direct';
-        else if( p.key === "2" ) p[ 'name' ] = 'L Walk/H Direct';
-        else if( p.key === "3" ) p[ 'name' ] = 'H Walk/L Direct';
-        else if( p.key === "4" ) p[ 'name' ] = 'L Walk/M Direct';
-      } );
-    }     
-  } else {
-    if( level === 'L1 Admin' ) {
-      profiles.forEach( p => {
-        if( p.key === "1" ) p[ 'name' ] = 'M Frag/Complex/L Iso';
-        else if( p.key === "2" ) p[ 'name' ] = 'H Frag/Irregular/L Iso';
-        else if( p.key === "3" ) p[ 'name' ] = 'M Frag/Compact/H Iso';
-        else if( p.key === "4" ) p[ 'name' ] = 'L Frag/Irregular/M Iso';
-      } );
-    } else {
-      profiles.forEach( p => {
-        if( p.key === "1" ) p[ 'name' ] = 'H Frag/Complex/M Iso';
-        else if( p.key === "2" ) p[ 'name' ] = 'M Frag/Irregular/L Iso';
-        else if( p.key === "3" ) p[ 'name' ] = 'L Frag/Complex/L Iso';
-        else if( p.key === "4" ) p[ 'name' ] = 'M Frag/Compact/H Iso';
-        else if( p.key === "5" ) p[ 'name' ] = 'L Frag/Irregular/L Iso';
-        else if( p.key === "6" ) p[ 'name' ] = 'H Frag/Compact/M Iso';
-      } );
-    }
-  }
-
-  console.log( profiles );
-
-  var profiles_chart = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-    "width": +d3.select( '#right-column' ).node().getBoundingClientRect().width - 180,
-    "height": 250,
-    "data": {
-      "values": profiles
-    },
-    "mark": "bar",
-    "encoding": {
-      "y": {
-        "field": "name", 
-        "type": "nominal",
-        "title": "Profile"
-      },
-      "x": {
-        "field": "value", 
-        "type": "quantitative",
-        "title": ( level === 'L1 Admin' ) ? "Number of cities" : "Number of sub-cities" 
-      },
-      "color": {
-        "field": "name", 
-        "type": "nominal",
-        "title": "Profile",
-        "legend": null
-      },
-      "tooltip": [ 
-        {
-          "field": "name", "type": "nominal"
-        },
-        {
-          "field": "value", "type": "quantitative"
-        }
-      ]
-    }
-  };
-
-  vegaEmbed( '#profiles', profiles_chart, { "actions" : false } );
-
-}
-
 d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
 
   l1admin_data = data;
+  l1admin_data = l1admin_data.map( d => {
+    d.TRANS_PROF_NAME = transformProfiles( 'L1 Admin', 'Street Design', d.TRANS_PROF );
+    d.URBAN_PROF_NAME = transformProfiles( 'L1 Admin', 'Urban Landscape', d.URBAN_PROF );
+    return d;
+  } );
 
   l1admin_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l1admin_data );
   l1admin_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l1admin_data );
@@ -597,26 +519,33 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
   d3.csv( "./data/l2.csv", d => parseNumbers( d ) ).then( data => {
 
     l2_data = data;
+    l2_data = l2_data.map( d => {
+    d.TRANS_PROF_NAME = transformProfiles( 'L2', 'Street Design', d.TRANS_PROF );
+    d.URBAN_PROF_NAME = transformProfiles( 'L2', 'Urban Landscape', d.URBAN_PROF );
+    return d;
+  } );
 
     level = levels[ 0 ];
     model = models[ 0 ];
 
-    l2_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l2_data );
+    //l2_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l2_data );
     //l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
     //l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
     l2_subcities = d3.map( l2_data, d => d.COUNTRY ).keys().map( c => { return { 'key': c, 'values': l2_data.filter( d => d.COUNTRY === c ).map( l => { return { 'key': l.L2, 'value': 1 } } ) } } );
     
-    initMap();
-    initMap2();
-    
-    drawUnitsTable();
-    drawFeaturesTable();
-
+    // Slide 2
     drawLevelCombo();
+    drawUnitsTable();
+    initMap1();
+    
+    // Slide 3
     drawModelCombo();
     drawCountryCombo();
-
+    drawFeaturesTable();
     drawBarchart();
+    initMap2();
+
+    // Slide 4
 
   } );
 
@@ -646,5 +575,40 @@ function parseNumbers( d ) {
   d[ "LAT" ] = +d[ "LAT" ];
 
   return d;
+
+}
+
+function transformProfiles( level, model, profile ) {
+
+  var name;
+  if( model === 'Street Design' ){
+    if( level === 'L1 Admin' ) {
+      if( profile === "1" ) name = 'L Walk/M Direct';
+      else if( profile === "2" ) name = 'M Walk/L Direct';
+      else if( profile === "3" ) name = 'H Walk/L Direct';
+      else if( profile === "4" ) name = 'L Walk/H Direct';
+    } else {
+      if( profile === "1" ) name = 'M Walk/L Direct';
+      else if( profile === "2" ) name = 'L Walk/H Direct';
+      else if( profile === "3" ) name = 'H Walk/L Direct';
+      else if( profile === "4" ) name = 'L Walk/M Direct';
+    }     
+  } else {
+    if( level === 'L1 Admin' ) {
+      if( profile === "1" ) name = 'M Frag/Complex/L Iso';
+      else if( profile === "2" ) name = 'H Frag/Irregular/L Iso';
+      else if( profile === "3" ) name = 'M Frag/Compact/H Iso';
+      else if( profile === "4" ) name = 'L Frag/Irregular/M Iso';
+    } else {
+        if( profile === "1" ) name = 'H Frag/Complex/M Iso';
+        else if( profile === "2" ) name = 'M Frag/Irregular/L Iso';
+        else if( profile === "3" ) name = 'L Frag/Complex/L Iso';
+        else if( profile === "4" ) name = 'M Frag/Compact/H Iso';
+        else if( profile === "5" ) name = 'L Frag/Irregular/L Iso';
+        else if( profile === "6" ) name = 'H Frag/Compact/M Iso';
+    }
+  }
+
+  return name;
 
 }
