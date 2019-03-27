@@ -91,33 +91,33 @@ var featuresHierarchy = {
 var icons = {
     1: new L.Icon( {
       iconUrl: './imgs/icons/1.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
+      iconSize: [ 15, 20 ],
+      popupAnchor: [ 0, -10 ]
     } ),
     2: new L.Icon( {
       iconUrl: './imgs/icons/2.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
+      iconSize: [ 15, 20 ],
+      popupAnchor: [ 0, -10 ]
     } ),
     3: new L.Icon( {
       iconUrl: './imgs/icons/3.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
+      iconSize: [ 15, 20 ],
+      popupAnchor: [ 0, -10 ]
     } ),
     4: new L.Icon( {
       iconUrl: './imgs/icons/4.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
+      iconSize: [ 15, 20 ],
+      popupAnchor: [ 0, -10 ]
     } ),
     5: new L.Icon( {
       iconUrl: './imgs/icons/5.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
+      iconSize: [ 15, 20 ],
+      popupAnchor: [ 0, -10 ]
     } ),
     6: new L.Icon( {
       iconUrl: './imgs/icons/6.png',
-      iconSize: [ 10, 15 ],
-      popupAnchor: [ 1, -34 ]
+      iconSize: [ 15, 20 ],
+      popupAnchor: [ 0, -10 ]
     } )
   };
 
@@ -299,50 +299,9 @@ function drawSparkLines() {
           "type": "quantitative",
           "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities' }
         },
-        "tooltip": {
-          "aggregate": "count",
-          "type": "quantitative"
-        }
+        "tooltip": null
       }
     };
-
-    /*var svg = d3.select( '#sparkline-' + feature ).append( 'svg' )
-      .attr( 'width', width )
-      .attr( 'height', height );
-
-    var columnArray = [];
-    dataTemp.map( d => columnArray.push( d[ feature ] ) );
-
-    var x = d3.scaleLinear()
-      .domain( [ d3.min( dataTemp, d => d[ feature ] ), d3.max( dataTemp, d => d[ feature ] ) ] )
-      .range( [ margin.left, width - margin.right ] );
-
-    var n = columnArray.length,
-      bins = d3.histogram().domain( x.domain() ).thresholds( columnArray.length / 50 )( columnArray );
-
-    var y = d3.scaleLinear()
-      .domain( [ 0, d3.max( bins, d => d.length / n ) ] )
-      .range( [ height - margin.bottom, margin.top ] );
-
-    svg.append( 'g' )
-      .attr( 'class', 'axis axis--x' )
-      .attr( 'transform', 'translate(0,' + ( height - margin.bottom ) + ')' )
-      .call( d3.axisBottom( x ).ticks( 5 ) );
-
-    svg.append( 'g' )
-      .attr( 'class', 'axis axis--y' )
-      .attr( 'transform', 'translate(' + margin.left + ',0)' )
-      .call( d3.axisLeft( y ).ticks( 3, '%' ) );
-
-    svg.insert( "g", "*" )
-      .attr( "fill", "steelblue" )
-      .selectAll( "rect" )
-      .data( bins )
-      .enter().append( "rect" )
-        .attr( "x", d => x( d.x0 ) + 1 )
-        .attr( "y", d => y( d.length / n ) )
-        .attr( "width", d => x( d.x1 ) - x( d.x0 ) - 1 )
-        .attr( "height", d => y( 0 ) - y( d.length / n ) );*/
 
     vegaEmbed( '#sparkline-' + feature, spec, { "actions" : false } );
 
@@ -371,7 +330,30 @@ function drawBarchart() {
     "data": {
       "values": dataTemp
     },
-    "mark": "bar",
+    "layer": [ 
+      {
+        "mark": "bar"
+      }, 
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "middle",
+          "dx": -8,
+          "fontSize": 12,
+          "align": "right",
+        },
+        "encoding": {
+          "text": {
+            "aggregate": "sum",
+            "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+            "type": "quantitative",
+            "format": ".1%"
+          },
+          "color": { "value": "white" }
+        }
+      }
+    ],
     "encoding": {
       "y": {
         "field": colorAttrName, 
@@ -392,7 +374,8 @@ function drawBarchart() {
           "domain": [ "1", "2", "3", "4", "5", "6" ],
           "scheme": "tableau10"
         }
-      }
+      },
+      "tooltip": null
     }
   };
 
@@ -509,6 +492,8 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
   l1admin_data = l1admin_data.map( d => {
     d.TRANS_PROF_NAME = transformProfiles( 'L1 Admin', 'Street Design', d.TRANS_PROF );
     d.URBAN_PROF_NAME = transformProfiles( 'L1 Admin', 'Urban Landscape', d.URBAN_PROF );
+    d.PERCENTAGE = 1 / l1admin_data.length;
+    d.PERCENTAGE_COUNTRY = 1 / l1admin_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
     return d;
   } );
 
@@ -522,6 +507,8 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
     l2_data = l2_data.map( d => {
     d.TRANS_PROF_NAME = transformProfiles( 'L2', 'Street Design', d.TRANS_PROF );
     d.URBAN_PROF_NAME = transformProfiles( 'L2', 'Urban Landscape', d.URBAN_PROF );
+    d.PERCENTAGE = 1 / l2_data.length;
+    d.PERCENTAGE_COUNTRY = 1 / l2_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
     return d;
   } );
 
