@@ -286,7 +286,31 @@ function drawSparkLines() {
       "height": height,
       "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
       "data": { "values": dataTemp },
-      "mark": "bar",
+      "layer": [ 
+      {
+        "mark": "bar"
+      }, 
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "top",
+          "dx": 15,
+          "dy": -12,
+          "fontSize": 10,
+          "align": "right",
+        },
+        "encoding": {
+          "text": {
+            "aggregate": "sum",
+            "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+            "type": "quantitative",
+            "format": ".1%"
+          },
+          "color": { "value": "gray" }
+        }
+      }
+    ],
       "encoding": {
         "x": {
           "bin": true,
