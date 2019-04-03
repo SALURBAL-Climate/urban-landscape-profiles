@@ -91,32 +91,32 @@ var featuresHierarchy = {
 var icons = {
     1: new L.Icon( {
       iconUrl: './imgs/icons/1.png',
-      iconSize: [ 15, 20 ],
+      iconSize: [ 20, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     2: new L.Icon( {
       iconUrl: './imgs/icons/2.png',
-      iconSize: [ 15, 20 ],
+      iconSize: [ 20, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     3: new L.Icon( {
       iconUrl: './imgs/icons/3.png',
-      iconSize: [ 15, 20 ],
+      iconSize: [ 20, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     4: new L.Icon( {
       iconUrl: './imgs/icons/4.png',
-      iconSize: [ 15, 20 ],
+      iconSize: [ 20, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     5: new L.Icon( {
       iconUrl: './imgs/icons/5.png',
-      iconSize: [ 15, 20 ],
+      iconSize: [ 20, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     6: new L.Icon( {
       iconUrl: './imgs/icons/6.png',
-      iconSize: [ 15, 20 ],
+      iconSize: [ 20, 25 ],
       popupAnchor: [ 0, -10 ]
     } )
   };
@@ -145,8 +145,13 @@ function drawMap1() {
   subcitiesLayer1.clearLayers();
 
   var dataTemp;
-  if( level === 'L1 Admin' ) dataTemp = l1admin_data;
-  else dataTemp = l2_data;
+  if( country !== undefined ) {
+    if( level === 'L1 Admin' ) dataTemp = l1admin_data.filter( d => d[ 'COUNTRY' ] == country );
+    else dataTemp = l2_data.filter( d => d[ 'COUNTRY' ] == country );
+  } else {
+    if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+    else dataTemp = l2_data;
+  }
 
   // Draw the markers
   dataTemp.map( d => {
@@ -155,21 +160,92 @@ function drawMap1() {
     markers1.push( marker );
   } );
 
-  var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
-  map1.fitBounds( bounds );
+  fitBounds( map1 );
 
 }
 
-function fitBoundsMap1() {
+function fitBounds( map ) {
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
   else dataTemp = l2_data;
 
-  var bounds;
-  if( country !== undefined ) bounds = new L.LatLngBounds( dataTemp.filter( d => d[ 'COUNTRY' ] === country ).map( d => [ d.LAT, d.LONG ] ) );
-  else bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
-  map1.fitBounds( bounds );
+  if( country !== undefined ) dataTemp = dataTemp.filter( d => d.COUNTRY === country );
+
+  var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
+  map.fitBounds( bounds );
+
+}
+
+function drawUnitsByCountry() {
+
+  var dataTemp;
+  if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else dataTemp = l2_data;
+
+  var profiles_chart = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+    "width": +d3.select( '#right-column' ).node().getBoundingClientRect().width - 190,
+    "height": 350,
+    "data": {
+      "values": dataTemp
+    },
+    "layer": [ 
+      {
+        "mark": "bar",
+        "selection": {
+          "countrySelection": { "type": "single", "encodings": [ "y" ] }
+        },
+      }, 
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "middle",
+          "dx": 30,
+          "fontSize": 10,
+          "align": "right",
+        },
+        "encoding": {
+          "text": {
+            "aggregate": "sum",
+            "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+            "type": "quantitative",
+            "format": ".1%"
+          },
+          "color": { "value": "gray" }
+        }
+      }
+    ],
+    "encoding": {
+      "y": {
+        "field": "COUNTRY", 
+        "type": "nominal",
+        "title": "Country",
+        "sort": { "encoding": "x", "order": "descending" }
+      },
+      "x": {
+        "aggregate": "count",
+        "field": "COUNTRY",
+        "type": "quantitative",
+        "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities' }
+      },
+      "color": {
+        "condition": {
+          "selection": "countrySelection",
+          "value": "steelblue" 
+        },
+        "value": "grey"
+      },
+      "tooltip": null
+    }
+  };
+
+  vegaEmbed( '#unitsByCountry', profiles_chart, { "actions" : false } ).then( ( { spec, view } ) => {
+    view.addEventListener( 'click', function ( event, item ) {
+
+    } )
+  } );
 
 }
 
@@ -206,7 +282,6 @@ function drawMap2() {
   }
 
   // Draw the markers
-  arrayOfLatLngs = [];
   dataTemp.forEach( d => {
 
     var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
@@ -215,11 +290,9 @@ function drawMap2() {
     var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ] } ).addTo( subcitiesLayer2 )
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] );
     markers2.push( marker );
-    arrayOfLatLngs.push( [ d[ 'LAT' ], d[ 'LONG' ] ] );
   } );
 
-  var bounds = new L.LatLngBounds( arrayOfLatLngs );
-  map2.fitBounds( bounds );
+  fitBounds( map2 );
 
 }
 
@@ -316,13 +389,14 @@ function drawSparkLines() {
           "bin": true,
           "field": feature,
           "type": "quantitative",
-          "axis": { "title": f.name + ' (' + f.units + ')' }
+          "axis": { "title": f.name /*+ ' (' + f.units + ')'*/ }
         },
         "y": {
           "aggregate": "count",
           "type": "quantitative",
           "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities' }
         },
+        "color": { "value": "#bab0ac" },
         "tooltip": null
       }
     };
@@ -356,7 +430,10 @@ function drawBarchart() {
     },
     "layer": [ 
       {
-        "mark": "bar"
+        "mark": "bar",
+        "selection": {
+          "prof": { "type": "single", "encodings": [ "y" ] }
+        },
       }, 
       {
         "mark": {
@@ -388,22 +465,31 @@ function drawBarchart() {
       "x": {
         "aggregate": "count",
         "field": colorAttrName,
-        "type": "quantitative"
+        "type": "quantitative",
+        "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities' }
       },
       "color": {
-        "field": colorAttr, 
-        "type": "nominal",
-        "legend": null,
-        "scale": {
-          "domain": [ "1", "2", "3", "4", "5", "6" ],
-          "scheme": "tableau10"
-        }
+        "condition": {
+          "selection": "prof",
+          "field": colorAttr, 
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "domain": [ "1", "2", "3", "4", "5", "6" ],
+            "scheme": "tableau10"
+          },
+        },
+        "value": "grey"
       },
       "tooltip": null
     }
   };
 
-  vegaEmbed( '#profiles', profiles_chart, { "actions" : false } );
+  vegaEmbed( '#profiles', profiles_chart, { "actions" : false } ).then( ( { spec, view } ) => {
+    view.addEventListener( 'click', function ( event, item ) {
+        console.log( item.datum );
+    } )
+  } );
 
 }
 
@@ -418,10 +504,16 @@ function drawLevelCombo() {
 
   d3.selectAll( "#levelSelect" )
     .on( 'change', function() {
+      
       level = this.value;
       d3.selectAll( "#levelSelect" ).selectAll( 'option' ).property( 'selected', d => ( d === level ) ? true : false );
+
+      d3.select( '#totalOfUnits' ).text( ( level === 'L1 Admin' ) ? `Total of cities: ${ l1admin_data.length }` : `Total of sub-cities: ${ d3.format( ',' )( l2_data.length ) }` );
+
       drawMap1();
-      drawFeaturesTable();
+      drawUnitsByCountry();
+      //drawFeaturesTable();
+      drawSparkLines();
       drawBarchart();
       if( country !== undefined ) drawCityCombo();
       drawMap2();
@@ -487,15 +579,15 @@ function drawCityCombo() {
 
     var units;
     if( level === 'L1 Admin' ){
-      city = l1admin_cities.find( d => d.key === country ).values[ 0 ].key;
+      //city = l1admin_cities.find( d => d.key === country ).values[ 0 ].key;
       units = l1admin_cities;
     } else {
-      city = l2_subcities.find( d => d.key === country ).values[ 0 ].key;
+      //city = l2_subcities.find( d => d.key === country ).values[ 0 ].key;
       units = l2_subcities;
     }
 
     d3.select( "#citySelect" ).selectAll( 'option' )
-      .data( units.find( d => d.key === country ).values )
+      .data( [ { 'key' : undefined } ].concat( units.find( d => d.key === country ).values ) )
       .enter()
       .append( 'option' )
         .attr( 'value', d => d.key )
@@ -503,7 +595,26 @@ function drawCityCombo() {
 
     d3.select( "#citySelect" )
       .on( 'change', _ => {
+        
         city = d3.select( "#citySelect" ).property( 'value' );
+        if( city === '' ) city = undefined;
+        
+        //drawMap1();
+        //drawSparkLines();
+        //drawBarchart();
+        //drawCityCombo();
+        //drawMap2();
+
+        if( level === 'L1 Admin' ) {
+          unit = l1admin_data.find( d => d.COUNTRY === country && d.L1 === city );
+        } else {
+          unit = l2_data.find( d => d.COUNTRY === country && d.L2 === city );
+        }
+        var arrayOfLatLngs = [ [ unit.LAT, unit.LONG ] ];
+        console.log( arrayOfLatLngs );
+        var bounds = new L.LatLngBounds( arrayOfLatLngs );
+        map2.fitBounds( bounds );
+
       } );
 
   }
@@ -546,7 +657,8 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
     
     // Slide 2
     drawLevelCombo();
-    drawUnitsTable();
+    drawUnitsByCountry();
+    //drawUnitsTable();
     initMap1();
     
     // Slide 3

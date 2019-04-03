@@ -53,7 +53,9 @@
         </div>
       </div>
 
-      <br /><br /><br />
+      <br /><br />
+      <hr />
+      <br /><br />
 
       <!-- Slide 2 -->
       <div class="row">
@@ -61,8 +63,20 @@
           <h4>Map of SALURBAL countries, cities and sub-cities</h4>
         </div>
         <div class="col-md-6" align="center">
-            
-          <table id="unitsTable" class="table table-bordered table-hover table-sm">
+          
+          <div class="form-group">
+            <label for="levelSelectFormControl"><b>Level</b></label>
+            <select class="form-control" id="levelSelect">
+            </select>
+          </div>
+
+          <div>
+            <span id="totalOfUnits">Total of cities: 370</span>
+          </div>
+
+          <div id="unitsByCountry"></div>
+
+          <!--<table id="unitsTable" class="table table-bordered table-hover table-sm">
             <thead class="thead-dark">
               <tr>
                 <th class="text-center" style="width: 34%">Countries</th>
@@ -72,22 +86,19 @@
             </thead>
             <tbody>
             </tbody>
-          </table>
+          </table>-->
 
         </div>
         <div class="col-md-6" align="center">
           
-          <div class="form-group">
-            <label for="levelSelectFormControl"><b>Level</b></label>
-            <select class="form-control" id="levelSelect">
-            </select>
-          </div>
           <div id="map1"></div>
 
         </div>
       </div>
 
-      <br /><br /><br />
+      <br /><br />
+      <hr />
+      <br /><br />
 
       <!-- Slide 3 -->
       <div class="row">
