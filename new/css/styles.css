@@ -7,6 +7,15 @@
   height: 450px;
 }
 
+.mycluster {
+  width: 40px;
+  height: 40px;
+  background-color: greenyellow;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 30px;
+}
+
 img {
   height: 60px;
   margin: 10px 0px; 

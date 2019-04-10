@@ -7,7 +7,7 @@ var map1, subcitiesLayer1, markers1 = [];
 var map2, subcitiesLayer2, markers2 = [], icons2;
 
 var levels = [ 'L1 Admin', 'L2' ], level,
-  models = [ 'Street Design', 'Urban Landscape' ], model,
+  models = [ 'Urban Landscape', 'Street Design' ], model,
   countries, country,
   cities, city,
   transProfiles, urbanProfiles;
@@ -19,31 +19,31 @@ var featuresHierarchy = {
       "name" : "Street density",
       "subdomain" : "Street density",
       "description" : "Measures the length of streets per Km2 of area.",
-      "units": "Streets per Km2"
+      "units": "streets/km2"
     }, {
       "key" : "BECADINTDENS",
       "name" : "Intersection density",
       "subdomain" : "Intersection density",
       "description" : "Measures the amount of intersections per Km2 of area.",
-      "units": "Intersections per Km2"
+      "units": "intersections/km2"
     }, {
       "key" : "BECADSTTPNODEAVG",
       "name" : "Streets per node average",
       "subdomain" : "Intersection density",
       "description" : "Measures the distribution of the number of streets that meet at each intersection of the street network.",
-      "units": "aaa"
+      "units": "streets"
     }, {
       "key" : "BECADSTTLGAVG",
       "name" : "Street length average",
       "subdomain" : "Street network length and structure",
       "description" : "Measures the length of streets in the street network.",
-      "units": "aaa"
+      "units": "meters"
     }, {
       "key" : "BECADCRCTYAVG",
       "name" : "Circuity average",
       "subdomain" : "Street network length and structure",
       "description" : "Measures the average ratio of network distances to straight-line distances.",
-      "units": "aaa"
+      "units": undefined
     }
   ],
   "Urban Landscape" : [ 
@@ -52,38 +52,38 @@ var featuresHierarchy = {
       "name" : "Area-weighted mean shape index",
       "subdomain" : "Shape",
       "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.",
-      "units": "aaa"
+      "units": undefined
     },
     {
       "key" : "BECNURBPTCH",
       "name" : "Number of urban patches",
       "subdomain" : "Fragmentation",
       "description" : "Number of contiguous areas of urban development (urban patches hereafter).",
-      "units": "aaa"
+      "units": "urban patches"
     }, {
       "key" : "BECPTCHDENS",
       "name" : "Patch density",
       "subdomain" : "Fragmentation",
       "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares).",
-      "units": "aaa"
+      "units": "urban patches/hectares"
     }, {
       "key" : "BECAWAVGPTCHAREA",
       "name" : "Area-weighted mean patch size",
       "subdomain" : "Fragmentation",
       "description" : "Weighted average of urban patch size (in hectares). This value is weighted by the area of each patch.",
-      "units": "aaa"
+      "units": "hectares"
     }, {
       "key" : "BECEFFMESHSIZE",
       "name" : "Effective Mesh Size",
       "subdomain" : "Fragmentation",
       "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit.",
-      "units": "aaa"
+      "units": "hectares"
     }, {
       "key" : "BECAWMNNNGH",
       "name" : "Area-weighted Mean Nearest Neighbor Distance",
       "subdomain" : "Isolation",
       "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch.",
-      "units": "aaa"
+      "units": "meters"
     } 
   ]
 };
@@ -131,7 +131,7 @@ function initMap1() {
 
   //subcitiesLayer1 = new L.layerGroup();
   subcitiesLayer1 = new L.MarkerClusterGroup( {
-    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', iconSize: new L.Point( 40, 40 ) } )
+    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', className: 'mycluster', iconSize: new L.Point( 40, 40 ) } )
   } );
   subcitiesLayer1.addTo( map1 );
 
@@ -259,7 +259,7 @@ function initMap2() {
 
   //subcitiesLayer2 = new L.layerGroup();
   subcitiesLayer2 = new L.MarkerClusterGroup( {
-    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', iconSize: new L.Point( 40, 40 ) } )
+    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<b><font size="5">' + ( +cluster.getChildCount() + 1 )  + '</font></b>', className: 'mycluster', iconSize: new L.Point( 40, 40 ) } )
   } );
   subcitiesLayer2.addTo( map2 );
 
@@ -389,7 +389,7 @@ function drawSparkLines() {
           "bin": true,
           "field": feature,
           "type": "quantitative",
-          "axis": { "title": f.name /*+ ' (' + f.units + ')'*/ }
+          "axis": { "title": f.name + ( ( f.units !== undefined ) ? ' (' + f.units + ')' : '' ) }
         },
         "y": {
           "aggregate": "count",
@@ -508,7 +508,7 @@ function drawLevelCombo() {
       level = this.value;
       d3.selectAll( "#levelSelect" ).selectAll( 'option' ).property( 'selected', d => ( d === level ) ? true : false );
 
-      d3.select( '#totalOfUnits' ).text( ( level === 'L1 Admin' ) ? `Total of cities: ${ l1admin_data.length }` : `Total of sub-cities: ${ d3.format( ',' )( l2_data.length ) }` );
+      d3.select( '#totalOfUnits' ).text( ( level === 'L1 Admin' ) ? `Total of cities: ${ 371 }` : `Total of sub-cities: ${ d3.format( ',' )( 1434 ) }` );
 
       drawMap1();
       drawUnitsByCountry();
@@ -543,7 +543,7 @@ function drawModelCombo() {
 function drawCountryCombo() {
 
   d3.select( "#countrySelect" ).selectAll( 'option' )
-    .data( [ { 'key' : undefined } ].concat( l1admin_countries ) )
+    .data( [ { 'key' : undefined } ].concat( l1admin_countries ).sort( ( x, y ) => d3.ascending( x.key, y.key ) ) )
     .enter()
     .append( 'option' )
       .attr( 'value', d => d.key )
@@ -587,7 +587,7 @@ function drawCityCombo() {
     }
 
     d3.select( "#citySelect" ).selectAll( 'option' )
-      .data( [ { 'key' : undefined } ].concat( units.find( d => d.key === country ).values ) )
+      .data( [ { 'key' : undefined } ].concat( units.find( d => d.key === country ).values ).sort( ( x, y ) => d3.ascending( x.key, y.key ) ) )
       .enter()
       .append( 'option' )
         .attr( 'value', d => d.key )
@@ -597,23 +597,30 @@ function drawCityCombo() {
       .on( 'change', _ => {
         
         city = d3.select( "#citySelect" ).property( 'value' );
-        if( city === '' ) city = undefined;
-        
-        //drawMap1();
-        //drawSparkLines();
-        //drawBarchart();
-        //drawCityCombo();
-        //drawMap2();
+        if( city === '' ) {
+          city = undefined;
 
-        if( level === 'L1 Admin' ) {
-          unit = l1admin_data.find( d => d.COUNTRY === country && d.L1 === city );
+          if( level === 'L1 Admin' ) {
+            units = l1admin_data.filter( d => d.COUNTRY === country );
+          } else {
+            units = l2_data.filter( d => d.COUNTRY === country );
+          }
+          var bounds = new L.LatLngBounds( units.map( u => [ u.LAT, u.LONG ] ) );
+          map1.fitBounds( bounds );
+          map2.fitBounds( bounds );
+
         } else {
-          unit = l2_data.find( d => d.COUNTRY === country && d.L2 === city );
+
+          if( level === 'L1 Admin' ) {
+            unit = l1admin_data.find( d => d.COUNTRY === country && d.L1 === city );
+          } else {
+            unit = l2_data.find( d => d.COUNTRY === country && d.L2 === city );
+          }
+          var bounds = new L.LatLngBounds( [ [ unit.LAT, unit.LONG ] ] );
+          map1.fitBounds( bounds );
+          map2.fitBounds( bounds );
+
         }
-        var arrayOfLatLngs = [ [ unit.LAT, unit.LONG ] ];
-        console.log( arrayOfLatLngs );
-        var bounds = new L.LatLngBounds( arrayOfLatLngs );
-        map2.fitBounds( bounds );
 
       } );
 
