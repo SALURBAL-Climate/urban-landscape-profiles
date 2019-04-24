@@ -173,7 +173,7 @@ function drawMap1( level = 'L1 Admin' ) {
 
 }
 
-function drawMap2() {
+function drawMap2( level = 'L1 Admin' ) {
 
   // Remove all layers in map
   subcitiesLayer2.clearLayers();
@@ -217,7 +217,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
   var profiles_chart = {
     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
     "width": +d3.select( '#unitsByCountry' ).node().parentNode.getBoundingClientRect().width - 190,
-    "height": 200,
+    "height": 250,
     "data": {
       "values": dataTemp
     },
@@ -294,7 +294,7 @@ function drawFeaturesTable() {
 
 }
 
-function drawSparkLines() {
+function drawSparkLines( level = 'L1 Admin' ) {
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
@@ -359,8 +359,7 @@ function drawSparkLines() {
             "titleFontSize": 12
           }
         },
-        "color": { "value": "#bab0ac" },
-        "tooltip": null
+        "color": { "value": "#bab0ac" }
       }
     };
 
@@ -370,7 +369,7 @@ function drawSparkLines() {
 
 }
 
-function drawUnitsByProfile() {
+function drawUnitsByProfile( level = 'L1 Admin' ) {
 
   var dataTemp;
   if( country !== undefined ) {
@@ -465,6 +464,21 @@ d3.selectAll( "#levelSelect-slide1" )
     } else {
       drawUnitsByCountry( 'L1 Admin' );
       drawMap1( 'L1 Admin' );
+    }
+
+  } );
+
+d3.selectAll( "#levelSelect-slide2" )
+  .on( 'change', function() {
+    
+    if( this.checked ) {
+      drawSparkLines( 'L2' );
+      drawUnitsByProfile( 'L2' );
+      drawMap2( 'L2' );
+    } else {
+      drawSparkLines( 'L1 Admin' );
+      drawUnitsByProfile( 'L1 Admin' );
+      drawMap2( 'L1 Admin' );
     }
 
   } );
