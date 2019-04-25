@@ -18,13 +18,13 @@ var featuresHierarchy = {
       "name" : "Street density",
       "subdomain" : "Street density",
       "description" : "Measures the length of streets per Km2 of area.",
-      "units": "streets/km2"
+      "units": "streets/Km2"
     }, {
       "key" : "BECADINTDENS",
       "name" : "Intersection density",
       "subdomain" : "Intersection density",
       "description" : "Measures the amount of intersections per Km2 of area.",
-      "units": "intersections/km2"
+      "units": "intersections/Km2"
     }, {
       "key" : "BECADSTTPNODEAVG",
       "name" : "Streets per node average",
@@ -245,7 +245,7 @@ function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  )
     var probAttr = ( model === 'Street Design' ) ? 'TRANS_PROB' : 'URBAN_PROB';
 
     var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
-      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] + '<br /><b>Probality: </b>' + d[ probAttr ] );
+      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] + '<br /><b>Probality: </b>' + d3.format(".2f")( d[ probAttr ] ) );
   } );
 
   if( fit === true ) {
@@ -702,6 +702,7 @@ d3.selectAll( "#levelSelect-slide1" )
       document.getElementById( "levelSelect-slide2" ).checked = false;
     }
 
+    drawUnitsByCountry( level );
     drawSparkLines( level, model );
     drawUnitsByProfile( level, model );
     drawMap1( level, model );
@@ -720,6 +721,7 @@ d3.selectAll( "#levelSelect-slide2" )
       document.getElementById( "levelSelect-slide1" ).checked = false;
     }
 
+    drawUnitsByCountry( level );
     drawSparkLines( level, model );
     drawUnitsByProfile( level, model );
     drawMap1( level, model );
