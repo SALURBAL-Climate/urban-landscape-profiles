@@ -133,8 +133,9 @@ function initMap1() {
   } );
   subcitiesLayer1.addTo( map1 );
 
-  var searchControl1 = new L.Control.Search( { layer: subcitiesLayer1, marker: false, moveToLocation: ( latlng, title, map ) => {
-      map.setView( latlng, 10 );
+  var searchControl1 = new L.Control.Search( { layer: subcitiesLayer1, marker: false, moveToLocation: ( latlng ) => {
+      map1.setView( latlng, 10 );
+      map2.setView( latlng, 10 );
     } } );
   map1.addControl( searchControl1 );
 
@@ -156,12 +157,47 @@ function initMap2() {
   } );
   subcitiesLayer2.addTo( map2 );
 
-  var searchControl2 = new L.Control.Search( { layer: subcitiesLayer2, marker: false, moveToLocation: ( latlng, title, map ) => {
-      map.setView( latlng, 10 );
+  var searchControl2 = new L.Control.Search( { layer: subcitiesLayer2, marker: false, moveToLocation: ( latlng ) => {
+      map1.setView( latlng, 10 );
+      map2.setView( latlng, 10 );
     } } );
   map2.addControl( searchControl2 );
 
+  var countryControl2 = L.control( { position: 'topright' } );
+  countryControl2.onAdd = ( map ) => {
+    var div = L.DomUtil.create( 'div', 'info legend' );
+    div.innerHTML = '<select id="countrySelect2"></select>';
+    div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
+    return div;
+  };
+  countryControl2.addTo( map2 );
+
   drawMap2();
+
+  d3.select( "#countrySelect2" ).selectAll( 'option' )
+    .data( [ { 'key' : undefined } ].concat( l1admin_countries ).sort( ( x, y ) => d3.ascending( x.key, y.key ) ) )
+    .enter()
+    .append( 'option' )
+      .attr( 'value', d => d.key )
+      .html( d => d.key );
+
+  d3.select( "#countrySelect2" )
+    .on( 'change', function() {
+      if( this.value !== undefined && this.value !== '' ) {
+        var bounds = new L.LatLngBounds( l2_data.filter( d => d.COUNTRY === this.value ).map( d => [ d.LAT, d.LONG ] ) );
+        map1.fitBounds( bounds );
+        map2.fitBounds( bounds );
+      
+        drawSparkLines( level, model, this.value );
+        drawUnitsByProfile( level, model, this.value );
+      } else {
+        map1.setView( [ -16.47, -74.36], 0 );
+        map2.setView( [ -16.47, -74.36], 0 );
+      
+        drawSparkLines( level, model );
+        drawUnitsByProfile( level, model );
+      }
+    } );
 
 }
 
@@ -182,7 +218,7 @@ function drawMap1( level = 'L1 Admin', fit = false ) {
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) );
   } );
 
-  if( fit ) {
+  if( fit === true ) {
     var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
     map1.fitBounds( bounds );
   }
@@ -192,6 +228,7 @@ function drawMap1( level = 'L1 Admin', fit = false ) {
 function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  ) {
 
   map2.setView( [ -16.47, -74.36], 0 );
+  document.getElementById( "countrySelect2" ).selectedIndex = 0;
 
   // Remove all layers in map
   subcitiesLayer2.clearLayers();
@@ -205,12 +242,13 @@ function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  )
 
     var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
     var colorAttrName = ( model === 'Street Design' ) ? 'TRANS_PROF_NAME' : 'URBAN_PROF_NAME';
+    var probAttr = ( model === 'Street Design' ) ? 'TRANS_PROB' : 'URBAN_PROB';
 
     var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
-      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] );
+      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] + '<br /><b>Probality: </b>' + d[ probAttr ] );
   } );
 
-  if( fit ) {
+  if( fit === true ) {
     var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
     map2.fitBounds( bounds );
   }
@@ -303,13 +341,11 @@ function drawFeaturesTable( level = 'L1 Admin', model = 'Urban Landscape' ) {
 
 }
 
-function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape' ) {
+function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country ) {
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
   else dataTemp = l2_data;
-
-  if( country !== undefined ) dataTemp = dataTemp.filter( d => d.COUNTRY === country );
 
   featuresHierarchy[ model ].forEach( f => {
 
@@ -327,7 +363,27 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape' ) {
       "data": { "values": dataTemp },
       "layer": [
         {
-          "mark": "bar"
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "bin": true,
+              "field": feature,
+              "type": "quantitative",
+              "axis": { "title": f.name + ( ( f.units !== undefined ) ? ' (' + f.units + ')' : '' ),
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "y": {
+              "aggregate": "count",
+              "type": "quantitative",
+              "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "color": { "value": "#bab0ac" }
+          }
         }, 
         {
           "mark": {
@@ -340,37 +396,61 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape' ) {
             "align": "right",
           },
           "encoding": {
+            "x": {
+              "bin": true,
+              "field": feature,
+              "type": "quantitative",
+              "axis": { "title": f.name + ( ( f.units !== undefined ) ? ' (' + f.units + ')' : '' ),
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "y": {
+              "aggregate": "count",
+              "type": "quantitative",
+              "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
             "text": {
               "aggregate": "sum",
-              "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+              //"field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+              "field": "PERCENTAGE",
               "type": "quantitative",
               "format": ".1%"
             },
             "color": { "value": "gray" }
           }
         }
-      ],
-      "encoding": {
-        "x": {
-          "bin": true,
-          "field": feature,
-          "type": "quantitative",
-          "axis": { "title": f.name + ( ( f.units !== undefined ) ? ' (' + f.units + ')' : '' ),
-            "titleFont": "Roboto",
-            "titleFontSize": 12
-          }
-        },
-        "y": {
-          "aggregate": "count",
-          "type": "quantitative",
-          "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
-            "titleFont": "Roboto",
-            "titleFontSize": 12
-          }
-        },
-        "color": { "value": "#bab0ac" }
-      }
+      ]
     };
+
+    if( country !== undefined )
+      spec.layer.push( {
+        "mark": "bar",
+        "transform": [ { "filter": { "field": "COUNTRY", "equal": country } } ],
+        "encoding": {
+          "x": {
+            "bin": true,
+            "field": feature,
+            "type": "quantitative",
+            "axis": { "title": f.name + ( ( f.units !== undefined ) ? ' (' + f.units + ')' : '' ),
+              "titleFont": "Roboto",
+              "titleFontSize": 12
+            }
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative",
+            "axis": { "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
+              "titleFont": "Roboto",
+              "titleFontSize": 12
+            }
+          },
+          "color": { "value": "#2196F3" }
+        }
+      } );
 
     vegaEmbed( '#sparkline-' + feature, spec, { "actions" : false } );
 
@@ -378,87 +458,229 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape' ) {
 
 }
 
-function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape' ) {
+function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', country ) {
 
   var dataTemp;
-  if( country !== undefined ) {
-    if( level === 'L1 Admin' ) dataTemp = l1admin_data.filter( d => d[ 'COUNTRY' ] == country );
-    else dataTemp = l2_data.filter( d => d[ 'COUNTRY' ] == country );
-  } else {
-    if( level === 'L1 Admin' ) dataTemp = l1admin_data;
-    else dataTemp = l2_data;
-  }
+  if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else dataTemp = l2_data;
 
   var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
   var colorAttrName = ( model === 'Street Design' ) ? 'TRANS_PROF_NAME' : 'URBAN_PROF_NAME';
 
-  var profiles_chart = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-    "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 205,
-    "height": 200,
-    "data": {
-      "values": dataTemp
-    },
-    "layer": [ 
-      {
-        "mark": "bar"
-      }, 
-      {
-        "mark": {
-          "type": "text",
-          "align": "left",
-          "baseline": "middle",
-          "dx": 5,
-          "fontSize": 12,
-          "align": "left",
-        },
-        "encoding": {
-          "text": {
-            "aggregate": "sum",
-            "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
-            "type": "quantitative",
-            "format": ".1%"
-          },
-          "color": { "value": "gray" }
-        }
-      }
-    ],
-    "encoding": {
-      "y": {
-        "field": colorAttrName, 
-        "type": "nominal",
-        "sort": { "encoding": "x", "order": "descending" },
-        "axis": { 
-          "title": "Profile", 
-          "titleFont": "Roboto",
-          "titleFontSize": 12
-        }
+  if( country !== undefined ) {
+
+    var profiles_chart = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 200,
+      "height": 200,
+      "data": {
+        "values": dataTemp
       },
-      "x": {
-        "aggregate": "count",
-        "field": colorAttrName,
-        "type": "quantitative",
-        "axis": { 
-          "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
-          "titleFont": "Roboto",
-          "titleFontSize": 12
-        }
-      },
-      "color": {
-        "field": colorAttr,
-        "type": "nominal",
-        "legend": null,
-          "scale": {
-            "domain": [ "1", "2", "3", "4", "5", "6" ],
-            "scheme": "tableau10"
+      "layer": [ 
+        {
+          "mark": "bar",
+          "encoding": {
+            "y": {
+              "field": colorAttrName, 
+              "type": "nominal",
+              "sort": { "encoding": "x", "order": "descending" },
+              "axis": { 
+                "title": "Profile", 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "x": {
+              "aggregate": "count",
+              "field": colorAttrName,
+              "type": "quantitative",
+              "axis": { 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "color": { "value": "#bab0ac" },
+            "tooltip": [
+              { "field": colorAttrName, "type": "nominal", "title": "Profile" },
+              { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
+            ]
           }
-      },
-      "tooltip": [
-        { "field": colorAttrName, "type": "nominal", "title": "Profile" },
-        { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 5,
+            "fontSize": 12,
+            "align": "left",
+          },
+          "encoding": {
+            "y": {
+              "field": colorAttrName, 
+              "type": "nominal",
+              "sort": { "encoding": "x", "order": "descending" },
+              "axis": { 
+                "title": "Profile", 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "x": {
+              "aggregate": "count",
+              "field": colorAttrName,
+              "type": "quantitative",
+              "axis": { 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "text": {
+              "aggregate": "sum",
+              //"field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+              "field": "PERCENTAGE",
+              "type": "quantitative",
+              "format": ".1%"
+            },
+            "color": { "value": "gray" }
+          }
+        },
+        {
+          "mark": "bar",
+          "transform": [ { "filter": { "field": "COUNTRY", "equal": country } } ],
+          "encoding": {
+            "y": {
+              "field": colorAttrName, 
+              "type": "nominal",
+              "sort": { "encoding": "x", "order": "descending" },
+              "axis": { 
+                "title": "Profile", 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "x": {
+              "aggregate": "count",
+              "field": colorAttrName,
+              "type": "quantitative",
+              "axis": { 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "color": {
+              "field": colorAttr,
+              "type": "nominal",
+              "legend": null,
+                "scale": {
+                  "domain": [ "1", "2", "3", "4", "5", "6" ],
+                  "scheme": "tableau10"
+                }
+            },
+            "tooltip": [
+              { "field": colorAttrName, "type": "nominal", "title": "Profile" },
+              { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
+            ]
+          }
+        }
       ]
-    }
-  };
+    };
+
+  } else {
+
+    var profiles_chart = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 205,
+      "height": 200,
+      "data": {
+        "values": dataTemp
+      },
+      "layer": [ 
+        {
+          "mark": "bar",
+          "encoding": {
+            "y": {
+              "field": colorAttrName, 
+              "type": "nominal",
+              "sort": { "encoding": "x", "order": "descending" },
+              "axis": { 
+                "title": "Profile", 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "x": {
+              "aggregate": "count",
+              "field": colorAttrName,
+              "type": "quantitative",
+              "axis": { 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "color": {
+              "field": colorAttr,
+              "type": "nominal",
+              "legend": null,
+                "scale": {
+                  "domain": [ "1", "2", "3", "4", "5", "6" ],
+                  "scheme": "tableau10"
+                }
+            },
+            "tooltip": [
+              { "field": colorAttrName, "type": "nominal", "title": "Profile" },
+              { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
+            ]
+          }
+        }, 
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 5,
+            "fontSize": 12,
+            "align": "left",
+          },
+          "encoding": {
+            "y": {
+              "field": colorAttrName, 
+              "type": "nominal",
+              "sort": { "encoding": "x", "order": "descending" },
+              "axis": { 
+                "title": "Profile", 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "x": {
+              "aggregate": "count",
+              "field": colorAttrName,
+              "type": "quantitative",
+              "axis": { 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "titleFont": "Roboto",
+                "titleFontSize": 12
+              }
+            },
+            "text": {
+              "aggregate": "sum",
+              //"field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+              "field": "PERCENTAGE",
+              "type": "quantitative",
+              "format": ".1%"
+            },
+            "color": { "value": "gray" }
+          }
+        }
+      ]
+    };
+
+  }
 
   vegaEmbed( '#profiles', profiles_chart, { "actions" : false } ).then( ( { spec, view } ) => {
     view.addEventListener( 'click', function ( event, item ) {
@@ -470,25 +692,36 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape' ) {
 
 d3.selectAll( "#levelSelect-slide1" )
   .on( 'change', function() {
-    
-    if( this.checked ) {
-      drawUnitsByCountry( 'L2' );
-      drawMap1( 'L2' );
+
+    if( this.checked ) { 
+      level = 'L2';
+      document.getElementById( "levelSelect-slide2" ).checked = true;
     } else {
-      drawUnitsByCountry( 'L1 Admin' );
-      drawMap1( 'L1 Admin' );
+      level = 'L1 Admin';
+      document.getElementById( "levelSelect-slide2" ).checked = false;
     }
+
+    drawSparkLines( level, model );
+    drawUnitsByProfile( level, model );
+    drawMap1( level, model );
+    drawMap2( level, model );
 
   } );
 
 d3.selectAll( "#levelSelect-slide2" )
   .on( 'change', function() {
     
-    if( this.checked ) level = 'L2';
-    else level = 'L1 Admin';
+    if( this.checked ) { 
+      level = 'L2';
+      document.getElementById( "levelSelect-slide1" ).checked = true;
+    } else {
+      level = 'L1 Admin';
+      document.getElementById( "levelSelect-slide1" ).checked = false;
+    }
 
     drawSparkLines( level, model );
     drawUnitsByProfile( level, model );
+    drawMap1( level, model );
     drawMap2( level, model );
 
   } );
