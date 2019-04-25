@@ -264,7 +264,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
   var profiles_chart = {
     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
     "width": +d3.select( '#unitsByCountry' ).node().parentNode.getBoundingClientRect().width - 190,
-    "height": 250,
+    "height": 360,
     "data": {
       "values": dataTemp
     },
@@ -335,7 +335,7 @@ function drawFeaturesTable( level = 'L1 Admin', model = 'Urban Landscape' ) {
     .data( featuresHierarchy[ model ] )
     .enter()
     .append( 'tr' )
-      .html( d => '<td style="background-color: white; font-size: 14px;">' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="Subdomain: ' + d.subdomain + '\nDescription: ' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
+      .html( d => '<td style="background-color: white; font-size: 14px; text-align: center;">' + d.subdomain + '</td><td style="background-color: white; font-size: 14px;  text-align: center;">' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
 
   drawSparkLines( level, model );
 
@@ -351,7 +351,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
 
     var feature = f.key;
 
-    var width = +d3.select( 'table' ).node().getBoundingClientRect().width * .7,
+    var width = +d3.select( 'table' ).node().getBoundingClientRect().width * .5,
       height = 70;
 
     d3.select( '#sparkline-' + feature ).html( '' );
@@ -628,6 +628,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "legend": null,
                 "scale": {
                   "domain": [ "1", "2", "3", "4", "5", "6" ],
+                  //"range": [ "#4c78a8", "#72b7b2", "#e45756", "#f58518", "#fff", "#fff" ]
                   "scheme": "tableau10"
                 }
             },
@@ -832,17 +833,17 @@ function transformProfiles( level, model, profile ) {
     }     
   } else {
     if( level === 'L1 Admin' ) {
-      if( profile === "1" ) name = 'M Frag/Complex/L Iso';
+      if( profile === "1" ) name = 'L Frag/Complex/L Iso';
       else if( profile === "2" ) name = 'M Frag/Irregular/M Iso';
       else if( profile === "3" ) name = 'H Frag/Compact/H Iso';
       else if( profile === "4" ) name = 'M Frag/Complex/M Iso';
     } else {
-        if( profile === "1" ) name = 'H Frag/Complex/M Iso';
-        else if( profile === "2" ) name = 'M Frag/Irregular/L Iso';
-        else if( profile === "3" ) name = 'L Frag/Complex/L Iso';
-        else if( profile === "4" ) name = 'M Frag/Compact/H Iso';
-        else if( profile === "5" ) name = 'L Frag/Irregular/L Iso';
-        else if( profile === "6" ) name = 'H Frag/Compact/M Iso';
+      if( profile === "1" ) name = 'H Frag/Complex/M Iso';
+      else if( profile === "2" ) name = 'M Frag/Irregular/L Iso';
+      else if( profile === "3" ) name = 'L Frag/Complex/L Iso';
+      else if( profile === "4" ) name = 'M Frag/Compact/H Iso';
+      else if( profile === "5" ) name = 'L Frag/Irregular/L Iso';
+      else if( profile === "6" ) name = 'H Frag/Compact/M Iso';
     }
   }
 

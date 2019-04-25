@@ -115,14 +115,14 @@
     <div class="left"><a href="https://drexel.edu/lac/salurbal/overview/" title="SALURBAL">
       <svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg>
     </a></div>
-    <div class="center">
+    <!--<div class="center">
       <ul class="menu uppercase">
         <li><a href="https://uniandes.edu.co/">Universidad de los Andes</a></li>
         <li><a href="https://www.berkeley.edu/">University of California Berkeley</a></li>
         <li><a href="https://drexel.edu/">Drexel University</a></li>
         <li><a href="https://www.northeastern.edu/">Northeastern University</a></li>
       </ul>
-    </div>
+    </div>-->
     <div class="right">
       <ul class="menu trim">
         <li><a href="https://www.facebook.com/LACUrbanHealth/" target="_blank"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#facebook"></use></svg></a></li>
@@ -225,22 +225,22 @@
 <section class="slide fade-6 kenBurns fromLeft">
   <div class="content">
     <div class="container">
-      <div class="wrap">
+      <div class="wrap" style="padding: 50px calc(0% + 0px);">
       
         <div class="fix-12-12">
-          <div class="fix-3-12 center toRight">
+          <h3 class="ae-1">Map of SALURBAL countries, cities and sub-cities</h3>
+          <p class="ae-2 opacity-8">
+            Total of cities: 370</span>&nbsp;&nbsp;
+            <label class="switch">
+              <input type="checkbox" id="levelSelect-slide1">
+              <span class="slider round"></span>
+            </label>&nbsp;&nbsp;
+            Total of sub-cities: 1.433
+          </p>
+          <div class="fix-5-12 center toRight" style="padding-left: 20px !important;">
             <div id="map1" class="ae-3"></div>
           </div>
-          <div class="fix-6-12 right toLeft">
-            <h3 class="ae-1">Map of SALURBAL countries, cities and sub-cities</h3>
-            <p class="ae-2 opacity-8">
-              Total of cities: 370</span>&nbsp;&nbsp;
-              <label class="switch">
-                <input type="checkbox" id="levelSelect-slide1">
-                <span class="slider round"></span>
-              </label>&nbsp;&nbsp;
-              Total of sub-cities: 1.433
-            </p>
+          <div class="fix-7-12 right toLeft" style="padding-right: 20px !important;">
             <div id="unitsByCountry" class="ae-2" style="background-color: white;"></div>
           </div>
         </div>
@@ -275,36 +275,37 @@
 <section class="slide fade-6 kenBurns">
   <div class="content">
     <div class="container">
-      <div class="wrap">
+      <div class="wrap" style="padding: 50px calc(0% + 0px);">
 
         <div class="fix-12-12">
-          <div class="fix-3-12 center toRight">
+          <h3 class="ae-1">Urban Landscape and Street Design Profiles</h3>
+          <p class="ae-2 opacity-8">
+            Cities</span>&nbsp;
+            <label class="switch">
+              <input type="checkbox" id="levelSelect-slide2">
+              <span class="slider round"></span>
+            </label>&nbsp;
+            Sub-cities&nbsp;&nbsp;|&nbsp;&nbsp;
+            Urban Landscape</span>&nbsp;
+            <label class="switch">
+              <input type="checkbox" id="modelSelect-slide2">
+              <span class="slider round"></span>
+            </label>&nbsp;
+            Street Design
+          </p>
+          <div class="fix-5-12 center toRight" style="padding-left: 20px !important;">
             <div id="profiles" class="ae-3" style="background-color: white;"></div>
             <div class="ae-3"><small>L = Low / M = Medium / H = High</small></div>
             <div id="map2" class="ae-3"></div>
           </div>
-          <div class="fix-6-12 right toLeft">
-            <h3 class="ae-1">Urban Landscape and Street Design Profiles</h3>
-            <p class="ae-2 opacity-8">
-              Cities</span>&nbsp;
-              <label class="switch">
-                <input type="checkbox" id="levelSelect-slide2">
-                <span class="slider round"></span>
-              </label>&nbsp;
-              Sub-cities&nbsp;&nbsp;|&nbsp;&nbsp;
-              Urban Landscape</span>&nbsp;
-              <label class="switch">
-                <input type="checkbox" id="modelSelect-slide2">
-                <span class="slider round"></span>
-              </label>&nbsp;
-              Street Design
-            </p>
+          <div class="fix-7-12 right toLeft" style="padding-right: 20px !important;">
             <div class="ae-2">
                 <table id="featureTable" class="table table-bordered table-hover" style="background-color: white;">
                   <thead class="thead-dark">
                     <tr>
-                      <th class="text-center" style="width: 30%">Metric</th>
-                      <th class="text-center" style="width: 70%">Distribution</th>
+                      <th class="text-center" style="width: 25%">Subdomain</th>
+                      <th class="text-center" style="width: 25%">Metric</th>
+                      <th class="text-center" style="width: 50%">Distribution</th>
                     </tr>
                   </thead>
                   <tbody>
