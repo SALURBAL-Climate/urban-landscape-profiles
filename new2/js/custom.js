@@ -57,19 +57,19 @@ var featuresHierarchy = {
       "name" : "Patch density",
       "subdomain" : "Fragmentation",
       "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares).",
-      "units": "urban patches/hectares"
+      "units": "urban patches/km2"
     }, {
       "key" : "BECAWAVGPTCHAREA",
       "name" : "Area-weighted mean patch size",
       "subdomain" : "Fragmentation",
-      "description" : "Weighted average of urban patch size (in hectares). This value is weighted by the area of each patch.",
-      "units": "hectares"
+      "description" : "Weighted average of urban patch size (in km2). This value is weighted by the area of each patch.",
+      "units": "km2"
     }, {
       "key" : "BECEFFMESHSIZE",
       "name" : "Effective Mesh Size",
       "subdomain" : "Fragmentation",
       "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit.",
-      "units": "hectares"
+      "units": "km2"
     }, {
       "key" : "BECAWMNSHPINDX",
       "name" : "Area-weighted mean shape index",
@@ -121,7 +121,7 @@ var icons = {
 
 function initMap1() {
 
-  map1 = L.map( 'map1' ).setView( [ -16.47, -74.36], 0 );
+  map1 = L.map( 'map1' );
 
   L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -129,9 +129,14 @@ function initMap1() {
 
   //subcitiesLayer1 = new L.layerGroup();
   subcitiesLayer1 = new L.MarkerClusterGroup( {
-    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<span style="font-size: 15px;"><b>' + ( +cluster.getChildCount() + 1 )  + '</b></span>', className: 'mycluster', iconSize: new L.Point( 40, 40 ) } )
+    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<span style="font-size: 15px;"><b>' + ( +cluster.getChildCount() )  + '</b></span>', className: 'mycluster', iconSize: new L.Point( 40, 40 ) } )
   } );
   subcitiesLayer1.addTo( map1 );
+
+  var searchControl1 = new L.Control.Search( { layer: subcitiesLayer1, marker: false, moveToLocation: ( latlng, title, map ) => {
+      map.setView( latlng, 10 );
+    } } );
+  map1.addControl( searchControl1 );
 
   drawMap1();
 
@@ -139,7 +144,7 @@ function initMap1() {
 
 function initMap2() {
 
-  map2 = L.map( 'map2' ).setView( [ -16.47, -74.36], 0 );
+  map2 = L.map( 'map2' );
 
   L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -147,15 +152,22 @@ function initMap2() {
 
   //subcitiesLayer2 = new L.layerGroup();
   subcitiesLayer2 = new L.MarkerClusterGroup( {
-    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<span style="font-size: 15px;"><b>' + ( +cluster.getChildCount() + 1 )  + '</b></span>', className: 'mycluster', iconSize: new L.Point( 40, 40 ) } )
+    iconCreateFunction: ( cluster ) => L.divIcon( { html: '<span style="font-size: 15px;"><b>' + ( +cluster.getChildCount() )  + '</b></span>', className: 'mycluster', iconSize: new L.Point( 40, 40 ) } )
   } );
   subcitiesLayer2.addTo( map2 );
+
+  var searchControl2 = new L.Control.Search( { layer: subcitiesLayer2, marker: false, moveToLocation: ( latlng, title, map ) => {
+      map.setView( latlng, 10 );
+    } } );
+  map2.addControl( searchControl2 );
 
   drawMap2();
 
 }
 
-function drawMap1( level = 'L1 Admin' ) {
+function drawMap1( level = 'L1 Admin', fit = false ) {
+
+  map1.setView( [ -16.47, -74.36], 0 );
 
   // Remove all layers in map
   subcitiesLayer1.clearLayers();
@@ -166,14 +178,20 @@ function drawMap1( level = 'L1 Admin' ) {
 
   // Draw the markers
   dataTemp.map( d => {
-    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ 1 ] } ).addTo( subcitiesLayer1 )
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ 1 ], title: ( level === 'L1 Admin' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer1 )
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) );
-    markers1.push( marker );
   } );
+
+  if( fit ) {
+    var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
+    map1.fitBounds( bounds );
+  }
 
 }
 
-function drawMap2( level = 'L1 Admin' ) {
+function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  ) {
+
+  map2.setView( [ -16.47, -74.36], 0 );
 
   // Remove all layers in map
   subcitiesLayer2.clearLayers();
@@ -188,23 +206,14 @@ function drawMap2( level = 'L1 Admin' ) {
     var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
     var colorAttrName = ( model === 'Street Design' ) ? 'TRANS_PROF_NAME' : 'URBAN_PROF_NAME';
 
-    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ] } ).addTo( subcitiesLayer2 )
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] );
-    markers2.push( marker );
   } );
 
-}
-
-function fitBounds( map ) {
-
-  var dataTemp;
-  if( level === 'L1 Admin' ) dataTemp = l1admin_data;
-  else dataTemp = l2_data;
-
-  if( country !== undefined ) dataTemp = dataTemp.filter( d => d.COUNTRY === country );
-
-  var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
-  map.fitBounds( bounds );
+  if( fit ) {
+    var bounds = new L.LatLngBounds( dataTemp.map( d => [ d.LAT, d.LONG ] ) );
+    map2.fitBounds( bounds );
+  }
 
 }
 
@@ -280,7 +289,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
 
 }
 
-function drawFeaturesTable() {
+function drawFeaturesTable( level = 'L1 Admin', model = 'Urban Landscape' ) {
 
   d3.select( '#featureTable' ).select( 'tbody' ).html( '' );
 
@@ -290,11 +299,11 @@ function drawFeaturesTable() {
     .append( 'tr' )
       .html( d => '<td style="background-color: white; font-size: 14px;">' + d.name + '&nbsp;<i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="Subdomain: ' + d.subdomain + '\nDescription: ' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
 
-  drawSparkLines();
+  drawSparkLines( level, model );
 
 }
 
-function drawSparkLines( level = 'L1 Admin' ) {
+function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape' ) {
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
@@ -316,31 +325,31 @@ function drawSparkLines( level = 'L1 Admin' ) {
       "height": height,
       "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
       "data": { "values": dataTemp },
-      "layer": [ 
-      {
-        "mark": "bar"
-      }, 
-      {
-        "mark": {
-          "type": "text",
-          "align": "left",
-          "baseline": "top",
-          "dx": 15,
-          "dy": -12,
-          "fontSize": 10,
-          "align": "right",
-        },
-        "encoding": {
-          "text": {
-            "aggregate": "sum",
-            "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
-            "type": "quantitative",
-            "format": ".1%"
+      "layer": [
+        {
+          "mark": "bar"
+        }, 
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "top",
+            "dx": 15,
+            "dy": -12,
+            "fontSize": 10,
+            "align": "right",
           },
-          "color": { "value": "gray" }
+          "encoding": {
+            "text": {
+              "aggregate": "sum",
+              "field": ( ( country !== undefined ) ? "PERCENTAGE_COUNTRY" : "PERCENTAGE" ),
+              "type": "quantitative",
+              "format": ".1%"
+            },
+            "color": { "value": "gray" }
+          }
         }
-      }
-    ],
+      ],
       "encoding": {
         "x": {
           "bin": true,
@@ -369,7 +378,7 @@ function drawSparkLines( level = 'L1 Admin' ) {
 
 }
 
-function drawUnitsByProfile( level = 'L1 Admin' ) {
+function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape' ) {
 
   var dataTemp;
   if( country !== undefined ) {
@@ -443,7 +452,11 @@ function drawUnitsByProfile( level = 'L1 Admin' ) {
             "domain": [ "1", "2", "3", "4", "5", "6" ],
             "scheme": "tableau10"
           }
-      }
+      },
+      "tooltip": [
+        { "field": colorAttrName, "type": "nominal", "title": "Profile" },
+        { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
+      ]
     }
   };
 
@@ -471,15 +484,24 @@ d3.selectAll( "#levelSelect-slide1" )
 d3.selectAll( "#levelSelect-slide2" )
   .on( 'change', function() {
     
-    if( this.checked ) {
-      drawSparkLines( 'L2' );
-      drawUnitsByProfile( 'L2' );
-      drawMap2( 'L2' );
-    } else {
-      drawSparkLines( 'L1 Admin' );
-      drawUnitsByProfile( 'L1 Admin' );
-      drawMap2( 'L1 Admin' );
-    }
+    if( this.checked ) level = 'L2';
+    else level = 'L1 Admin';
+
+    drawSparkLines( level, model );
+    drawUnitsByProfile( level, model );
+    drawMap2( level, model );
+
+  } );
+
+d3.selectAll( "#modelSelect-slide2" )
+  .on( 'change', function() {
+    
+    if( this.checked ) model = 'Street Design';
+    else model = 'Urban Landscape';
+
+    drawFeaturesTable( level, model );
+    drawUnitsByProfile( level, model );
+    drawMap2( level, model );
 
   } );
 
@@ -502,12 +524,12 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
 
     l2_data = data;
     l2_data = l2_data.map( d => {
-    d.TRANS_PROF_NAME = transformProfiles( 'L2', 'Street Design', d.TRANS_PROF );
-    d.URBAN_PROF_NAME = transformProfiles( 'L2', 'Urban Landscape', d.URBAN_PROF );
-    d.PERCENTAGE = 1 / l2_data.length;
-    d.PERCENTAGE_COUNTRY = 1 / l2_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
-    return d;
-  } );
+      d.TRANS_PROF_NAME = transformProfiles( 'L2', 'Street Design', d.TRANS_PROF );
+      d.URBAN_PROF_NAME = transformProfiles( 'L2', 'Urban Landscape', d.URBAN_PROF );
+      d.PERCENTAGE = 1 / l2_data.length;
+      d.PERCENTAGE_COUNTRY = 1 / l2_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
+      return d;
+    } );
 
     level = levels[ 0 ];
     model = models[ 0 ];
@@ -545,8 +567,8 @@ function parseNumbers( d ) {
   /* Urban Landscape model */
   d[ "BECNURBPTCH" ] = +d[ "BECNURBPTCH" ];
   d[ "BECPTCHDENS" ] = +d[ "BECPTCHDENS" ];
-  d[ "BECEFFMESHSIZE" ] = +d[ "BECEFFMESHSIZE" ];
-  d[ "BECAWAVGPTCHAREA" ] = +d[ "BECAWAVGPTCHAREA" ];
+  d[ "BECEFFMESHSIZE" ] = +d[ "BECEFFMESHSIZE" ] / 100;
+  d[ "BECAWAVGPTCHAREA" ] = +d[ "BECAWAVGPTCHAREA" ] / 100;
   d[ "BECAWMNSHPINDX" ] = +d[ "BECAWMNSHPINDX" ];
   d[ "BECAWMNNNGH" ] = +d[ "BECAWMNNNGH" ];
 
@@ -566,21 +588,21 @@ function transformProfiles( level, model, profile ) {
   if( model === 'Street Design' ){
     if( level === 'L1 Admin' ) {
       if( profile === "1" ) name = 'L Walk/M Direct';
-      else if( profile === "2" ) name = 'M Walk/L Direct';
+      else if( profile === "2" ) name = 'M Walk/M Direct';
       else if( profile === "3" ) name = 'H Walk/L Direct';
-      else if( profile === "4" ) name = 'L Walk/H Direct';
+      else if( profile === "4" ) name = 'M Walk/H Direct';
     } else {
-      if( profile === "1" ) name = 'M Walk/L Direct';
+      if( profile === "1" ) name = 'M Walk/M Direct';
       else if( profile === "2" ) name = 'L Walk/H Direct';
-      else if( profile === "3" ) name = 'H Walk/L Direct';
-      else if( profile === "4" ) name = 'L Walk/M Direct';
+      else if( profile === "3" ) name = 'M Walk/L Direct';
+      else if( profile === "4" ) name = 'H Walk/M Direct';
     }     
   } else {
     if( level === 'L1 Admin' ) {
       if( profile === "1" ) name = 'M Frag/Complex/L Iso';
-      else if( profile === "2" ) name = 'H Frag/Irregular/L Iso';
-      else if( profile === "3" ) name = 'M Frag/Compact/H Iso';
-      else if( profile === "4" ) name = 'L Frag/Irregular/M Iso';
+      else if( profile === "2" ) name = 'M Frag/Irregular/M Iso';
+      else if( profile === "3" ) name = 'H Frag/Compact/H Iso';
+      else if( profile === "4" ) name = 'M Frag/Complex/M Iso';
     } else {
         if( profile === "1" ) name = 'H Frag/Complex/M Iso';
         else if( profile === "2" ) name = 'M Frag/Irregular/L Iso';

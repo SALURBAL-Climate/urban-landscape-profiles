@@ -8,12 +8,13 @@
 	<!-- Page Title -->
 	<title>Urban Landscape and Street Design Profiles: The SALURBAL Study</title>
 
-  <!-- Third-Party Slides -->
+  <!-- Third-Party Styles -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
  crossorigin=""/>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-search@2.9.8/dist/leaflet-search.min.css">
 
 	<!-- Compressed Styles -->
 	<link href="css/slides.min.css?41331" rel="stylesheet" type="text/css">
@@ -119,6 +120,7 @@
         <li><a href="https://uniandes.edu.co/">Universidad de los Andes</a></li>
         <li><a href="https://www.berkeley.edu/">University of California Berkeley</a></li>
         <li><a href="https://drexel.edu/">Drexel University</a></li>
+        <li><a href="https://www.northeastern.edu/">Northeastern University</a></li>
       </ul>
     </div>
     <div class="right">
@@ -181,11 +183,12 @@
             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#play"></use></svg>
           </div>-->
           <h3 class="ae-2"><b>Authors</b></h3>
-          <p class="ae-3"><span class="opacity-8">Andrés Useche<sup>a</sup>, Fabian C. Peña<sup>a</sup>, Olga L. Sarmiento<sup>b</sup>, Oscar Guaje<sup>a</sup>, Felipe Montes<sup>a</sup>, Xize Wang<sup>c</sup>, Iryna Dronova<sup>c</sup>, Yuanyuan Zhao, Daniel Rodriguez<sup>c</sup>, Usama Bilal<sup>d</sup>, Luis Angel Gúzman<sup>a</sup>, Alex Quitsberg<sup>c</sup>, Ivana Stankov<sup>d</sup></p>
+          <p class="ae-3"><span class="opacity-8">Andrés Useche<sup>a</sup>, Fabian C. Peña<sup>a</sup>, Olga L. Sarmiento<sup>b</sup>, Oscar Guaje<sup>a</sup>, Felipe Montes<sup>a</sup>, Xize Wang<sup>c</sup>, Iryna Dronova<sup>c</sup>, Yuanyuan Zhao<sup>c</sup>, Daniel Rodriguez<sup>c</sup>, Usama Bilal<sup>d</sup>, Luis Angel Gúzman<sup>a</sup>, Alex Quitsberg<sup>c</sup>, Ivana Stankov<sup>d</sup>, John A. Guerra-Gomez<sup>e</sup></p>
           <p class="ae-3"><span class="opacity-8">a. School of Engineering at Universidad de los Andes, Bogota, Colombia<br/>
           b. School of Medicine at Universidad de de los Andes, Bogota Colombia<br/>
-          c. Department of Landscape Architecture and Environmental Planning, University of California, Berkely<br/> 
-          d. Urban Health Collaborative at the Dornsife School of Public Health, Drexel University</p>  
+          c. Department of Landscape Architecture and Environmental Planning, University of California, Berkeley<br/> 
+          d. Urban Health Collaborative at the Dornsife School of Public Health, Drexel University<br/>
+          e. Khoury College of Computing, Northeastern University Silicon Valley</p>  
           <!--<p class="ae-3"><span class="opacity-8">Start now and get <b>free bonus</b> on account</span></p>-->
           <!--<form class="slides-form" action="#" autocomplete="off">
             <input type="email" class="input-9 ae-4 fromCenter" name="user-email" placeholder="Email" val=""/>
@@ -198,7 +201,7 @@
       </div>
     </div>
   </div>
-  <div class="background" style="background-image:url(assets/img/background/aimsandactivities.jpg)"></div>
+  <!--<div class="background" style="background-image:url(assets/img/background/aimsandactivities.jpg)"></div>-->
 </section>
 
 <!-- Popup Video -->
@@ -231,12 +234,12 @@
           <div class="fix-6-12 right toLeft">
             <h3 class="ae-1">Map of SALURBAL countries, cities and sub-cities</h3>
             <p class="ae-2 opacity-8">
-              Total of cities: 371</span>&nbsp;&nbsp;
+              Total of cities: 370</span>&nbsp;&nbsp;
               <label class="switch">
                 <input type="checkbox" id="levelSelect-slide1">
                 <span class="slider round"></span>
               </label>&nbsp;&nbsp;
-              Total of sub-cities: 1.436
+              Total of sub-cities: 1.433
             </p>
             <div id="unitsByCountry" class="ae-2" style="background-color: white;"></div>
           </div>
@@ -283,15 +286,21 @@
           <div class="fix-6-12 right toLeft">
             <h3 class="ae-1">Urban Landscape and Street Design Profiles</h3>
             <p class="ae-2 opacity-8">
-              Total of cities: 371</span>&nbsp;&nbsp;
+              Cities</span>&nbsp;
               <label class="switch">
                 <input type="checkbox" id="levelSelect-slide2">
                 <span class="slider round"></span>
-              </label>&nbsp;&nbsp;
-              Total of sub-cities: 1.436
+              </label>&nbsp;
+              Sub-cities&nbsp;&nbsp;|&nbsp;&nbsp;
+              Urban Landscape</span>&nbsp;
+              <label class="switch">
+                <input type="checkbox" id="modelSelect-slide2">
+                <span class="slider round"></span>
+              </label>&nbsp;
+              Street Design
             </p>
             <div class="ae-2">
-                <table id="featureTable" class="table table-bordered table-hover">
+                <table id="featureTable" class="table table-bordered table-hover" style="background-color: white;">
                   <thead class="thead-dark">
                     <tr>
                       <th class="text-center" style="width: 30%">Metric</th>
@@ -425,6 +434,7 @@
 integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
 crossorigin=""></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster-src.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet-search@2.9.8/dist/leaflet-search.src.min.js"></script>
 
 <!-- Custom Scripts -->
 <script src="js/custom.js" type="text/javascript"></script>
