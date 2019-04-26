@@ -352,7 +352,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
     var feature = f.key;
 
     var width = +d3.select( 'table' ).node().getBoundingClientRect().width * .5,
-      height = 70;
+      height = 80;
 
     d3.select( '#sparkline-' + feature ).html( '' );
 
