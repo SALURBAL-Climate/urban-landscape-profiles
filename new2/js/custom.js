@@ -314,7 +314,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         }
       },
       "color": {
-        "value": "#2196F3"
+        "value": "#39b69d"
       }
     }
   };
@@ -382,7 +382,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
                 "titleFontSize": 12
               }
             },
-            "color": { "value": "#bab0ac" }
+            "color": { "value": ( ( country === undefined ) ? "#39b69d" : "#ccc" ) }
           }
         }, 
         {
@@ -448,7 +448,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "titleFontSize": 12
             }
           },
-          "color": { "value": "#2196F3" }
+          "color": { "value": "#39b69d" }
         }
       } );
 
@@ -500,7 +500,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleFontSize": 12
               }
             },
-            "color": { "value": "#bab0ac" },
+            "color": { "value": "#ccc" },
             "tooltip": [
               { "field": colorAttrName, "type": "nominal", "title": "Profile" },
               { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
