@@ -278,7 +278,9 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
           "align": "left",
           "baseline": "middle",
           "dx": 5,
-          "fontSize": 12,
+          "titleFontSize": 18,
+          "titleOpacity": 0.8,
+          "titleFontWeight": 300,
           "align": "left",
         },
         "encoding": {
@@ -300,7 +302,9 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         "axis": { 
           "title": "Country", 
           "titleFont": "Roboto",
-          "titleFontSize": 12
+          "titleFontSize": 18,
+          "titleOpacity": 0.8,
+          "titleFontWeight": 300
         }
       },
       "x": {
@@ -310,7 +314,9 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         "axis": { 
           "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
           "titleFont": "Roboto",
-          "titleFontSize": 12
+          "titleFontSize": 18,
+          "titleOpacity": 0.8,
+          "titleFontWeight": 300
         }
       },
       "color": {
@@ -823,29 +829,29 @@ function transformProfiles( level, model, profile ) {
   var name;
   if( model === 'Street Design' ){
     if( level === 'L1 Admin' ) {
-      if( profile === "1" ) name = 'L Walk/M Direct';
-      else if( profile === "2" ) name = 'M Walk/M Direct';
-      else if( profile === "3" ) name = 'H Walk/L Direct';
-      else if( profile === "4" ) name = 'M Walk/H Direct';
+      if( profile === "1" ) name = 'L Str. Connect./M Curved';
+      else if( profile === "2" ) name = 'M Str. Connect./M Curved';
+      else if( profile === "3" ) name = 'H Str. Connect./Straight';
+      else if( profile === "4" ) name = 'M Str. Connect./H Curved';
     } else {
-      if( profile === "1" ) name = 'M Walk/M Direct';
-      else if( profile === "2" ) name = 'L Walk/H Direct';
-      else if( profile === "3" ) name = 'M Walk/L Direct';
-      else if( profile === "4" ) name = 'H Walk/M Direct';
+      if( profile === "1" ) name = 'M Str. Connect./M Curved';
+      else if( profile === "2" ) name = 'L Str. Connect./H Curved';
+      else if( profile === "3" ) name = 'M Str. Connect./Straight';
+      else if( profile === "4" ) name = 'H Str. Connect./M Curved';
     }     
   } else {
     if( level === 'L1 Admin' ) {
-      if( profile === "1" ) name = 'L Frag/Complex/L Iso';
-      else if( profile === "2" ) name = 'M Frag/Irregular/M Iso';
-      else if( profile === "3" ) name = 'H Frag/Compact/H Iso';
-      else if( profile === "4" ) name = 'M Frag/Complex/M Iso';
+      if( profile === "1" ) name = 'L Frag./Complex/L Iso.';
+      else if( profile === "2" ) name = 'M Frag./Irregular/M Iso.';
+      else if( profile === "3" ) name = 'H Frag./Compact/H Iso.';
+      else if( profile === "4" ) name = 'M Frag./Complex/M Iso.';
     } else {
-      if( profile === "1" ) name = 'H Frag/Complex/M Iso';
-      else if( profile === "2" ) name = 'M Frag/Irregular/L Iso';
-      else if( profile === "3" ) name = 'L Frag/Complex/L Iso';
-      else if( profile === "4" ) name = 'M Frag/Compact/H Iso';
-      else if( profile === "5" ) name = 'L Frag/Irregular/L Iso';
-      else if( profile === "6" ) name = 'H Frag/Compact/M Iso';
+      if( profile === "1" ) name = 'H Frag./Complex/M Iso.';
+      else if( profile === "2" ) name = 'M Frag./Irregular/L Iso.';
+      else if( profile === "3" ) name = 'L Frag./Complex/L Iso.';
+      else if( profile === "4" ) name = 'M Frag./Compact/H Iso.';
+      else if( profile === "5" ) name = 'L Frag./Irregular/L Iso.';
+      else if( profile === "6" ) name = 'H Frag./Compact/M Iso.';
     }
   }
 
