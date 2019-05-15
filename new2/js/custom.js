@@ -49,7 +49,7 @@ var featuresHierarchy = {
       "name" : "Circuity average",
       "subdomain" : "Street network length and structure",
       "description" : "Measures the average ratio of network distances to straight-line distances.",
-      "units": undefined
+      "units": "N/A"
     }
   ],
   "Urban Landscape" : [ 
@@ -73,7 +73,7 @@ var featuresHierarchy = {
       "units": "km2"
     }, {
       "key" : "BECEFFMESHSIZE",
-      "name" : "Effective Mesh Size",
+      "name" : "Effective mesh size",
       "subdomain" : "Fragmentation",
       "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit.",
       "units": "km2"
@@ -82,10 +82,10 @@ var featuresHierarchy = {
       "name" : "Area-weighted mean shape index",
       "subdomain" : "Shape",
       "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.",
-      "units": undefined
+      "units": "N/A"
     }, {
       "key" : "BECAWMNNNGH",
-      "name" : "Area-weighted Mean Nearest Neighbor Distance",
+      "name" : "Area-weighted mean nearest neighbor distance",
       "subdomain" : "Isolation",
       "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch.",
       "units": "meters"
@@ -283,7 +283,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
 
   var profiles_chart = {
     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-    "width": +d3.select( '#unitsByCountry' ).node().parentNode.getBoundingClientRect().width - 150,
+    "width": +d3.select( '#unitsByCountry' ).node().parentNode.getBoundingClientRect().width - 160,
     "height": 360,
     "data": {
       "values": dataTemp
@@ -301,7 +301,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
           "align": "left",
           "font": "Roboto",
           "fontSize": 16,
-          "opacity": 0.8,
+          "opacity": 1,
           "fontWeight": 300
         },
         "encoding": {
@@ -311,7 +311,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
             "type": "quantitative",
             "format": ".1%"
           },
-          "color": { "value": "gray" }
+          "color": { "value": "black" }
         }
       }
     ],
@@ -323,13 +323,16 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         "axis": { 
           "title": "Country", 
           "titleFont": "Roboto",
-          "titleFontSize": 18,
-          "titleOpacity": 0.8,
+          "titleFontSize": 16,
+          "titleOpacity": 1,
           "titleFontWeight": 300,
+          "titleColor": "black",
           "labelFont": "Roboto",
-          "labelFontSize": 12,
-          "labelOpacity": 0.8,
-          "labelFontWeight": 300
+          "labelFontSize": 16,
+          "labelOpacity": 1,
+          "labelFontWeight": 300,
+          "labelColor": "black",
+          "tickColor": "black"
         }
       },
       "x": {
@@ -339,13 +342,17 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         "axis": { 
           "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
           "titleFont": "Roboto",
-          "titleFontSize": 18,
-          "titleOpacity": 0.8,
+          "titleFontSize": 16,
+          "titleOpacity": 1,
           "titleFontWeight": 300,
+          "titleColor": "black",
           "labelFont": "Roboto",
-          "labelFontSize": 12,
-          "labelOpacity": 0.8,
-          "labelFontWeight": 300
+          "labelFontSize": 16,
+          "labelOpacity": 1,
+          "labelFontWeight": 300,
+          "labelColor": "black",
+          "tickColor": "black",
+          "tickCount": 8
         }
       },
       "color": {
@@ -372,7 +379,7 @@ function drawFeaturesTable( level = 'L1 Admin', model = 'Urban Landscape' ) {
     .data( featuresHierarchy[ model ] )
     .enter()
     .append( 'tr' )
-      .html( d => '<td style="background-color: white; font-size: 14px; text-align: center; opacity: 0.8;">' + d.subdomain + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + subdomains[ model ][ d.subdomain ] +'"></i></td><td style="background-color: white; font-size: 14px;  text-align: center; opacity: 0.8;">' + d.name + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
+      .html( d => '<td style="background-color: white; font-size: 16px; text-align: center; opacity: 0.8;">' + d.subdomain + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + subdomains[ model ][ d.subdomain ] +'"></i></td><td style="background-color: white; font-size: 16px;  text-align: center; opacity: 0.8;">' + d.name + ' (' + d.units + ')<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
 
   drawSparkLines( level, model );
 
@@ -409,8 +416,8 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "axis": { 
                 "title": null,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -420,12 +427,12 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -437,12 +444,12 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "type": "text",
             "align": "left",
             "baseline": "top",
-            "dx": 15,
-            "dy": -12,
+            "dx": 18,
+            "dy": -14,
             "align": "right",
             "font": "Roboto",
-            "fontSize": 12,
-            "opacity": 0.8,
+            "fontSize": 14,
+            "opacity": 1,
             "fontWeight": 300
           },
           "encoding": {
@@ -453,8 +460,8 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "axis": { 
                 "title": null,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -464,12 +471,12 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -480,7 +487,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "type": "quantitative",
               "format": ".1%"
             },
-            "color": { "value": "gray" }
+            "color": { "value": "black" }
           }
         }
       ]
@@ -498,8 +505,8 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "axis": { 
               "title": null,
               "labelFont": "Roboto",
-              "labelFontSize": 12,
-              "labelOpacity": 0.8,
+              "labelFontSize": 16,
+              "labelOpacity": 1,
               "labelFontWeight": 300
             }
           },
@@ -509,12 +516,12 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "axis": { 
               "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
               "titleFont": "Roboto",
-              "titleFontSize": 18,
-              "titleOpacity": 0.8,
+              "titleFontSize": 16,
+              "titleOpacity": 1,
               "titleFontWeight": 300,
               "labelFont": "Roboto",
-              "labelFontSize": 12,
-              "labelOpacity": 0.8,
+              "labelFontSize": 16,
+              "labelOpacity": 1,
               "labelFontWeight": 300
             }
           },
@@ -541,7 +548,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
 
     var profiles_chart = {
       "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 240,
+      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 200,
       "height": 200,
       "data": {
         "values": dataTemp
@@ -557,13 +564,17 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": "Profile", 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
+                "titleAngle": -45,
+                "titleY": 20,
+                "titleX": -45,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
-                "labelFontWeight": 300
+                "labelFontSize": 16,
+                "labelOpacity": 1,
+                "labelFontWeight": 300,
+                "labelAngle": -45
               }
             },
             "x": {
@@ -573,12 +584,12 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -598,7 +609,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
             "align": "left",
             "font": "Roboto",
             "fontSize": 16,
-            "opacity": 0.8,
+            "opacity": 1,
             "fontWeight": 300
           },
           "encoding": {
@@ -609,12 +620,12 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": "Profile", 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -625,12 +636,12 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -641,7 +652,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "type": "quantitative",
               "format": ".1%"
             },
-            "color": { "value": "gray" }
+            "color": { "value": "black" }
           }
         },
         {
@@ -655,13 +666,17 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": "Profile", 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
+                "titleAngle": -45,
+                "titleY": 20,
+                "titleX": -45,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
-                "labelFontWeight": 300
+                "labelFontSize": 16,
+                "labelOpacity": 1,
+                "labelFontWeight": 300,
+                "labelAngle": -45
               }
             },
             "x": {
@@ -671,12 +686,12 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -702,7 +717,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
 
     var profiles_chart = {
       "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 240,
+      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 200,
       "height": 200,
       "data": {
         "values": dataTemp
@@ -718,13 +733,17 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": "Profile", 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
+                "titleAngle": -45,
+                "titleY": 20,
+                "titleX": -45,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
-                "labelFontWeight": 300
+                "labelFontSize": 16,
+                "labelOpacity": 1,
+                "labelFontWeight": 300,
+                "labelAngle": -45
               }
             },
             "x": {
@@ -734,12 +753,12 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -767,7 +786,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
             "align": "left",
             "font": "Roboto",
             "fontSize": 16,
-            "opacity": 0.8,
+            "opacity": 1,
             "fontWeight": 300
           },
           "encoding": {
@@ -778,13 +797,14 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": "Profile", 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
-                "labelFontWeight": 300
+                "labelFontSize": 16,
+                "labelOpacity": 1,
+                "labelFontWeight": 300,
+                "labelAngle": -45
               }
             },
             "x": {
@@ -794,12 +814,12 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "axis": { 
                 "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
                 "titleFont": "Roboto",
-                "titleFontSize": 18,
-                "titleOpacity": 0.8,
+                "titleFontSize": 16,
+                "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 12,
-                "labelOpacity": 0.8,
+                "labelFontSize": 16,
+                "labelOpacity": 1,
                 "labelFontWeight": 300
               }
             },
@@ -810,7 +830,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "type": "quantitative",
               "format": ".1%"
             },
-            "color": { "value": "gray" }
+            "color": { "value": "black" }
           }
         }
       ]
