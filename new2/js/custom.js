@@ -12,7 +12,7 @@ var levels = [ 'L1 Admin', 'L2' ], level,
   transProfiles, urbanProfiles;
 
 var urlParams = new URLSearchParams(window.location.search),
-  profileScheme = 'tableau10';
+  profileScheme = 'category10';
 
 if( urlParams.has( 'scheme' ) ) {
   profileScheme = urlParams.get( 'scheme' );
@@ -108,32 +108,32 @@ var subdomains = {
 
 var icons = {
     1: new L.Icon( {
-      iconUrl: './assets/img/icons/1.png',
+      iconUrl: './assets/img/icons/blue.png',
       iconSize: [ 17, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     2: new L.Icon( {
-      iconUrl: './assets/img/icons/2.png',
+      iconUrl: './assets/img/icons/orange.png',
       iconSize: [ 17, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     3: new L.Icon( {
-      iconUrl: './assets/img/icons/3.png',
+      iconUrl: './assets/img/icons/green.png',
       iconSize: [ 17, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     4: new L.Icon( {
-      iconUrl: './assets/img/icons/4.png',
+      iconUrl: './assets/img/icons/red.png',
       iconSize: [ 17, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     5: new L.Icon( {
-      iconUrl: './assets/img/icons/5.png',
+      iconUrl: './assets/img/icons/purple.png',
       iconSize: [ 17, 25 ],
       popupAnchor: [ 0, -10 ]
     } ),
     6: new L.Icon( {
-      iconUrl: './assets/img/icons/6.png',
+      iconUrl: './assets/img/icons/brown.png',
       iconSize: [ 17, 25 ],
       popupAnchor: [ 0, -10 ]
     } )
