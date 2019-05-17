@@ -23,32 +23,37 @@ var featuresHierarchy = {
     {
       "key" : "BECADSTTDENS",
       "name" : "Street density",
-      "subdomain" : "Street density",
+      "subdomain" : "Street connectivity",
       "description" : "Measures the length of streets per Km2 of area.",
+      "interpretation": "Higher values, higher connectivity",
       "units": "streets/Km2"
     }, {
       "key" : "BECADINTDENS",
       "name" : "Intersection density",
       "subdomain" : "Intersection density",
       "description" : "Measures the amount of intersections per Km2 of area.",
+      "interpretation": "Higher values, higher density",
       "units": "intersections/Km2"
     }, {
       "key" : "BECADSTTPNODEAVG",
       "name" : "Streets per node average",
       "subdomain" : "Intersection density",
       "description" : "Measures the distribution of the number of streets that meet at each intersection of the street network.",
+      "interpretation": "Higher values, higher density",
       "units": "streets"
     }, {
       "key" : "BECADSTTLGAVG",
       "name" : "Street length average",
       "subdomain" : "Street network length and structure",
       "description" : "Measures the length of streets in the street network.",
+      "interpretation": "Higher values, larger street segments",
       "units": "meters"
     }, {
       "key" : "BECADCRCTYAVG",
       "name" : "Circuity average",
       "subdomain" : "Street network length and structure",
       "description" : "Measures the average ratio of network distances to straight-line distances.",
+      "interpretation": "Higher values, more curved streets",
       "units": "N/A"
     }
   ],
@@ -58,36 +63,42 @@ var featuresHierarchy = {
       "name" : "Number of urban patches",
       "subdomain" : "Fragmentation",
       "description" : "Number of contiguous areas of urban development (urban patches hereafter).",
+      "interpretation": "Higher values, higher fragmentation",
       "units": "urban patches"
     }, {
       "key" : "BECPTCHDENS",
       "name" : "Patch density",
       "subdomain" : "Fragmentation",
       "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares).",
+      "interpretation": "Higher values, higher fragmentation",
       "units": "urban patches/km2"
     }, {
       "key" : "BECAWAVGPTCHAREA",
       "name" : "Area-weighted mean patch size",
       "subdomain" : "Fragmentation",
       "description" : "Weighted average of urban patch size (in km2). This value is weighted by the area of each patch.",
+      "interpretation": "Higher values, lower fragmentation",
       "units": "km2"
     }, {
       "key" : "BECEFFMESHSIZE",
       "name" : "Effective mesh size",
       "subdomain" : "Fragmentation",
       "description" : "The sum of squares of urban patch size, divided by the total area of the geographic unit.",
+      "interpretation": "Higher values, lower fragmentation",
       "units": "km2"
     }, {
       "key" : "BECAWMNSHPINDX",
       "name" : "Area-weighted mean shape index",
       "subdomain" : "Shape",
       "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.",
+      "interpretation": "Higher values, more complex shape",
       "units": "N/A"
     }, {
       "key" : "BECAWMNNNGH",
       "name" : "Area-weighted mean nearest neighbor distance",
       "subdomain" : "Isolation",
       "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch.",
+      "interpretation": "Higher values, higher isolation",
       "units": "meters"
     } 
   ]
@@ -379,7 +390,7 @@ function drawFeaturesTable( level = 'L1 Admin', model = 'Urban Landscape' ) {
     .data( featuresHierarchy[ model ] )
     .enter()
     .append( 'tr' )
-      .html( d => '<td style="background-color: white; font-size: 16px; text-align: center; opacity: 0.8;">' + d.subdomain + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + subdomains[ model ][ d.subdomain ] +'"></i></td><td style="background-color: white; font-size: 16px;  text-align: center; opacity: 0.8;">' + d.name + ' (' + d.units + ')<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
+      .html( d => '<td style="background-color: white; font-size: 16px; text-align: center; opacity: 0.8;">' + d.subdomain + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.interpretation +'"></i></td><td style="background-color: white; font-size: 16px;  text-align: center; opacity: 0.8;">' + d.name + ' (' + d.units + ')<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
 
   drawSparkLines( level, model );
 
