@@ -241,11 +241,12 @@ function drawMap1( level = 'L1 Admin', fit = false ) {
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else if( level === 'L1 UX' ) dataTemp = l1ux_data;
   else dataTemp = l2_data;
 
   // Draw the markers
   dataTemp.map( d => {
-    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ 1 ], title: ( level === 'L1 Admin' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer1 )
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ 1 ], title: ( level === 'L1 Admin' || level === 'L1 UX' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer1 )
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) );
   } );
 
@@ -266,6 +267,7 @@ function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  )
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else if( level === 'L1 UX' ) dataTemp = l1ux_data;
   else dataTemp = l2_data;
 
   // Draw the markers
@@ -275,7 +277,7 @@ function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  )
     var colorAttrName = ( model === 'Street Design' ) ? 'TRANS_PROF_NAME' : 'URBAN_PROF_NAME';
     var probAttr = ( model === 'Street Design' ) ? 'TRANS_PROB' : 'URBAN_PROB';
 
-    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
+    var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' || level === 'L1 UX' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
       .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] + '<br /><b>Probality: </b>' + d3.format(".2f")( d[ probAttr ] ) );
   } );
 
@@ -290,6 +292,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else if( level === 'L1 UX' ) dataTemp = l1ux_data;
   else dataTemp = l2_data;
 
   var profiles_chart = {
@@ -351,7 +354,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         "field": "COUNTRY",
         "type": "quantitative",
         "axis": { 
-          "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+          "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
           "titleFont": "Roboto",
           "titleFontSize": 16,
           "titleOpacity": 1,
@@ -400,6 +403,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else if( level === 'L1 UX' ) dataTemp = l1ux_data;
   else dataTemp = l2_data;
 
   featuresHierarchy[ model ].forEach( f => {
@@ -550,6 +554,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
 
   var dataTemp;
   if( level === 'L1 Admin' ) dataTemp = l1admin_data;
+  else if( level === 'L1 UX' ) dataTemp = l1ux_data;
   else dataTemp = l2_data;
 
   var colorAttr = ( model === 'Street Design' ) ? 'TRANS_PROF' : 'URBAN_PROF';
@@ -921,37 +926,52 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
   l1admin_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l1admin_data );
   l1admin_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l1admin_data );
   
+  d3.csv( "./data/l1UX.csv", d => parseNumbers( d ) ).then( data => {
 
-  d3.csv( "./data/l2.csv", d => parseNumbers( d ) ).then( data => {
-
-    l2_data = data;
-    l2_data = l2_data.map( d => {
-      d.TRANS_PROF_NAME = transformProfiles( 'L2', 'Street Design', d.TRANS_PROF );
-      d.URBAN_PROF_NAME = transformProfiles( 'L2', 'Urban Landscape', d.URBAN_PROF );
-      d.PERCENTAGE = 1 / l2_data.length;
-      d.PERCENTAGE_COUNTRY = 1 / l2_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
+    l1ux_data = data;
+    l1ux_data = l1ux_data.map( d => {
+      d.TRANS_PROF_NAME = transformProfiles( 'L1 UX', 'Street Design', d.TRANS_PROF );
+      d.URBAN_PROF_NAME = transformProfiles( 'L1 UX', 'Urban Landscape', d.URBAN_PROF );
+      d.PERCENTAGE = 1 / l1ux_data.length;
+      d.PERCENTAGE_COUNTRY = 1 / l1ux_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
       return d;
     } );
 
-    level = levels[ 0 ];
-    model = models[ 0 ];
+    l1ux_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l1ux_data );
+    l1ux_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l1ux_data );
 
-    //l2_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l2_data );
-    //l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
-    //l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
-    l2_subcities = d3.map( l2_data, d => d.COUNTRY ).keys().map( c => { return { 'key': c, 'values': l2_data.filter( d => d.COUNTRY === c ).map( l => { return { 'key': l.L2, 'value': 1 } } ) } } );
-    
-    // Slide 2
-    //drawLevelCombo();
-    drawUnitsByCountry();
-    initMap1();
-    
-    // Slide 3
-    //drawModelCombo();
-    //drawCountryCombo();
-    drawFeaturesTable();
-    drawUnitsByProfile();
-    initMap2();
+    d3.csv( "./data/l2.csv", d => parseNumbers( d ) ).then( data => {
+
+      l2_data = data;
+      l2_data = l2_data.map( d => {
+        d.TRANS_PROF_NAME = transformProfiles( 'L2', 'Street Design', d.TRANS_PROF );
+        d.URBAN_PROF_NAME = transformProfiles( 'L2', 'Urban Landscape', d.URBAN_PROF );
+        d.PERCENTAGE = 1 / l2_data.length;
+        d.PERCENTAGE_COUNTRY = 1 / l2_data.filter( k => k.COUNTRY === d.COUNTRY ).length;
+        return d;
+      } );
+
+      level = levels[ 0 ];
+      model = models[ 0 ];
+
+      //l2_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l2_data );
+      //l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
+      //l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
+      l2_subcities = d3.map( l2_data, d => d.COUNTRY ).keys().map( c => { return { 'key': c, 'values': l2_data.filter( d => d.COUNTRY === c ).map( l => { return { 'key': l.L2, 'value': 1 } } ) } } );
+      
+      // Slide 2
+      //drawLevelCombo();
+      drawUnitsByCountry();
+      initMap1();
+      
+      // Slide 3
+      //drawModelCombo();
+      //drawCountryCombo();
+      drawFeaturesTable();
+      drawUnitsByProfile();
+      initMap2();
+
+    } );
 
   } );
 
@@ -993,6 +1013,12 @@ function transformProfiles( level, model, profile ) {
       else if( profile === "2" ) name = 'M Str. Connect./M Curved';
       else if( profile === "3" ) name = 'H Str. Connect./Straight';
       else if( profile === "4" ) name = 'M Str. Connect./H Curved';
+    } else if( level === 'L1 UX' ) {
+      if( profile === "1" ) name = 'L Str. Connect./H Curved';
+      else if( profile === "2" ) name = 'H Str. Connect./M Curved';
+      else if( profile === "3" ) name = 'M Str. Connect./L Curved';
+      else if( profile === "4" ) name = 'M Str. Connect./M Curved';
+      else if( profile === "5" ) name = 'H Str. Connect./H Curved';
     } else {
       if( profile === "1" ) name = 'M Str. Connect./M Curved';
       else if( profile === "2" ) name = 'L Str. Connect./H Curved';
@@ -1005,6 +1031,11 @@ function transformProfiles( level, model, profile ) {
       else if( profile === "2" ) name = 'M Frag./Irregular/M Iso.';
       else if( profile === "3" ) name = 'H Frag./Compact/H Iso.';
       else if( profile === "4" ) name = 'M Frag./Complex/M Iso.';
+    } else if( level === 'L1 UX' ) {
+      if( profile === "1" ) name = 'L Frag./Complex/H Iso.';
+      else if( profile === "2" ) name = 'L Frag./Complex/L Iso.';
+      else if( profile === "3" ) name = 'H Frag./Compact/L Iso.';
+      else if( profile === "4" ) name = 'M Frag./Irregular/M Iso.';
     } else {
       if( profile === "1" ) name = 'H Frag./Complex/M Iso.';
       else if( profile === "2" ) name = 'M Frag./Irregular/L Iso.';
