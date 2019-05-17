@@ -1,4 +1,16 @@
 
+.container {
+    max-width: 1400px !important;
+}
+
+.fix-12-12 {
+  max-width: 1400px!important;
+}
+
+.fix-6-12 {
+  max-width: 660px!important;
+}
+
 .slide {
   /*color: #323f50 !important;*/
   color: black !important;
@@ -78,7 +90,7 @@ small {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #39b69d;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -97,6 +109,10 @@ small {
 
 input:checked + .slider {
   background-color: #39b69d;
+}
+
+input:disabled + .slider {
+  background-color: #ccc;
 }
 
 input:focus + .slider {

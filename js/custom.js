@@ -297,7 +297,7 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
 
   var profiles_chart = {
     "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-    "width": +d3.select( '#unitsByCountry' ).node().parentNode.getBoundingClientRect().width - 160,
+    "width": +d3.select( '#unitsByCountry' ).node().parentNode.getBoundingClientRect().width - 100,
     "height": 360,
     "data": {
       "values": dataTemp
@@ -564,7 +564,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
 
     var profiles_chart = {
       "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 200,
+      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 250,
       "height": 200,
       "data": {
         "values": dataTemp
@@ -583,14 +583,14 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleFontSize": 16,
                 "titleOpacity": 1,
                 "titleFontWeight": 300,
-                "titleAngle": -45,
-                "titleY": 20,
+                "titleAngle": 0,
+                "titleY": 0,
                 "titleX": -45,
                 "labelFont": "Roboto",
-                "labelFontSize": 16,
+                "labelFontSize": 14,
                 "labelOpacity": 1,
                 "labelFontWeight": 300,
-                "labelAngle": -45
+                //"labelAngle": -45
               }
             },
             "x": {
@@ -640,7 +640,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 16,
+                "labelFontSize": 14,
                 "labelOpacity": 1,
                 "labelFontWeight": 300
               }
@@ -656,7 +656,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 16,
+                "labelFontSize": 14,
                 "labelOpacity": 1,
                 "labelFontWeight": 300
               }
@@ -685,14 +685,14 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleFontSize": 16,
                 "titleOpacity": 1,
                 "titleFontWeight": 300,
-                "titleAngle": -45,
-                "titleY": 20,
+                "titleAngle": 0,
+                "titleY": 0,
                 "titleX": -45,
                 "labelFont": "Roboto",
-                "labelFontSize": 16,
+                "labelFontSize": 14,
                 "labelOpacity": 1,
                 "labelFontWeight": 300,
-                "labelAngle": -45
+                //"labelAngle": -45
               }
             },
             "x": {
@@ -733,7 +733,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
 
     var profiles_chart = {
       "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 200,
+      "width": +d3.select( '#profiles' ).node().parentNode.getBoundingClientRect().width - 250,
       "height": 200,
       "data": {
         "values": dataTemp
@@ -752,14 +752,14 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleFontSize": 16,
                 "titleOpacity": 1,
                 "titleFontWeight": 300,
-                "titleAngle": -45,
-                "titleY": 20,
+                "titleAngle": 0,
+                "titleY": 0,
                 "titleX": -45,
                 "labelFont": "Roboto",
-                "labelFontSize": 16,
+                "labelFontSize": 14,
                 "labelOpacity": 1,
                 "labelFontWeight": 300,
-                "labelAngle": -45
+                //"labelAngle": -45
               }
             },
             "x": {
@@ -817,10 +817,10 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
                 "titleOpacity": 1,
                 "titleFontWeight": 300,
                 "labelFont": "Roboto",
-                "labelFontSize": 16,
+                "labelFontSize": 14,
                 "labelOpacity": 1,
                 "labelFontWeight": 300,
-                "labelAngle": -45
+                //"labelAngle": -45
               }
             },
             "x": {
@@ -868,9 +868,13 @@ d3.selectAll( "#levelSelect-slide1" )
     if( this.checked ) { 
       level = 'L2';
       document.getElementById( "levelSelect-slide2" ).checked = true;
+      document.getElementById( "l1typeSelect-slide1" ).disabled = true;
+      document.getElementById( "l1typeSelect-slide2" ).disabled = true;
     } else {
       level = 'L1 Admin';
       document.getElementById( "levelSelect-slide2" ).checked = false;
+      document.getElementById( "l1typeSelect-slide1" ).disabled = false;
+      document.getElementById( "l1typeSelect-slide2" ).disabled = false;
     }
 
     drawUnitsByCountry( level );
@@ -887,9 +891,13 @@ d3.selectAll( "#levelSelect-slide2" )
     if( this.checked ) { 
       level = 'L2';
       document.getElementById( "levelSelect-slide1" ).checked = true;
+      document.getElementById( "l1typeSelect-slide1" ).disabled = true;
+      document.getElementById( "l1typeSelect-slide2" ).disabled = true;
     } else {
       level = 'L1 Admin';
       document.getElementById( "levelSelect-slide1" ).checked = false;
+      document.getElementById( "l1typeSelect-slide1" ).disabled = false;
+      document.getElementById( "l1typeSelect-slide2" ).disabled = false;
     }
 
     drawUnitsByCountry( level );
