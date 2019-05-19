@@ -5,7 +5,7 @@ var map1, subcitiesLayer1, markers1 = [];
 
 var map2, subcitiesLayer2, markers2 = [], icons2;
 
-var levels = [ 'L1 Admin', 'L2' ], level,
+var levels = [ 'L1 Admin', 'L1 UX', 'L2' ], level,
   models = [ 'Urban Landscape', 'Street Design' ], model,
   countries, country,
   cities, city,
@@ -427,7 +427,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "aggregate": "count",
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -450,7 +450,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "dy": -14,
             "align": "right",
             "font": "Roboto",
-            "fontSize": 14,
+            "fontSize": 13,
             "opacity": 1,
             "fontWeight": 300
           },
@@ -471,7 +471,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "aggregate": "count",
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -516,7 +516,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "aggregate": "count",
             "type": "quantitative",
             "axis": { 
-              "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities',
+              "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
               "titleFont": "Roboto",
               "titleFontSize": 16,
               "titleOpacity": 1,
@@ -585,7 +585,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "field": colorAttrName,
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -637,7 +637,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "field": colorAttrName,
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -687,7 +687,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "field": colorAttrName,
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -754,7 +754,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "field": colorAttrName,
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -815,7 +815,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "field": colorAttrName,
               "type": "quantitative",
               "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : '# of cities', 
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -852,13 +852,18 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
 d3.selectAll( "#levelSelect-slide1" )
   .on( 'change', function() {
 
-    if( this.checked ) { 
+    level = $( 'input[name=levelSelect-slide1]:checked').val();
+
+    $( 'input[name=levelSelect-slide2]').prop( "checked", false );
+    $( 'input[value="' + level + '"]').prop( "checked", true );
+
+    /*if( this.checked ) { 
       level = 'L2';
       document.getElementById( "levelSelect-slide2" ).checked = true;
     } else {
-      level = 'L1 Admin';
+      level = 'L1 UX';
       document.getElementById( "levelSelect-slide2" ).checked = false;
-    }
+    }*/
 
     drawUnitsByCountry( level );
     drawSparkLines( level, model );
@@ -871,13 +876,18 @@ d3.selectAll( "#levelSelect-slide1" )
 d3.selectAll( "#levelSelect-slide2" )
   .on( 'change', function() {
     
-    if( this.checked ) { 
+    level = $( 'input[name=levelSelect-slide2]:checked').val();
+
+    $( 'input[name=levelSelect-slide1]').prop( "checked", false );
+    $( 'input[value="' + level + '"]').prop( "checked", true );
+
+    /*if( this.checked ) { 
       level = 'L2';
       document.getElementById( "levelSelect-slide1" ).checked = true;
     } else {
-      level = 'L1 Admin';
+      level = 'L1 UX';
       document.getElementById( "levelSelect-slide1" ).checked = false;
-    }
+    }*/
 
     drawUnitsByCountry( level );
     drawSparkLines( level, model );
