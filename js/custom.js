@@ -26,35 +26,35 @@ var featuresHierarchy = {
       "subdomain" : "Street connectivity",
       "description" : "Measures the length of streets per Km2 of area.",
       "interpretation": "Higher values, higher connectivity",
-      "units": "streets/Km2"
+      "units": "streets / Km2"
     }, {
       "key" : "BECADINTDENS",
       "name" : "Intersection density",
-      "subdomain" : "Intersection density",
+      "subdomain" : "Intersection connectivity",
       "description" : "Measures the amount of intersections per Km2 of area.",
-      "interpretation": "Higher values, higher density",
-      "units": "intersections/Km2"
+      "interpretation": "Higher values, higher connectivity",
+      "units": "intersections / Km2"
     }, {
       "key" : "BECADSTTPNODEAVG",
       "name" : "Streets per node average",
-      "subdomain" : "Intersection density",
+      "subdomain" : "Intersection connectivity",
       "description" : "Measures the distribution of the number of streets that meet at each intersection of the street network.",
-      "interpretation": "Higher values, higher density",
+      "interpretation": "Higher values, higher connectivity",
       "units": "streets"
     }, {
       "key" : "BECADSTTLGAVG",
       "name" : "Street length average",
-      "subdomain" : "Street network length and structure",
+      "subdomain" : "Street length",
       "description" : "Measures the length of streets in the street network.",
-      "interpretation": "Higher values, larger street segments",
+      "interpretation": "Higher values, larger streets segments",
       "units": "meters"
     }, {
       "key" : "BECADCRCTYAVG",
       "name" : "Circuity average",
-      "subdomain" : "Street network length and structure",
+      "subdomain" : "Directness",
       "description" : "Measures the average ratio of network distances to straight-line distances.",
       "interpretation": "Higher values, more curved streets",
-      "units": "N/A"
+      "units": undefined
     }
   ],
   "Urban Landscape" : [ 
@@ -71,7 +71,7 @@ var featuresHierarchy = {
       "subdomain" : "Fragmentation",
       "description" : "Number of urban patches divided by the total area of the geographic unit (in 100 hectares).",
       "interpretation": "Higher values, higher fragmentation",
-      "units": "urban patches/km2"
+      "units": "urban patches / km2"
     }, {
       "key" : "BECAWAVGPTCHAREA",
       "name" : "Area-weighted mean patch size",
@@ -92,7 +92,7 @@ var featuresHierarchy = {
       "subdomain" : "Shape",
       "description" : "Shape index is a ratio of the actual perimeter of a patch to the minimum perimeter possible for a maximally compact patch with the same size. The area-weighted mean shape index is the weighted average of the shape index for each patch within the geographic boundary. This index is weighted by the area of each patch.",
       "interpretation": "Higher values, more complex shape",
-      "units": "N/A"
+      "units": undefined
     }, {
       "key" : "BECAWMNNNGH",
       "name" : "Area-weighted mean nearest neighbor distance",
@@ -102,19 +102,6 @@ var featuresHierarchy = {
       "units": "meters"
     } 
   ]
-};
-
-var subdomains = {
-  "Street Design" : {
-    "Street density": "Street density description...",
-    "Intersection density": "Intersection density description...",
-    "Street network length and structure": "Street... description..."
-  },
-  "Urban Landscape" : {
-    "Fragmentation": "Fragmentation description...",
-    "Shape": "Shape description...",
-    "Isolation": "Isolation description..."
-  },
 };
 
 var icons = {
@@ -393,7 +380,7 @@ function drawFeaturesTable( level = 'L1 Admin', model = 'Urban Landscape' ) {
     .data( featuresHierarchy[ model ] )
     .enter()
     .append( 'tr' )
-      .html( d => '<td style="background-color: white; font-size: 16px; text-align: center; opacity: 0.8;">' + d.subdomain + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.interpretation +'"></i></td><td style="background-color: white; font-size: 16px;  text-align: center; opacity: 0.8;">' + d.name + ' (' + d.units + ')<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
+      .html( d => '<td style="background-color: white; font-size: 14px; text-align: center; opacity: 0.8;">' + d.subdomain + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.interpretation +'"></i></td><td style="background-color: white; font-size: 14px;  text-align: center; opacity: 0.8;">' + d.name + ( ( d.units !== undefined )  ? ' (' + d.units + ')' : '' ) + '<br /><i class="far fa-question-circle" data-toggle="tooltip" data-placement="right" title="' + d.description +'"></i></td><td id="sparkline-' + d.key + '" style="background-color: white;"></td>' );
 
   drawSparkLines( level, model );
 
@@ -868,13 +855,9 @@ d3.selectAll( "#levelSelect-slide1" )
     if( this.checked ) { 
       level = 'L2';
       document.getElementById( "levelSelect-slide2" ).checked = true;
-      document.getElementById( "l1typeSelect-slide1" ).disabled = true;
-      document.getElementById( "l1typeSelect-slide2" ).disabled = true;
     } else {
       level = 'L1 Admin';
       document.getElementById( "levelSelect-slide2" ).checked = false;
-      document.getElementById( "l1typeSelect-slide1" ).disabled = false;
-      document.getElementById( "l1typeSelect-slide2" ).disabled = false;
     }
 
     drawUnitsByCountry( level );
@@ -891,13 +874,9 @@ d3.selectAll( "#levelSelect-slide2" )
     if( this.checked ) { 
       level = 'L2';
       document.getElementById( "levelSelect-slide1" ).checked = true;
-      document.getElementById( "l1typeSelect-slide1" ).disabled = true;
-      document.getElementById( "l1typeSelect-slide2" ).disabled = true;
     } else {
       level = 'L1 Admin';
       document.getElementById( "levelSelect-slide1" ).checked = false;
-      document.getElementById( "l1typeSelect-slide1" ).disabled = false;
-      document.getElementById( "l1typeSelect-slide2" ).disabled = false;
     }
 
     drawUnitsByCountry( level );
