@@ -265,7 +265,7 @@ function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  )
     var probAttr = ( model === 'Street Design' ) ? 'TRANS_PROB' : 'URBAN_PROB';
 
     var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' || level === 'L1 UX' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
-      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] + '<br /><b>Probality: </b>' + d3.format(".2f")( d[ probAttr ] ) );
+      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] /*+ '<br /><b>Probality: </b>' + d3.format(".2f")( d[ probAttr ] )*/ );
   } );
 
   if( fit === true ) {
@@ -1006,16 +1006,16 @@ function transformProfiles( level, model, profile ) {
   var name;
   if( model === 'Street Design' ){
     if( level === 'L1 Admin' ) {
-      if( profile === "1" ) name = 'L Str. Connect./M Curved';
-      else if( profile === "2" ) name = 'M Str. Connect./M Curved';
-      else if( profile === "3" ) name = 'H Str. Connect./Straight';
-      else if( profile === "4" ) name = 'M Str. Connect./H Curved';
+      if( profile === "1" ) name = 'Semi-hyperbolic grid';
+      else if( profile === "2" ) name = 'Labyrinth';
+      else if( profile === "3" ) name = 'Spiderweb';
+      else if( profile === "4" ) name = 'Hyperbolic grid';
     } else if( level === 'L1 UX' ) {
-      if( profile === "1" ) name = 'L Str. Connect./H Curved';
-      else if( profile === "2" ) name = 'H Str. Connect./M Curved';
-      else if( profile === "3" ) name = 'M Str. Connect./L Curved';
-      else if( profile === "4" ) name = 'M Str. Connect./M Curved';
-      else if( profile === "5" ) name = 'H Str. Connect./H Curved';
+      if( profile === "1" ) name = 'Semi-hyperbolic grid';
+      else if( profile === "2" ) name = 'Straight grid';
+      else if( profile === "3" ) name = 'Spiderweb';
+      else if( profile === "4" ) name = 'Labyrinth';
+      else if( profile === "5" ) name = 'Hyperbolic labyrinth';
     } else {
       if( profile === "1" ) name = 'M Str. Connect./M Curved';
       else if( profile === "2" ) name = 'L Str. Connect./H Curved';
@@ -1024,15 +1024,15 @@ function transformProfiles( level, model, profile ) {
     }     
   } else {
     if( level === 'L1 Admin' ) {
-      if( profile === "1" ) name = 'L Frag./Complex/L Iso.';
-      else if( profile === "2" ) name = 'M Frag./Irregular/M Iso.';
-      else if( profile === "3" ) name = 'H Frag./Compact/H Iso.';
-      else if( profile === "4" ) name = 'M Frag./Complex/M Iso.';
+      if( profile === "1" ) name = 'Proximate stones';
+      else if( profile === "2" ) name = 'Scattered pixels';
+      else if( profile === "3" ) name = 'Proximate inkblots';
+      else if( profile === "4" ) name = 'Contiguous large inkblots';
     } else if( level === 'L1 UX' ) {
-      if( profile === "1" ) name = 'L Frag./Complex/H Iso.';
-      else if( profile === "2" ) name = 'L Frag./Complex/L Iso.';
-      else if( profile === "3" ) name = 'H Frag./Compact/L Iso.';
-      else if( profile === "4" ) name = 'M Frag./Irregular/M Iso.';
+      if( profile === "1" ) name = 'Contiguous pixels';
+      else if( profile === "2" ) name = 'Proximate stones';
+      else if( profile === "3" ) name = 'Contiguous large inkblots';
+      else if( profile === "4" ) name = 'Scattered large inkblots';
     } else {
       if( profile === "1" ) name = 'H Frag./Complex/M Iso.';
       else if( profile === "2" ) name = 'M Frag./Irregular/L Iso.';
