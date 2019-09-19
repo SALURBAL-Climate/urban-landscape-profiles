@@ -9,10 +9,8 @@ The BE significantly affects the public’s health. For more than a decade there
 ## Proposed Solution
 
 <p align="center">
-  <a href="https://fabiancpl.github.io/salurbal/">Demo</a>
+  <a href="https://fabiancpl.github.io/salurbal/">Demo<br /><img src="https://fabiancpl.github.io/salurbal/thumbnail.gif"></a>
 </p>
-
-![Demo](thumbnail.gif)
 
 ## Authors
 
