@@ -12,7 +12,7 @@ The BE significantly affects the public’s health. For more than a decade there
   <a href="https://fabiancpl.github.io/salurbal/">Demo</a>
 </p>
 
-![Demo](images/thumbnail.gif)
+![Demo](thumbnail.gif)
 
 ## Authors
 
