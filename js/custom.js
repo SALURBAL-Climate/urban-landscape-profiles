@@ -1046,3 +1046,35 @@ function transformProfiles( level, model, profile ) {
   return name;
 
 }
+
+/* Tooltips */
+
+$( "#contiguous-large-inkblots" ).tooltip( {
+  title: "<img src='./assets/img/labels/urban/contiguous-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous large inkblots:</b> Cities with higher patch density and higher area weighted mean patch size, patches with complex shape and lower isolation.</p>",  
+  html: true, 
+} );
+
+$( "#contiguous-pixels" ).tooltip( {
+  title: "<img src='./assets/img/labels/urban/contiguous-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous pixels:</b> Cities moderate patch density and lower area weighted mean patch size, patches with compact shape and lower isolation.</p>",  
+  html: true, 
+} );
+
+$( "#proximate-inkblots" ).tooltip( {
+  title: "<img src='./assets/img/labels/urban/proximate-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Proximate inkblots:</b> Cities with moderate patch density and higher area weighted mean patch size, patches with complex shape and moderate isolation.</p>",  
+  html: true, 
+} );
+
+$( "#proximate-stones" ).tooltip( {
+  title: "<img src='./assets/img/labels/urban/proximate-stones.png'><p style='color: white !important; font-size: 14px !important;'><b>Proximate stones:</b> Cities with moderate patch density and moderate area weighted mean patch size, patches with irregular shape and moderate isolation.</p>",  
+  html: true, 
+} );
+
+$( "#scattered-large-inkblots" ).tooltip( {
+  title: "<img src='./assets/img/labels/urban/scattered-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered large inkblots:</b> Cities with moderate patch density and higher area weighted mean patch size, patches with complex shape and higher isolation.</p>",  
+  html: true, 
+} );
+
+$( "#scattered-pixels" ).tooltip( {
+  title: "<img src='./assets/img/labels/urban/scattered-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered pixels:</b> Cities with lower patch density and lower area weighted mean patch size, patches with compact shape and higher isolation.</p>",  
+  html: true, 
+} );
