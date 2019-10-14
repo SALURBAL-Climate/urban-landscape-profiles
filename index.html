@@ -236,7 +236,7 @@
       <div class="wrap" style="padding: 50px calc(0% + 0px);">
       
         <div class="fix-12-12">
-          <h3 class="ae-1"><b>Map of SALURBAL Countries, Cities and Sub-cities</b></h3>
+          <h3 class="ae-1"><b>Map of SALURBAL Countries and Cities</b></h3>
           <p class="ae-2 opacity-8">
             <!--Cities</span>&nbsp;&nbsp;
             <label class="switch">
@@ -244,9 +244,9 @@
               <span class="slider round"></span>
             </label>&nbsp;&nbsp;
             Sub-cities-->
-            <input type="radio" id="levelSelect-slide1" name="levelSelect-slide1" value="L1 Admin" checked />&nbsp;L1 Admin&nbsp;&nbsp;
+            <!--<input type="radio" id="levelSelect-slide1" name="levelSelect-slide1" value="L1 Admin" checked />&nbsp;L1 Admin&nbsp;&nbsp;
             <input type="radio" id="levelSelect-slide1" name="levelSelect-slide1" value="L1 UX" />&nbsp;L1 UX&nbsp;&nbsp;
-            <!--<input type="radio" id="levelSelect-slide1" name="levelSelect-slide1" value="L2" />&nbsp;L2&nbsp;&nbsp;-->
+            <input type="radio" id="levelSelect-slide1" name="levelSelect-slide1" value="L2" />&nbsp;L2&nbsp;&nbsp;-->
           </p>
           <div class="fix-6-12 center toRight" style="padding-left: 80px !important;">
             <div id="map1" class="ae-3"></div>
@@ -297,9 +297,9 @@
               <span class="slider round">
             </label>&nbsp;
             Sub-cities&nbsp;&nbsp;|&nbsp;&nbsp;-->
-            <input type="radio" id="levelSelect-slide2" name="levelSelect-slide2" value="L1 Admin" checked />&nbsp;L1 Admin&nbsp;&nbsp;
+            <!--<input type="radio" id="levelSelect-slide2" name="levelSelect-slide2" value="L1 Admin" checked />&nbsp;L1 Admin&nbsp;&nbsp;
             <input type="radio" id="levelSelect-slide2" name="levelSelect-slide2" value="L1 UX" />&nbsp;L1 UX&nbsp;&nbsp;
-            <!--<input type="radio" id="levelSelect-slide2" name="levelSelect-slide2" value="L2" />&nbsp;L2&nbsp;&nbsp;-->
+            <input type="radio" id="levelSelect-slide2" name="levelSelect-slide2" value="L2" />&nbsp;L2&nbsp;&nbsp;-->
             Urban Landscape&nbsp;
             <label class="switch">
               <input type="checkbox" id="modelSelect-slide2">
@@ -308,26 +308,50 @@
             Street Design
           </p>
           <div class="fix-6-12 center toRight" style="padding-left: 25px !important;">
-            <!--<div class="ae-3"><small style="font-size: 14px;">L = Low / M = Medium / H = High</small></div>-->
-            <div class="ae-3" style="width: 100%">
+            <!-- Urban Landscape -->
+            <div id ="urban-landscape-labels" class="ae-3" style="width: 100%">
+              <div style="width: 16.5%; float: left;">&nbsp;</div>
               <div style="width: 16.5%; float: left;">
-                <img src="./assets/img/labels/urban/contiguous-large-inkblots.png" width="85" id="contiguous-large-inkblots" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+                <img src="./assets/img/labels/urban/proximate-stones.png" width="85" id="proximate-stones" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
               </div>
               <div style="width: 16.5%; float: left;">
-                <img src="./assets/img/labels/urban/contiguous-pixels.png" width="85" id="contiguous-pixels" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+                <img src="./assets/img/labels/urban/scattered-pixels.png" width="85" id="scattered-pixels" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
               </div>
               <div style="width: 16.5%; float: left;">
                 <img src="./assets/img/labels/urban/proximate-inkblots.png" width="85" id="proximate-inkblots" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
               </div>
               <div style="width: 16.5%; float: left;">
-                <img src="./assets/img/labels/urban/proximate-stones.png" width="85" id="proximate-stones" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+                <img src="./assets/img/labels/urban/contiguous-large-inkblots.png" width="85" id="contiguous-large-inkblots" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
               </div>
-              <div style="width: 16.5%; float: left;">
+              <!--<div style="width: 16.5%; float: left;">
+                <img src="./assets/img/labels/urban/contiguous-pixels.png" width="85" id="contiguous-pixels" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+              </div>-->
+              <!--<div style="width: 16.5%; float: left;">
                 <img src="./assets/img/labels/urban/scattered-large-inkblots.png" width="85" id="scattered-large-inkblots" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+              </div>-->
+              <div style="clear: left;"></div>
+            </div>
+            <!-- Street Design -->
+            <div id ="street-design-labels" class="ae-3" style="width: 100%; display: none;">
+              <div style="width: 24.75%; float: left;">&nbsp;</div>
+              <div style="width: 16.5%; float: left;">
+                <img src="./assets/img/labels/street/hyperbolic-grid.png" width="85" id="hyperbolic-grid" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
               </div>
               <div style="width: 16.5%; float: left;">
-                <img src="./assets/img/labels/urban/scattered-pixels.png" width="85" id="scattered-pixels" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+                <img src="./assets/img/labels/street/labyrinth.png" width="85" id="labyrinth" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
               </div>
+              <div style="width: 16.5%; float: left;">
+                <img src="./assets/img/labels/street/spiderweb.png" width="85" id="spiderweb" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+              </div>
+              <!--<div style="width: 16.5%; float: left;">
+                <img src="./assets/img/labels/street/wool-ball.png" width="85" id="wool-ball" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+              </div>
+              <div style="width: 16.5%; float: left;">
+                <img src="./assets/img/labels/street/straight-grid.png" width="85" id="straight-grid" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+              </div>
+              <div style="width: 16.5%; float: left;">
+                <img src="./assets/img/labels/street/hyperbolic-labyrinth.png" width="85" id="hyperbolic-labyrinth" data-toggle="tooltip" data-placement="bottom" class="red-tooltip">
+              </div>-->
               <div style="clear: left;"></div>
             </div>
             <div id="profiles" class="ae-3" style="background-color: white;"></div>

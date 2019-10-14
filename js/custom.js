@@ -899,9 +899,16 @@ d3.selectAll( "#levelSelect-slide2" )
 
 d3.selectAll( "#modelSelect-slide2" )
   .on( 'change', function() {
-    
-    if( this.checked ) model = 'Street Design';
-    else model = 'Urban Landscape';
+
+    if( this.checked ) {
+      model = 'Street Design';
+      $( "#street-design-labels" ).show();
+      $( "#urban-landscape-labels" ).hide();
+    } else {
+      model = 'Urban Landscape';
+      $( "#street-design-labels" ).hide();
+      $( "#urban-landscape-labels" ).show();
+    }
 
     drawFeaturesTable( level, model );
     drawUnitsByProfile( level, model );
@@ -1047,7 +1054,7 @@ function transformProfiles( level, model, profile ) {
 
 }
 
-/* Tooltips */
+/* Tooltips - Urban Landscape */
 
 $( "#contiguous-large-inkblots" ).tooltip( {
   title: "<img src='./assets/img/labels/urban/contiguous-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous large inkblots:</b> Cities with higher patch density and higher area weighted mean patch size, patches with complex shape and lower isolation.</p>",  
@@ -1076,5 +1083,37 @@ $( "#scattered-large-inkblots" ).tooltip( {
 
 $( "#scattered-pixels" ).tooltip( {
   title: "<img src='./assets/img/labels/urban/scattered-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered pixels:</b> Cities with lower patch density and lower area weighted mean patch size, patches with compact shape and higher isolation.</p>",  
+  html: true, 
+} );
+
+/* Tooltips - Street Design */
+
+$( "#hyperbolic-grid" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/hyperbolic-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Hyperbolic grid:</b> Cities with moderate street connectivity, streets with moderate length and moderate curved streets.</p>",  
+  html: true, 
+} );
+
+$( "#labyrinth" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Labyrinth:</b> Cities with low street connectivity, streets with moderate length and moderate curved streets.</p>",  
+  html: true, 
+} );
+
+$( "#wool-ball" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/wool-ball.png'><p style='color: white !important; font-size: 14px !important;'><b>Wool ball:</b> Cities with higher street connectivity, shorter streets and higher curved streets.</p>",  
+  html: true, 
+} );
+
+$( "#straight-grid" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/straight-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Straight grid:</b> Cities with moderate street connectivity, larger streets and lower curved streets.</p>",  
+  html: true, 
+} );
+
+$( "#hyperbolic-labyrinth" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/hyperbolic-labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Hyperbolic labyrinth:</b> Cities with lower streets connectivity, larger streets and higher curved streets.</p>",  
+  html: true, 
+} );
+
+$( "#spiderweb" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/spiderweb.png'><p style='color: white !important; font-size: 14px !important;'><b>Spiderweb:</b> Cities with higher street connectivity, shorter streets and moderate curved streets.</p>",  
   html: true, 
 } );
