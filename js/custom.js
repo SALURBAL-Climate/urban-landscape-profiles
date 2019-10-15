@@ -1,3 +1,5 @@
+/* global d3, SwarmModule */
+
 var l1admin_data,
   l2_data;
 
@@ -57,7 +59,7 @@ var featuresHierarchy = {
       "units": undefined
     }
   ],
-  "Urban Landscape" : [ 
+  "Urban Landscape" : [
     {
       "key" : "BECNURBPTCH",
       "name" : "Number of urban patches",
@@ -100,7 +102,7 @@ var featuresHierarchy = {
       "description" : "Mean distance (in meters) to the nearest urban patch within the geographic boundary. This value is weighted by the area of each patch.",
       "interpretation": "Higher values, higher isolation",
       "units": "meters"
-    } 
+    }
   ]
 };
 
@@ -205,13 +207,13 @@ function initMap2() {
         var bounds = new L.LatLngBounds( l2_data.filter( d => d.COUNTRY === this.value ).map( d => [ d.LAT, d.LONG ] ) );
         map1.fitBounds( bounds );
         map2.fitBounds( bounds );
-      
+
         drawSparkLines( level, model, this.value );
         drawUnitsByProfile( level, model, this.value );
       } else {
         map1.setView( [ -16.47, -74.36], 0 );
         map2.setView( [ -16.47, -74.36], 0 );
-      
+
         drawSparkLines( level, model );
         drawUnitsByProfile( level, model );
       }
@@ -289,10 +291,10 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
     "data": {
       "values": dataTemp
     },
-    "layer": [ 
+    "layer": [
       {
         "mark": "bar"
-      }, 
+      },
       {
         "mark": {
           "type": "text",
@@ -318,11 +320,11 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
     ],
     "encoding": {
       "y": {
-        "field": "COUNTRY", 
+        "field": "COUNTRY",
         "type": "nominal",
         "sort": { "encoding": "x", "order": "descending" },
-        "axis": { 
-          "title": "Country", 
+        "axis": {
+          "title": "Country",
           "titleFont": "Roboto",
           "titleFontSize": 16,
           "titleOpacity": 1,
@@ -340,8 +342,8 @@ function drawUnitsByCountry( level = 'L1 Admin' ) {
         "aggregate": "count",
         "field": "COUNTRY",
         "type": "quantitative",
-        "axis": { 
-          "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
+        "axis": {
+          "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
           "titleFont": "Roboto",
           "titleFontSize": 16,
           "titleOpacity": 1,
@@ -415,7 +417,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "bin": true,
               "field": feature,
               "type": "quantitative",
-              "axis": { 
+              "axis": {
                 "title": null,
                 "labelFont": "Roboto",
                 "labelFontSize": 16,
@@ -426,7 +428,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "y": {
               "aggregate": "count",
               "type": "quantitative",
-              "axis": { 
+              "axis": {
                 "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
@@ -440,7 +442,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             },
             "color": { "value": ( ( country === undefined ) ? "#39b69d" : "#ccc" ) }
           }
-        }, 
+        },
         {
           "mark": {
             "type": "text",
@@ -459,7 +461,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
               "bin": true,
               "field": feature,
               "type": "quantitative",
-              "axis": { 
+              "axis": {
                 "title": null,
                 "labelFont": "Roboto",
                 "labelFontSize": 16,
@@ -470,7 +472,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "y": {
               "aggregate": "count",
               "type": "quantitative",
-              "axis": { 
+              "axis": {
                 "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
@@ -504,7 +506,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
             "bin": true,
             "field": feature,
             "type": "quantitative",
-            "axis": { 
+            "axis": {
               "title": null,
               "labelFont": "Roboto",
               "labelFontSize": 16,
@@ -515,7 +517,7 @@ function drawSparkLines( level = 'L1 Admin', model = 'Urban Landscape', country 
           "y": {
             "aggregate": "count",
             "type": "quantitative",
-            "axis": { 
+            "axis": {
               "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
               "titleFont": "Roboto",
               "titleFontSize": 16,
@@ -556,16 +558,16 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
       "data": {
         "values": dataTemp
       },
-      "layer": [ 
+      "layer": [
         {
           "mark": "bar",
           "encoding": {
             "y": {
-              "field": colorAttrName, 
+              "field": colorAttrName,
               "type": "nominal",
               "sort": { "encoding": "x", "order": "descending" },
-              "axis": { 
-                "title": "Profile", 
+              "axis": {
+                "title": "Profile",
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -584,8 +586,8 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "aggregate": "count",
               "field": colorAttrName,
               "type": "quantitative",
-              "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
+              "axis": {
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -617,11 +619,11 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
           },
           "encoding": {
             "y": {
-              "field": colorAttrName, 
+              "field": colorAttrName,
               "type": "nominal",
               "sort": { "encoding": "x", "order": "descending" },
-              "axis": { 
-                "title": "Profile", 
+              "axis": {
+                "title": "Profile",
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -636,8 +638,8 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "aggregate": "count",
               "field": colorAttrName,
               "type": "quantitative",
-              "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
+              "axis": {
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -663,11 +665,11 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
           "transform": [ { "filter": { "field": "COUNTRY", "equal": country } } ],
           "encoding": {
             "y": {
-              "field": colorAttrName, 
+              "field": colorAttrName,
               "type": "nominal",
               "sort": { "encoding": "x", "order": "descending" },
-              "axis": { 
-                "title": "Profile", 
+              "axis": {
+                "title": "Profile",
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -686,8 +688,8 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "aggregate": "count",
               "field": colorAttrName,
               "type": "quantitative",
-              "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
+              "axis": {
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -725,16 +727,16 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
       "data": {
         "values": dataTemp
       },
-      "layer": [ 
+      "layer": [
         {
           "mark": "bar",
           "encoding": {
             "y": {
-              "field": colorAttrName, 
+              "field": colorAttrName,
               "type": "nominal",
               "sort": { "encoding": "x", "order": "descending" },
-              "axis": { 
-                "title": "Profile", 
+              "axis": {
+                "title": "Profile",
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -753,8 +755,8 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "aggregate": "count",
               "field": colorAttrName,
               "type": "quantitative",
-              "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
+              "axis": {
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -779,7 +781,7 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               { "aggregate": "count", "field": colorAttr, "type": "quantitative" }
             ]
           }
-        }, 
+        },
         {
           "mark": {
             "type": "text",
@@ -794,11 +796,11 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
           },
           "encoding": {
             "y": {
-              "field": colorAttrName, 
+              "field": colorAttrName,
               "type": "nominal",
               "sort": { "encoding": "x", "order": "descending" },
-              "axis": { 
-                "title": "Profile", 
+              "axis": {
+                "title": "Profile",
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -814,8 +816,8 @@ function drawUnitsByProfile( level = 'L1 Admin', model = 'Urban Landscape', coun
               "aggregate": "count",
               "field": colorAttrName,
               "type": "quantitative",
-              "axis": { 
-                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ), 
+              "axis": {
+                "title": ( level === 'L2' ) ? '# of sub-cities' : ( ( level === 'L1 UX' ) ? '# of UX cities' : '# of Admin cities' ),
                 "titleFont": "Roboto",
                 "titleFontSize": 16,
                 "titleOpacity": 1,
@@ -857,7 +859,7 @@ d3.selectAll( "#levelSelect-slide1" )
     $( 'input[name=levelSelect-slide2]').prop( "checked", false );
     $( 'input[value="' + level + '"]').prop( "checked", true );
 
-    /*if( this.checked ) { 
+    /*if( this.checked ) {
       level = 'L2';
       document.getElementById( "levelSelect-slide2" ).checked = true;
     } else {
@@ -875,13 +877,13 @@ d3.selectAll( "#levelSelect-slide1" )
 
 d3.selectAll( "#levelSelect-slide2" )
   .on( 'change', function() {
-    
+
     level = $( 'input[name=levelSelect-slide2]:checked').val();
 
     $( 'input[name=levelSelect-slide1]').prop( "checked", false );
     $( 'input[value="' + level + '"]').prop( "checked", true );
 
-    /*if( this.checked ) { 
+    /*if( this.checked ) {
       level = 'L2';
       document.getElementById( "levelSelect-slide1" ).checked = true;
     } else {
@@ -927,9 +929,16 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
     return d;
   } );
 
+  d3.select("#urbanProfiles")
+    .node().appendChild(SwarmModule(data, "Urban Landscape"));
+
+  d3.select("#streetProfiles")
+    .node().appendChild(SwarmModule(data, "Street Design"));
+
+
   l1admin_countries = d3.nest().key( d => d.COUNTRY ).rollup( v => v.length ).entries( l1admin_data );
   l1admin_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l1admin_data );
-  
+
   d3.csv( "./data/l1UX.csv", d => parseNumbers( d ) ).then( data => {
 
     l1ux_data = data;
@@ -962,12 +971,12 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
       //l2_cities = d3.nest().key( d => d.COUNTRY ).key( d => d.L1 ).rollup( v => v.length ).entries( l2_data );
       //l2_subcities = d3.nest().key( d => d.COUNTRY ).key( d => d.L2 ).rollup( v => v.length ).entries( l2_data );
       l2_subcities = d3.map( l2_data, d => d.COUNTRY ).keys().map( c => { return { 'key': c, 'values': l2_data.filter( d => d.COUNTRY === c ).map( l => { return { 'key': l.L2, 'value': 1 } } ) } } );
-      
+
       // Slide 2
       //drawLevelCombo();
       drawUnitsByCountry();
       initMap1();
-      
+
       // Slide 3
       //drawModelCombo();
       //drawCountryCombo();
@@ -982,7 +991,7 @@ d3.csv( "./data/l1Admin.csv", d => parseNumbers( d ) ).then( data => {
 } );
 
 function parseNumbers( d ) {
-  
+
   /* Street Design model */
   d[ "BECADCRCTYAVG" ] = +d[ "BECADCRCTYAVG" ];
   d[ "BECADINTDENS" ] = +d[ "BECADINTDENS" ];
@@ -1028,7 +1037,7 @@ function transformProfiles( level, model, profile ) {
       else if( profile === "2" ) name = 'L Str. Connect./H Curved';
       else if( profile === "3" ) name = 'M Str. Connect./Straight';
       else if( profile === "4" ) name = 'H Str. Connect./M Curved';
-    }     
+    }
   } else {
     if( level === 'L1 Admin' ) {
       if( profile === "1" ) name = 'Proximate stones';
@@ -1057,63 +1066,63 @@ function transformProfiles( level, model, profile ) {
 /* Tooltips - Urban Landscape */
 
 $( "#contiguous-large-inkblots" ).tooltip( {
-  title: "<img src='./assets/img/labels/urban/contiguous-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous large inkblots:</b> Cities with higher patch density and higher area weighted mean patch size, patches with complex shape and lower isolation.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/urban/contiguous-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous large inkblots:</b> Cities with higher patch density and higher area weighted mean patch size, patches with complex shape and lower isolation.</p>",
+  html: true,
 } );
 
 $( "#contiguous-pixels" ).tooltip( {
-  title: "<img src='./assets/img/labels/urban/contiguous-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous pixels:</b> Cities moderate patch density and lower area weighted mean patch size, patches with compact shape and lower isolation.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/urban/contiguous-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Contiguous pixels:</b> Cities moderate patch density and lower area weighted mean patch size, patches with compact shape and lower isolation.</p>",
+  html: true,
 } );
 
 $( "#proximate-inkblots" ).tooltip( {
-  title: "<img src='./assets/img/labels/urban/proximate-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Proximate inkblots:</b> Cities with moderate patch density and higher area weighted mean patch size, patches with complex shape and moderate isolation.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/urban/proximate-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Proximate inkblots:</b> Cities with moderate patch density and higher area weighted mean patch size, patches with complex shape and moderate isolation.</p>",
+  html: true,
 } );
 
 $( "#proximate-stones" ).tooltip( {
-  title: "<img src='./assets/img/labels/urban/proximate-stones.png'><p style='color: white !important; font-size: 14px !important;'><b>Proximate stones:</b> Cities with moderate patch density and moderate area weighted mean patch size, patches with irregular shape and moderate isolation.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/urban/proximate-stones.png'><p style='color: white !important; font-size: 14px !important;'><b>Proximate stones:</b> Cities with moderate patch density and moderate area weighted mean patch size, patches with irregular shape and moderate isolation.</p>",
+  html: true,
 } );
 
 $( "#scattered-large-inkblots" ).tooltip( {
-  title: "<img src='./assets/img/labels/urban/scattered-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered large inkblots:</b> Cities with moderate patch density and higher area weighted mean patch size, patches with complex shape and higher isolation.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/urban/scattered-large-inkblots.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered large inkblots:</b> Cities with moderate patch density and higher area weighted mean patch size, patches with complex shape and higher isolation.</p>",
+  html: true,
 } );
 
 $( "#scattered-pixels" ).tooltip( {
-  title: "<img src='./assets/img/labels/urban/scattered-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered pixels:</b> Cities with lower patch density and lower area weighted mean patch size, patches with compact shape and higher isolation.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/urban/scattered-pixels.png'><p style='color: white !important; font-size: 14px !important;'><b>Scattered pixels:</b> Cities with lower patch density and lower area weighted mean patch size, patches with compact shape and higher isolation.</p>",
+  html: true,
 } );
 
 /* Tooltips - Street Design */
 
 $( "#hyperbolic-grid" ).tooltip( {
-  title: "<img src='./assets/img/labels/street/hyperbolic-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Hyperbolic grid:</b> Cities with moderate street connectivity, streets with moderate length and moderate curved streets.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/street/hyperbolic-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Hyperbolic grid:</b> Cities with moderate street connectivity, streets with moderate length and moderate curved streets.</p>",
+  html: true,
 } );
 
 $( "#labyrinth" ).tooltip( {
-  title: "<img src='./assets/img/labels/street/labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Labyrinth:</b> Cities with low street connectivity, streets with moderate length and moderate curved streets.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/street/labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Labyrinth:</b> Cities with low street connectivity, streets with moderate length and moderate curved streets.</p>",
+  html: true,
 } );
 
 $( "#wool-ball" ).tooltip( {
-  title: "<img src='./assets/img/labels/street/wool-ball.png'><p style='color: white !important; font-size: 14px !important;'><b>Wool ball:</b> Cities with higher street connectivity, shorter streets and higher curved streets.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/street/wool-ball.png'><p style='color: white !important; font-size: 14px !important;'><b>Wool ball:</b> Cities with higher street connectivity, shorter streets and higher curved streets.</p>",
+  html: true,
 } );
 
 $( "#straight-grid" ).tooltip( {
-  title: "<img src='./assets/img/labels/street/straight-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Straight grid:</b> Cities with moderate street connectivity, larger streets and lower curved streets.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/street/straight-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Straight grid:</b> Cities with moderate street connectivity, larger streets and lower curved streets.</p>",
+  html: true,
 } );
 
 $( "#hyperbolic-labyrinth" ).tooltip( {
-  title: "<img src='./assets/img/labels/street/hyperbolic-labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Hyperbolic labyrinth:</b> Cities with lower streets connectivity, larger streets and higher curved streets.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/street/hyperbolic-labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Hyperbolic labyrinth:</b> Cities with lower streets connectivity, larger streets and higher curved streets.</p>",
+  html: true,
 } );
 
 $( "#spiderweb" ).tooltip( {
-  title: "<img src='./assets/img/labels/street/spiderweb.png'><p style='color: white !important; font-size: 14px !important;'><b>Spiderweb:</b> Cities with higher street connectivity, shorter streets and moderate curved streets.</p>",  
-  html: true, 
+  title: "<img src='./assets/img/labels/street/spiderweb.png'><p style='color: white !important; font-size: 14px !important;'><b>Spiderweb:</b> Cities with higher street connectivity, shorter streets and moderate curved streets.</p>",
+  html: true,
 } );
