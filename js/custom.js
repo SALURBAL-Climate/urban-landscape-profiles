@@ -265,7 +265,7 @@ function drawMap2( level = 'L1 Admin', model = 'Urban Landscape', fit = false  )
     var probAttr = ( model === 'Street Design' ) ? 'TRANS_PROB' : 'URBAN_PROB';
 
     var marker = L.marker( [ d[ 'LAT' ], d[ 'LONG' ] ], { icon: icons[ d[ colorAttr ] ], title: ( level === 'L1 Admin' || level === 'L1 UX' ) ? d[ 'L1' ] : d[ 'L2' ] } ).addTo( subcitiesLayer2 )
-      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] /*+ '<br /><b>Probality: </b>' + d3.format(".2f")( d[ probAttr ] )*/ );
+      .bindPopup( '<b>Country: </b>' + d[ 'COUNTRY' ] + '<br /><b>City: </b>' + d[ 'L1' ] + ( ( d[ 'L2' ] !== undefined ) ? '<br /><b>Sub-city: </b>' + d[ 'L2' ] : '' ) + '<br /><b>Profile: </b>' + d[ colorAttrName ] + '<br /><b>Probality: </b>' + d3.format(".2f")( d[ probAttr ] ) );
   } );
 
   if( fit === true ) {
