@@ -1102,6 +1102,11 @@ $( "#hyperbolic-grid" ).tooltip( {
   html: true,
 } );
 
+$( "#semi-hyperbolic-grid" ).tooltip( {
+  title: "<img src='./assets/img/labels/street/semi-hyperbolic-grid.png'><p style='color: white !important; font-size: 14px !important;'><b>Semi-hyperbolic grid:</b> Cities with moderate street connectivity, streets with moderate length and moderate directness streets.</p>",
+  html: true,
+} );
+
 $( "#labyrinth" ).tooltip( {
   title: "<img src='./assets/img/labels/street/labyrinth.png'><p style='color: white !important; font-size: 14px !important;'><b>Labyrinth:</b> Cities with low street connectivity, streets with moderate length and moderate curved streets.</p>",
   html: true,
